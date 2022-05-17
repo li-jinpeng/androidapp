@@ -57,4 +57,12 @@
 
 
     <string name="error_gif">x or y bound size should be at least %1$dpx and file size should be no more than %2$sM</string>
+    <string name="BACK">返回</string>
+    <string name="PUBLISH">发布动态</string>
+    <string name="PUBCONFIRM">发布</string>
+    <string name="TITLETIP">起个好标题吧~</string>
+    <string name="CONTENTTIP">想分享的事儿</string>
+    <string name="SENDPOV">发送位置</string>
+    <string name="SENDMUSIC">上传音乐</string>
+    <string name="SENDVIDEO">上传视频</string>
 </resources>

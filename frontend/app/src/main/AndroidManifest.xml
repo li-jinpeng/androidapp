@@ -44,6 +44,7 @@
             tools:ignore="LockedOrientationActivity"/>
         <activity
             android:name=".activity.LoginActivity"
+            android:exported="true"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
             tools:ignore="LockedOrientationActivity">
