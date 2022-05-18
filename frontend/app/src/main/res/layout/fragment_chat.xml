@@ -20,7 +20,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_marginLeft="10dp"
-            android:text="会话"
+            android:text="通知"
             android:textSize="18sp"></TextView>
 
     </RelativeLayout>

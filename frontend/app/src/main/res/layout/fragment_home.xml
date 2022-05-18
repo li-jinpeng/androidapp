@@ -28,7 +28,7 @@
             android:background="@color/transparent"
             android:clickable="true"
             android:padding="5dp"
-            android:src="@drawable/ic_photoholder"
+            android:src="@drawable/ic_school"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -72,10 +72,11 @@
             <TextView
                 android:id="@+id/selectText"
                 android:layout_width="40dp"
-                android:layout_height="0dp"
+                android:layout_height="20dp"
                 android:clickable="true"
                 android:text="筛选"
                 android:textColor="@color/black"
+
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
