@@ -31,6 +31,16 @@
             android:screenOrientation="portrait"
             tools:ignore="LockedOrientationActivity" />
         <activity
+            android:name=".activity.PublicActivity"
+            android:windowSoftInputMode="adjustPan"
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity" />
+        <activity
+            android:name=".activity.PhotoViewActivity"
+            android:windowSoftInputMode="adjustPan"
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity" />
+        <activity
             android:name=".activity.MainActivity"
             android:label="@string/app_name"
             android:windowSoftInputMode="adjustPan"
@@ -64,6 +74,7 @@
             android:label="@string/app_name"
             android:screenOrientation="portrait"
             tools:ignore="LockedOrientationActivity"/>
+
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="com.zhihu.matisse.sample.fileprovider"

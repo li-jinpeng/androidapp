@@ -11,6 +11,7 @@ import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -20,12 +21,11 @@ import butterknife.OnClick;
 
 import com.example.androidapp.R;
 import com.example.androidapp.adapter.SelectPlotAdapter;
+import com.example.androidapp.util.GlideEngine;
 import com.example.androidapp.util.Tools;
 import com.luck.picture.lib.PictureSelector;
 import com.luck.picture.lib.entity.LocalMedia;
-import com.zhihu.matisse.engine.impl.GlideEngine;
 
-import java.text.BreakIterator;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,6 +38,9 @@ public class PublicActivity extends AppCompatActivity {
     EditText editcontent;
     @BindView(R.id.rcv_img)
     RecyclerView recycler;
+
+    @BindView(R.id.top_panel)
+    Toolbar toolbar;
     private SelectPlotAdapter adapter;
     private ArrayList<String> allSelectList;//所有的图片集合
     private ArrayList<String> categoryLists;//查看图片集合
@@ -46,7 +49,7 @@ public class PublicActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_publish);
         ButterKnife.bind(this);
         if (null == allSelectList) {
             allSelectList = new ArrayList();
@@ -88,7 +91,7 @@ public class PublicActivity extends AppCompatActivity {
                     selectList.add(localMedia);
                 }
                 //①、图片选择器自带预览
-                PictureSelector.create(MainActivity.this)
+                PictureSelector.create(PublicActivity.this)
                         .themeStyle(R.style.picture_default_style)
                         .isNotPreviewDownload(true)//是否显示保存弹框
                         .imageEngine(GlideEngine.createGlideEngine()) // 选择器展示不出图片则添加
@@ -99,6 +102,12 @@ public class PublicActivity extends AppCompatActivity {
         });
     }
 
+    @OnClick(R.id.top_panel)
+    public void onClickReturnTo() {
+        Intent intent = new Intent(this, MainActivity.class);
+        intent.putExtra("message","public");
+        startActivity(intent);
+    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
@@ -126,13 +135,13 @@ public class PublicActivity extends AppCompatActivity {
         adapter.setImageList(allSelectList);
     }
 
-    @OnClick({R.id.upload})
+    @OnClick({R.id.menu_button})
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.upload:
-                BreakIterator edit;
-                String content = edit.getText().toString();
-                if (TextUtils.isEmpty(content)) {
+            case R.id.menu_button:
+                String title = edittitle.getText().toString();
+                String content = editcontent.getText().toString();
+                if (TextUtils.isEmpty(title)) {
                     Toast.makeText(this, "请输入上传内容", Toast.LENGTH_LONG).show();
                     return;
                 }
@@ -140,6 +149,7 @@ public class PublicActivity extends AppCompatActivity {
                     Toast.makeText(this, "请选择图片进行上传", Toast.LENGTH_LONG).show();
                     return;
                 }
+                Log.e(TAG, "标题: " + title);
                 Log.e(TAG, "内容: " + content);
                 Log.e(TAG, "图片: " + allSelectList.toString());
                 break;
