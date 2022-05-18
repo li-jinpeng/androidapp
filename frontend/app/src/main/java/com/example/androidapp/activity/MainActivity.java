@@ -106,11 +106,11 @@ public class MainActivity extends BaseActivity {
                     break;
                 case "info":
                     viewPager.setCurrentItem(2);
-                    navView.getMenu().findItem(R.id.navigation_conversations).setChecked(true);
+                    navView.getMenu().findItem(R.id.navigation_dashboard).setChecked(true);
                     break;
                 default:
                     viewPager.setCurrentItem(0);
-                    navView.getMenu().findItem(R.id.navigation_conversations).setChecked(true);
+                    navView.getMenu().findItem(R.id.navigation_home).setChecked(true);
                     break;
             }
         }

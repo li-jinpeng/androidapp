@@ -65,4 +65,5 @@
     <string name="SENDPOV">发送位置</string>
     <string name="SENDMUSIC">上传音乐</string>
     <string name="SENDVIDEO">上传视频</string>
+    <string name="DRAFT">草稿箱</string>
 </resources>
