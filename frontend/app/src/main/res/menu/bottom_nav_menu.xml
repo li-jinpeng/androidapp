@@ -10,7 +10,7 @@
     <item
         android:id="@+id/navigation_conversations"
         android:icon="@drawable/ic_chat_black_24dp"
-        android:title="@string/title_conversations" />
+        android:title="通知"/>
 
     <item
         android:id="@+id/navigation_dashboard"

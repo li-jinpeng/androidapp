@@ -61,24 +61,24 @@ public class ChatFragment extends Fragment implements DateFormatter.Formatter {
     private ArrayList<Dialog> dialogs;
     private ArrayList<ChatHistory> tmpChatHistoryList;
     private Unbinder unbinder;
-/*
-    private static Handler mHandler = new Handler(Looper.getMainLooper());
+    /*
+        private static Handler mHandler = new Handler(Looper.getMainLooper());
 
-    private Runnable mTimeCounterRunnable = new Runnable() {
-        @Override
-        public void run() {
-           // refresh();
-            mHandler.postDelayed(this, 2 * 1000);
-        }
-    };
+        private Runnable mTimeCounterRunnable = new Runnable() {
+            @Override
+            public void run() {
+               // refresh();
+                mHandler.postDelayed(this, 2 * 1000);
+            }
+        };
 
-    BroadcastReceiver myBroadcastReceive = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-           // refresh();
-        }
-    };
-*/
+        BroadcastReceiver myBroadcastReceive = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+               // refresh();
+            }
+        };
+    */
     public ChatFragment() { }
 
 
@@ -162,36 +162,74 @@ public class ChatFragment extends Fragment implements DateFormatter.Formatter {
         }
     }
 
-//硬编码聊天内容
+    //硬编码聊天内容
     public static ArrayList<Dialog> getDialogs() {
         ArrayList<Dialog> chats = new ArrayList<>();
 
-        for (int i = 0; i < 20; i++) {
+        for (int i = 0; i < 4; i++) {
             Calendar calendar = Calendar.getInstance();
             calendar.add(Calendar.DAY_OF_MONTH, -(i * i));
             calendar.add(Calendar.MINUTE, -(i * i));
-
             chats.add(getDialog(i, calendar.getTime()));
         }
-
         return chats;
     }
 
     private static Dialog getDialog(int i, Date lastMessageCreatedAt) {
-        ArrayList<User> users = getUsers();
-        return new Dialog(
-                getRandomId(),
-                users.size() > 1 ? groupChatTitles.get(users.size() - 2) : users.get(0).getName(),
-                users.size() > 1 ? groupChatImages.get(users.size() - 2) : getRandomAvatar(),
-                users,
-                getMessage(lastMessageCreatedAt),
-                i < 3 ? 3 - i : 0);
+        if (i == 0) {
+            ArrayList<User> users1 = new ArrayList<>();
+            User user1 = new User(getRandomId(), "通知1", "https://pic3.zhimg.com/v2-58d652598269710fa67ec8d1c88d8f03_r.jpg?source=1940ef5c", true);
+            users1.add(user1);
+            return new Dialog(
+                    getRandomId(),
+                    users1.get(0).getName(),
+                    users1.get(0).getAvatar(),
+                    users1,
+                    getMessage(lastMessageCreatedAt, user1, "消息1"),
+                    i < 3 ? 3 - i : 0);
+        }
+        if (i == 1) {
+            ArrayList<User> users1 = new ArrayList<>();
+            User user1 = new User(getRandomId(), "通知2", "https://tse1-mm.cn.bing.net/th/id/R-C.3d306925305a64f259d4c055fb651300?rik=Zqu05cjCisLZPw&riu=http%3a%2f%2fpic.sc.chinaz.com%2ffiles%2fpic%2fpic9%2f202008%2fapic27360.jpg&ehk=ck6DlPpXvVhMOLALWTbnBeaFs5dAsPAh6%2fgv3ffd%2bTA%3d&risl=&pid=ImgRaw&r=0", true);
+            users1.add(user1);
+            return new Dialog(
+                    getRandomId(),
+                    users1.get(0).getName(),
+                    users1.get(0).getAvatar(),
+                    users1,
+                    getMessage(lastMessageCreatedAt, user1, "消息2"),
+                    i < 3 ? 3 - i : 0);
+        }
+        if (i == 2) {
+            ArrayList<User> users1 = new ArrayList<>();
+            User user1 = new User(getRandomId(), "通知3", "https://desk-fd.zol-img.com.cn/t_s640x530c5/g5/M00/06/08/ChMkJlXeb1KIVZGWACFv1tl0Xl4AABZ5QOw6uEAIW_u041.jpg", true);
+            users1.add(user1);
+            return new Dialog(
+                    getRandomId(),
+                    users1.get(0).getName(),
+                    users1.get(0).getAvatar(),
+                    users1,
+                    getMessage(lastMessageCreatedAt, user1, "消息3"),
+                    i < 3 ? 3 - i : 0);
+        }
+        if (i == 3) {
+            ArrayList<User> users1 = new ArrayList<>();
+            User user1 = new User(getRandomId(), "通知4", "https://tse1-mm.cn.bing.net/th/id/OIP-C.1CyIihS--FMRpXQsydJWJQHaEo?pid=ImgDet&rs=1", true);
+            users1.add(user1);
+            return new Dialog(
+                    getRandomId(),
+                    users1.get(0).getName(),
+                    users1.get(0).getAvatar(),
+                    users1,
+                    getMessage(lastMessageCreatedAt, user1, "消息4"),
+                    i < 3 ? 3 - i : 0);
+        }
+        return null;
     }
 
     private static ArrayList<User> getUsers() {
         ArrayList<User> users = new ArrayList<>();
-        int usersCount = 1 + rnd.nextInt(4);
-
+        int usersCount = 1;
         for (int i = 0; i < usersCount; i++) {
             users.add(getUser());
         }
@@ -207,11 +245,11 @@ public class ChatFragment extends Fragment implements DateFormatter.Formatter {
                 getRandomBoolean());
     }
 
-    private static Message getMessage(final Date date) {
+    private static Message getMessage(final Date date,User user,String message) {
         return new Message(
                 getRandomId(),
-                getUser(),
-                getRandomMessage(),
+                user,
+                message,
                 date);
     }
 

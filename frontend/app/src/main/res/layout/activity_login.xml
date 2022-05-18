@@ -4,16 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/bg_login"
+    android:background="@drawable/bg"
     android:gravity="center"
     android:orientation="vertical"
     android:padding="20dp">
-
-    <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:srcCompat="@drawable/png_logo" />
 
 
     <com.andreabaccega.widget.FormEditText
@@ -23,7 +17,7 @@
         android:layout_margin="10dp"
         android:autofillHints=""
         android:background="@drawable/shape_username_box"
-        android:drawableStart="@drawable/ic_person_black_24dp"
+        android:drawableStart="@drawable/ic_user"
         android:drawablePadding="10dp"
         android:hint="@string/ACCOUNT"
         android:inputType="textPersonName"
@@ -41,7 +35,7 @@
         android:layout_margin="10dp"
         android:autofillHints=""
         android:background="@drawable/shape_username_box"
-        android:drawableStart="@drawable/ic_lock_black_24dp"
+        android:drawableStart="@drawable/ic_password"
         android:drawablePadding="10dp"
         android:hint="@string/PASSWORD"
         android:inputType="textPassword"
@@ -73,22 +67,6 @@
         android:orientation="horizontal">
 
         <Button
-            android:id="@+id/introduce"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="50dp"
-            android:layout_marginTop="0dp"
-            android:layout_marginRight="10dp"
-            android:layout_marginBottom="10dp"
-            android:background="@android:color/transparent"
-            android:drawableLeft="@drawable/ic_home_black_24dp"
-            android:drawablePadding="6dp"
-            android:padding="4dp"
-            android:shadowColor="@android:color/transparent"
-            android:text="@string/INTRODUCE"
-            android:textColor="@android:color/black" />
-
-        <Button
             android:id="@+id/logon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -98,12 +76,12 @@
             android:layout_marginRight="50dp"
             android:layout_marginBottom="10dp"
             android:background="@android:color/transparent"
-            android:drawableLeft="@drawable/ic_person_outline_black_24dp"
+            android:drawableLeft="@drawable/ic_user"
             android:drawablePadding="6dp"
             android:padding="4dp"
             android:shadowColor="@android:color/transparent"
             android:text="@string/LOGON"
-            android:textColor="@android:color/black" />
+            android:textColor="@android:color/white" />
     </RelativeLayout>
 
 

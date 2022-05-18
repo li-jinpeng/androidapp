@@ -70,8 +70,6 @@ public class ChatActivity extends BaseActivity {
     @BindView(R.id.messagesList)
     MessagesList messagesList;
 
-    @BindView(R.id.input)
-    MessageInput messageInput;
 
     @BindView(R.id.name)
     TextView name;
@@ -106,31 +104,15 @@ public class ChatActivity extends BaseActivity {
     }
 
     private void initAdapter() {
-        MessageInput input = findViewById(R.id.input);
+
 
         imageLoader = (imageView, url, payload) -> {
             Picasso.get().load(url).placeholder(R.drawable.ic_avatarholder).into(imageView);
         };
 
-        /*
-         * senderId:自己的id，用于区分自己和对方，控制消息气泡的位置。
-         * imageLoader:图像加载器
-         *
-         * */
         messagesListAdapter = new MessagesListAdapter<>("0", imageLoader);
         //滑倒顶部时加载历史记录
         //messagesListAdapter.setLoadMoreListener(this);
-
-        //发送输入框中的文本，addToStart的第二个参数是列表滚动到底部
-        input.setInputListener(input1 -> {
-            messagesListAdapter.addToStart(getTextMessage(input1.toString()), true);
-            return true;
-        });
-        //小加号按钮点击事件，发送一张图片
-        input.setAttachmentsListener(() -> {
-            //第二个参数表示是否滚动列表到最底部
-            messagesListAdapter.addToStart(getImageMessage(), true);
-        });
 
         messagesList.setAdapter(messagesListAdapter);
     }
