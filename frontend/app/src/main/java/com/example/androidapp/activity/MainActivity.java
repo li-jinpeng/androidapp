@@ -3,6 +3,7 @@ package com.example.androidapp.activity;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 
 import androidx.viewpager.widget.ViewPager;
 
@@ -96,12 +97,23 @@ public class MainActivity extends BaseActivity {
 
         Intent intent = getIntent();
         String message = intent.getStringExtra("message");
-        if(message!=null)
-        {
-            viewPager.setCurrentItem(1);
-            navView.getMenu().findItem(R.id.navigation_conversations).setChecked(true);
+        if(message!=null) {
+            Log.v("1",message);
+            switch (message) {
+                case "chat":
+                    viewPager.setCurrentItem(1);
+                    navView.getMenu().findItem(R.id.navigation_conversations).setChecked(true);
+                    break;
+                case "info":
+                    viewPager.setCurrentItem(2);
+                    navView.getMenu().findItem(R.id.navigation_dashboard).setChecked(true);
+                    break;
+                default:
+                    viewPager.setCurrentItem(0);
+                    navView.getMenu().findItem(R.id.navigation_home).setChecked(true);
+                    break;
+            }
         }
-
     }
 
 

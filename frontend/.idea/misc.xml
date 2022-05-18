@@ -46,6 +46,37 @@
         <entry key="..\:/Users/86156/Desktop/frontend/app/src/main/res/layout/view_intro_2.xml" value="0.25364583333333335" />
         <entry key="..\:/Users/86156/Desktop/frontend/app/src/main/res/layout/view_intro_3.xml" value="0.25364583333333335" />
         <entry key="..\:/Users/86156/Desktop/frontend/app/src/main/res/menu/bottom_nav_menu.xml" value="0.1" />
+        <entry key="..\:/android_app/androidapp/frontend/app/src/main/res/drawable-anydpi-v26/bg_login.xml" value="0.244" />
+        <entry key="..\:/android_app/androidapp/frontend/app/src/main/res/drawable/circle_loading.xml" value="0.244" />
+        <entry key="..\:/android_app/androidapp/frontend/app/src/main/res/drawable/ic_delete_5dp.xml" value="0.1185" />
+        <entry key="..\:/android_app/androidapp/frontend/app/src/main/res/drawable/ic_music_24dp.xml" value="0.244" />
+        <entry key="..\:/android_app/androidapp/frontend/app/src/main/res/drawable/ic_person_black_24dp.xml" value="0.244" />
+        <entry key="..\:/android_app/androidapp/frontend/app/src/main/res/drawable/ic_person_outline_black_24dp.xml" value="0.244" />
+        <entry key="..\:/android_app/androidapp/frontend/app/src/main/res/drawable/ic_photoholder.xml" value="0.244" />
+        <entry key="..\:/android_app/androidapp/frontend/app/src/main/res/drawable/ic_pov.xml" value="0.244" />
+        <entry key="..\:/android_app/androidapp/frontend/app/src/main/res/drawable/ic_pov_24dp.xml" value="0.5" />
+        <entry key="..\:/android_app/androidapp/frontend/app/src/main/res/drawable/ic_query_black_24dp.xml" value="0.244" />
+        <entry key="..\:/android_app/androidapp/frontend/app/src/main/res/drawable/ic_search_black_24dp.xml" value="0.244" />
+        <entry key="..\:/android_app/androidapp/frontend/app/src/main/res/drawable/ic_video_24dp.xml" value="0.244" />
+        <entry key="..\:/android_app/androidapp/frontend/app/src/main/res/layout/activity_chat.xml" value="0.23802083333333332" />
+        <entry key="..\:/android_app/androidapp/frontend/app/src/main/res/layout/activity_edit_info.xml" value="0.1038961038961039" />
+        <entry key="..\:/android_app/androidapp/frontend/app/src/main/res/layout/activity_main.xml" value="0.22" />
+        <entry key="..\:/android_app/androidapp/frontend/app/src/main/res/layout/activity_photo_view.xml" value="0.12183383991894631" />
+        <entry key="..\:/android_app/androidapp/frontend/app/src/main/res/layout/activity_publish.xml" value="0.23489583333333333" />
+        <entry key="..\:/android_app/androidapp/frontend/app/src/main/res/layout/activity_query.xml" value="0.23489583333333333" />
+        <entry key="..\:/android_app/androidapp/frontend/app/src/main/res/layout/fragment_chat.xml" value="0.24114583333333334" />
+        <entry key="..\:/android_app/androidapp/frontend/app/src/main/res/layout/fragment_dashboard.xml" value="0.24114583333333334" />
+        <entry key="..\:/android_app/androidapp/frontend/app/src/main/res/layout/fragment_home.xml" value="0.24114583333333334" />
+        <entry key="..\:/android_app/androidapp/frontend/app/src/main/res/layout/item_gallery.xml" value="0.5" />
+        <entry key="..\:/android_app/androidapp/frontend/app/src/main/res/layout/layout_history_list.xml" value="0.146403242147923" />
+        <entry key="..\:/android_app/androidapp/frontend/app/src/main/res/layout/layout_hot_search_cards.xml" value="0.146403242147923" />
+        <entry key="..\:/android_app/androidapp/frontend/app/src/main/res/layout/view_intro_1.xml" value="0.146403242147923" />
+        <entry key="..\:/android_app/androidapp/frontend/app/src/main/res/layout/view_intro_2.xml" value="0.146403242147923" />
+        <entry key="..\:/android_app/androidapp/frontend/app/src/main/res/layout/view_intro_3.xml" value="0.146403242147923" />
+        <entry key="..\:/android_app/androidapp/frontend/app/src/main/res/menu/bottom_nav_menu.xml" value="0.18020833333333333" />
+        <entry key="..\:/android_app/androidapp/frontend/app/src/main/res/menu/menu_publishmenu.xml" value="0.3020833333333333" />
+        <entry key="..\:/android_app/androidapp/frontend/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.2525" />
+        <entry key="..\:/android_app/androidapp/frontend/app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml" value="0.2525" />
       </map>
     </option>
   </component>

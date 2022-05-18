@@ -1,12 +1,21 @@
 package com.example.androidapp.fragment.main;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+
+import android.widget.ImageView;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
+
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -14,6 +23,9 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.androidapp.R;
+
+import com.example.androidapp.activity.PublicActivity;
+
 import com.example.androidapp.adapter.HomeAdapter;
 import com.example.androidapp.util.PostDetail;
 import com.google.gson.Gson;
@@ -21,6 +33,10 @@ import com.google.gson.reflect.TypeToken;
 
 import java.util.List;
 
+
+import java.lang.reflect.Method;
+
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 import okhttp3.OkHttpClient;
@@ -31,6 +47,11 @@ import okhttp3.FormBody;
 public class HomeFragment extends Fragment {
     private HomeAdapter homeAdapter;
     private Unbinder unbinder;
+
+    @BindView(R.id.imageButton)
+    ImageView imageview;
+
+
     private Spinner spinner;
     private String spinner_content;
     private List<PostDetail> post_list;
@@ -42,11 +63,15 @@ public class HomeFragment extends Fragment {
     private Gson gson;
     private int lock;
     private String host = "http://101.43.128.148:8001";
+
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
 
         View root = inflater.inflate(R.layout.fragment_home, container, false);
         unbinder = ButterKnife.bind(this, root);
+
+        Initview();
+
         TextView text = root.findViewById(R.id.selectText);
         recycleView = root.findViewById(R.id.recycleView);
         editText = root.findViewById(R.id.search_view);
@@ -120,6 +145,35 @@ public class HomeFragment extends Fragment {
 
         return root;
     }
+
+    private void Initview(){
+        this.registerForContextMenu(imageview);
+    }
+
+
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+        MenuInflater inflater = getActivity().getMenuInflater();
+        inflater.inflate(R.menu.menu_publishmenu,menu);
+        super.onCreateContextMenu(menu, v, menuInfo);
+    }
+
+    //该方法对菜单的item进行监听
+    @Override
+    public boolean onContextItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.menu1: //发布动态
+                Intent intent = new Intent();
+                intent.setClass(getActivity(), PublicActivity.class);
+                startActivity(intent);
+                break;
+            case R.id.menu2:
+                Log.v("2","2");
+                break;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
