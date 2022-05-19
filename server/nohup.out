@@ -1,0 +1,665 @@
+ * Running on all addresses.
+   WARNING: This is a development server. Do not use it in a production deployment.
+
+ * Running on https://10.0.16.17:443/ (Press CTRL+C to quit)
+
+ * Restarting with stat
+
+Performing system checks...
+
+System check identified no issues (0 silenced).
+
+Django version 3.2.9, using settings 'THU_HELPER.settings'
+Development server is running at https://0.0.0.0:443/
+Using the Werkzeug debugger (http://werkzeug.pocoo.org/)
+Quit the server with CONTROL-C.
+ * Debugger is active!
+
+ * Debugger PIN: 828-228-419
+
+223.72.72.139 - - [11/Dec/2021 23:04:09] "GET /food/index/ HTTP/1.1" 200 -
+
+223.72.72.139 - - [11/Dec/2021 23:04:09] "GET /post/index/ HTTP/1.1" 200 -
+
+223.72.72.139 - - [11/Dec/2021 23:04:09] "GET /course/index/ HTTP/1.1" 200 -
+
+223.72.72.139 - - [11/Dec/2021 23:04:10] "GET /img/Td58DZl6CQDooXCQK8CE.png HTTP/1.1" 301 -
+
+223.72.72.139 - - [11/Dec/2021 23:04:10] "GET /img/0bZ5wvKVpKz1o1ejLwrA.png/ HTTP/1.1" 200 -
+
+223.72.72.139 - - [11/Dec/2021 23:04:10] "GET /img/Td58DZl6CQDooXCQK8CE.png/ HTTP/1.1" 500 -
+
+Traceback (most recent call last):
+  File "/home/ubuntu/.local/lib/python3.6/site-packages/django/contrib/staticfiles/handlers.py", line 76, in __call__
+    return self.application(environ, start_response)
+  File "/home/ubuntu/.local/lib/python3.6/site-packages/django/core/handlers/wsgi.py", line 133, in __call__
+    response = self.get_response(request)
+  File "/home/ubuntu/.local/lib/python3.6/site-packages/django/core/handlers/base.py", line 130, in get_response
+    response = self._middleware_chain(request)
+  File "/home/ubuntu/.local/lib/python3.6/site-packages/django/core/handlers/exception.py", line 49, in inner
+    response = response_for_exception(request, exc)
+  File "/home/ubuntu/.local/lib/python3.6/site-packages/django/core/handlers/exception.py", line 114, in response_for_exception
+    response = handle_uncaught_exception(request, get_resolver(get_urlconf()), sys.exc_info())
+  File "/home/ubuntu/.local/lib/python3.6/site-packages/django/core/handlers/exception.py", line 149, in handle_uncaught_exception
+    return debug.technical_500_response(request, *exc_info)
+  File "/home/ubuntu/.local/lib/python3.6/site-packages/django_extensions/management/technical_response.py", line 40, in null_technical_500_response
+    raise exc_value.with_traceback(tb)
+  File "/home/ubuntu/.local/lib/python3.6/site-packages/django/core/handlers/exception.py", line 47, in inner
+    response = get_response(request)
+  File "/home/ubuntu/.local/lib/python3.6/site-packages/django/core/handlers/base.py", line 181, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/ubuntu/server/THU_HELPER/views.py", line 1296, in get_image
+    image_data = open(imagepath,"rb").read()
+FileNotFoundError: [Errno 2] No such file or directory: 'pic/Td58DZl6CQDooXCQK8CE.png'
+223.72.72.139 - - [11/Dec/2021 23:04:10] "GET /img/2NaL8htVpwgHYgCZ5_hM.png/ HTTP/1.1" 200 -
+
+223.72.72.139 - - [11/Dec/2021 23:04:10] "GET /img/FoS8bFQF9HXViLpHOe7o.png/ HTTP/1.1" 500 -
+
+Traceback (most recent call last):
+  File "/home/ubuntu/.local/lib/python3.6/site-packages/django/contrib/staticfiles/handlers.py", line 76, in __call__
+    return self.application(environ, start_response)
+  File "/home/ubuntu/.local/lib/python3.6/site-packages/django/core/handlers/wsgi.py", line 133, in __call__
+    response = self.get_response(request)
+  File "/home/ubuntu/.local/lib/python3.6/site-packages/django/core/handlers/base.py", line 130, in get_response
+    response = self._middleware_chain(request)
+  File "/home/ubuntu/.local/lib/python3.6/site-packages/django/core/handlers/exception.py", line 49, in inner
+    response = response_for_exception(request, exc)
+  File "/home/ubuntu/.local/lib/python3.6/site-packages/django/core/handlers/exception.py", line 114, in response_for_exception
+    response = handle_uncaught_exception(request, get_resolver(get_urlconf()), sys.exc_info())
+  File "/home/ubuntu/.local/lib/python3.6/site-packages/django/core/handlers/exception.py", line 149, in handle_uncaught_exception
+    return debug.technical_500_response(request, *exc_info)
+  File "/home/ubuntu/.local/lib/python3.6/site-packages/django_extensions/management/technical_response.py", line 40, in null_technical_500_response
+    raise exc_value.with_traceback(tb)
+  File "/home/ubuntu/.local/lib/python3.6/site-packages/django/core/handlers/exception.py", line 47, in inner
+    response = get_response(request)
+  File "/home/ubuntu/.local/lib/python3.6/site-packages/django/core/handlers/base.py", line 181, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/ubuntu/server/THU_HELPER/views.py", line 1296, in get_image
+    image_data = open(imagepath,"rb").read()
+FileNotFoundError: [Errno 2] No such file or directory: 'pic/FoS8bFQF9HXViLpHOe7o.png'
+223.72.72.139 - - [11/Dec/2021 23:04:10] "POST /get_id/ HTTP/1.1" 200 -
+
+223.72.72.139 - - [11/Dec/2021 23:04:10] "POST /user/init/ HTTP/1.1" 200 -
+
+223.72.72.139 - - [11/Dec/2021 23:04:10] "POST /judge_identy/ HTTP/1.1" 200 -
+
+223.72.72.139 - - [11/Dec/2021 23:04:32] "POST /user/get/home/ HTTP/1.1" 200 -
+
+223.72.72.139 - - [11/Dec/2021 23:05:19] "GET /food/index/ HTTP/1.1" 200 -
+
+223.72.72.139 - - [11/Dec/2021 23:05:19] "GET /course/index/ HTTP/1.1" 200 -
+
+223.72.72.139 - - [11/Dec/2021 23:05:19] "GET /post/index/ HTTP/1.1" 200 -
+
+223.72.72.139 - - [11/Dec/2021 23:05:20] "GET /img/0bZ5wvKVpKz1o1ejLwrA.png/ HTTP/1.1" 200 -
+
+223.72.72.139 - - [11/Dec/2021 23:05:20] "GET /img/Td58DZl6CQDooXCQK8CE.png/ HTTP/1.1" 500 -
+
+Traceback (most recent call last):
+  File "/home/ubuntu/.local/lib/python3.6/site-packages/django/contrib/staticfiles/handlers.py", line 76, in __call__
+    return self.application(environ, start_response)
+  File "/home/ubuntu/.local/lib/python3.6/site-packages/django/core/handlers/wsgi.py", line 133, in __call__
+    response = self.get_response(request)
+  File "/home/ubuntu/.local/lib/python3.6/site-packages/django/core/handlers/base.py", line 130, in get_response
+    response = self._middleware_chain(request)
+  File "/home/ubuntu/.local/lib/python3.6/site-packages/django/core/handlers/exception.py", line 49, in inner
+    response = response_for_exception(request, exc)
+  File "/home/ubuntu/.local/lib/python3.6/site-packages/django/core/handlers/exception.py", line 114, in response_for_exception
+    response = handle_uncaught_exception(request, get_resolver(get_urlconf()), sys.exc_info())
+  File "/home/ubuntu/.local/lib/python3.6/site-packages/django/core/handlers/exception.py", line 149, in handle_uncaught_exception
+    return debug.technical_500_response(request, *exc_info)
+  File "/home/ubuntu/.local/lib/python3.6/site-packages/django_extensions/management/technical_response.py", line 40, in null_technical_500_response
+    raise exc_value.with_traceback(tb)
+  File "/home/ubuntu/.local/lib/python3.6/site-packages/django/core/handlers/exception.py", line 47, in inner
+    response = get_response(request)
+  File "/home/ubuntu/.local/lib/python3.6/site-packages/django/core/handlers/base.py", line 181, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/ubuntu/server/THU_HELPER/views.py", line 1296, in get_image
+    image_data = open(imagepath,"rb").read()
+FileNotFoundError: [Errno 2] No such file or directory: 'pic/Td58DZl6CQDooXCQK8CE.png'
+223.72.72.139 - - [11/Dec/2021 23:05:20] "GET /img/2NaL8htVpwgHYgCZ5_hM.png/ HTTP/1.1" 200 -
+
+223.72.72.139 - - [11/Dec/2021 23:05:20] "GET /img/FoS8bFQF9HXViLpHOe7o.png/ HTTP/1.1" 500 -
+
+Traceback (most recent call last):
+  File "/home/ubuntu/.local/lib/python3.6/site-packages/django/contrib/staticfiles/handlers.py", line 76, in __call__
+    return self.application(environ, start_response)
+  File "/home/ubuntu/.local/lib/python3.6/site-packages/django/core/handlers/wsgi.py", line 133, in __call__
+    response = self.get_response(request)
+  File "/home/ubuntu/.local/lib/python3.6/site-packages/django/core/handlers/base.py", line 130, in get_response
+    response = self._middleware_chain(request)
+  File "/home/ubuntu/.local/lib/python3.6/site-packages/django/core/handlers/exception.py", line 49, in inner
+    response = response_for_exception(request, exc)
+  File "/home/ubuntu/.local/lib/python3.6/site-packages/django/core/handlers/exception.py", line 114, in response_for_exception
+    response = handle_uncaught_exception(request, get_resolver(get_urlconf()), sys.exc_info())
+  File "/home/ubuntu/.local/lib/python3.6/site-packages/django/core/handlers/exception.py", line 149, in handle_uncaught_exception
+    return debug.technical_500_response(request, *exc_info)
+  File "/home/ubuntu/.local/lib/python3.6/site-packages/django_extensions/management/technical_response.py", line 40, in null_technical_500_response
+    raise exc_value.with_traceback(tb)
+  File "/home/ubuntu/.local/lib/python3.6/site-packages/django/core/handlers/exception.py", line 47, in inner
+    response = get_response(request)
+  File "/home/ubuntu/.local/lib/python3.6/site-packages/django/core/handlers/base.py", line 181, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/ubuntu/server/THU_HELPER/views.py", line 1296, in get_image
+    image_data = open(imagepath,"rb").read()
+FileNotFoundError: [Errno 2] No such file or directory: 'pic/FoS8bFQF9HXViLpHOe7o.png'
+223.72.72.139 - - [11/Dec/2021 23:05:20] "POST /get_id/ HTTP/1.1" 200 -
+
+223.72.72.139 - - [11/Dec/2021 23:05:20] "POST /user/init/ HTTP/1.1" 200 -
+
+223.72.72.139 - - [11/Dec/2021 23:05:20] "POST /judge_identy/ HTTP/1.1" 200 -
+
+223.72.72.139 - - [11/Dec/2021 23:05:21] "POST /user/get/home/ HTTP/1.1" 200 -
+
+223.72.72.139 - - [11/Dec/2021 23:05:26] "GET /food/index/ HTTP/1.1" 200 -
+
+223.72.72.139 - - [11/Dec/2021 23:05:26] "GET /course/index/ HTTP/1.1" 200 -
+
+223.72.72.139 - - [11/Dec/2021 23:05:26] "GET /post/index/ HTTP/1.1" 200 -
+
+223.72.72.139 - - [11/Dec/2021 23:05:26] "GET /img/0bZ5wvKVpKz1o1ejLwrA.png/ HTTP/1.1" 200 -
+
+223.72.72.139 - - [11/Dec/2021 23:05:26] "GET /img/2NaL8htVpwgHYgCZ5_hM.png/ HTTP/1.1" 200 -
+
+223.72.72.139 - - [11/Dec/2021 23:05:27] "POST /user/get/home/ HTTP/1.1" 200 -
+
+223.72.72.139 - - [11/Dec/2021 23:08:15] "POST /user/store/ HTTP/1.1" 500 -
+
+Traceback (most recent call last):
+  File "/home/ubuntu/.local/lib/python3.6/site-packages/django/contrib/staticfiles/handlers.py", line 76, in __call__
+    return self.application(environ, start_response)
+  File "/home/ubuntu/.local/lib/python3.6/site-packages/django/core/handlers/wsgi.py", line 133, in __call__
+    response = self.get_response(request)
+  File "/home/ubuntu/.local/lib/python3.6/site-packages/django/core/handlers/base.py", line 130, in get_response
+    response = self._middleware_chain(request)
+  File "/home/ubuntu/.local/lib/python3.6/site-packages/django/core/handlers/exception.py", line 49, in inner
+    response = response_for_exception(request, exc)
+  File "/home/ubuntu/.local/lib/python3.6/site-packages/django/core/handlers/exception.py", line 114, in response_for_exception
+    response = handle_uncaught_exception(request, get_resolver(get_urlconf()), sys.exc_info())
+  File "/home/ubuntu/.local/lib/python3.6/site-packages/django/core/handlers/exception.py", line 149, in handle_uncaught_exception
+    return debug.technical_500_response(request, *exc_info)
+  File "/home/ubuntu/.local/lib/python3.6/site-packages/django_extensions/management/technical_response.py", line 40, in null_technical_500_response
+    raise exc_value.with_traceback(tb)
+  File "/home/ubuntu/.local/lib/python3.6/site-packages/django/core/handlers/exception.py", line 47, in inner
+    response = get_response(request)
+  File "/home/ubuntu/.local/lib/python3.6/site-packages/django/core/handlers/base.py", line 181, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/ubuntu/server/THU_HELPER/views.py", line 234, in user_store
+    if item["hide"] == 0:
+KeyError: 'hide'
+223.72.72.139 - - [11/Dec/2021 23:08:47] "POST /user/get/home/ HTTP/1.1" 200 -
+
+223.72.72.139 - - [11/Dec/2021 23:08:49] "POST /user/record/ HTTP/1.1" 200 -
+
+223.72.72.139 - - [11/Dec/2021 23:08:50] "POST /user/get/home/ HTTP/1.1" 200 -
+
+223.72.72.139 - - [11/Dec/2021 23:08:51] "POST /user/store/ HTTP/1.1" 500 -
+
+Traceback (most recent call last):
+  File "/home/ubuntu/.local/lib/python3.6/site-packages/django/contrib/staticfiles/handlers.py", line 76, in __call__
+    return self.application(environ, start_response)
+  File "/home/ubuntu/.local/lib/python3.6/site-packages/django/core/handlers/wsgi.py", line 133, in __call__
+    response = self.get_response(request)
+  File "/home/ubuntu/.local/lib/python3.6/site-packages/django/core/handlers/base.py", line 130, in get_response
+    response = self._middleware_chain(request)
+  File "/home/ubuntu/.local/lib/python3.6/site-packages/django/core/handlers/exception.py", line 49, in inner
+    response = response_for_exception(request, exc)
+  File "/home/ubuntu/.local/lib/python3.6/site-packages/django/core/handlers/exception.py", line 114, in response_for_exception
+    response = handle_uncaught_exception(request, get_resolver(get_urlconf()), sys.exc_info())
+  File "/home/ubuntu/.local/lib/python3.6/site-packages/django/core/handlers/exception.py", line 149, in handle_uncaught_exception
+    return debug.technical_500_response(request, *exc_info)
+  File "/home/ubuntu/.local/lib/python3.6/site-packages/django_extensions/management/technical_response.py", line 40, in null_technical_500_response
+    raise exc_value.with_traceback(tb)
+  File "/home/ubuntu/.local/lib/python3.6/site-packages/django/core/handlers/exception.py", line 47, in inner
+    response = get_response(request)
+  File "/home/ubuntu/.local/lib/python3.6/site-packages/django/core/handlers/base.py", line 181, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/ubuntu/server/THU_HELPER/views.py", line 234, in user_store
+    if item["hide"] == 0:
+KeyError: 'hide'
+Watching for file changes with StatReloader
+Performing system checks...
+
+System check identified no issues (0 silenced).
+May 19, 2022 - 21:53:30
+Django version 3.2.10, using settings 'THU_HELPER.settings'
+Starting development server at http://0.0.0.0:8001/
+Quit the server with CONTROL-C.
+[19/May/2022 21:53:35] "GET /pic/8487441.jpg/ HTTP/1.1" 200 218159
+[19/May/2022 21:53:42] "GET /pic/8487441.jpg/ HTTP/1.1" 200 218159
+Not Found: /favicon.ico
+[19/May/2022 21:53:42] "GET /favicon.ico HTTP/1.1" 404 5941
+[19/May/2022 21:58:09] "GET /pic/8487441.jpg/ HTTP/1.1" 200 218159
+Not Found: /favicon.ico
+[19/May/2022 21:58:09] "GET /favicon.ico HTTP/1.1" 404 5941
+[19/May/2022 23:20:18] code 400, message Bad request syntax ('\x05\x01\x00')
+[19/May/2022 23:20:18] " " 400 -
+[19/May/2022 23:20:21] code 400, message Bad request syntax ('\x05\x01\x00')
+[19/May/2022 23:20:21] " " 400 -
+Not Found: /api.ipify.org:443
+[19/May/2022 23:49:04] "CONNECT api.ipify.org:443 HTTP/1.1" 404 1803
+[19/May/2022 23:49:05,010] - Broken pipe from ('85.119.151.250', 56917)
+
+Not Found: /http:/110.242.68.4/
+[19/May/2022 23:49:05] "HEAD http://110.242.68.4/ HTTP/1.1" 404 1803
+[19/May/2022 23:49:14] code 400, message Bad request syntax ('\x04\x01\x00P6[;Ç0\x00')
+[19/May/2022 23:49:14] " P6[;Ç0 " 400 -
+Not Found: /http:/api.ipify.org/
+[19/May/2022 23:49:14] "GET http://api.ipify.org/?Z70879437961Q1 HTTP/1.1" 404 1821
+[19/May/2022 23:49:24] code 400, message Bad request syntax ('\x05\x01\x00')
+[19/May/2022 23:49:24] " " 400 -
+Not Found: /
+[20/May/2022 00:07:31] "GET / HTTP/1.1" 404 5885
+[20/May/2022 00:07:31,390] - Broken pipe from ('111.13.63.135', 57100)
+
+[20/May/2022 01:14:57] code 400, message Bad request syntax ('\x05\x01\x00')
+[20/May/2022 01:14:57] " " 400 -
+[20/May/2022 01:17:35] code 400, message Bad request syntax ('\x05\x01\x00')
+[20/May/2022 01:17:35] " " 400 -
+[20/May/2022 01:18:43] code 400, message Bad request syntax ('\x05\x01\x00')
+[20/May/2022 01:18:43] " " 400 -
+[20/May/2022 01:21:58] code 400, message Bad request syntax ('\x05\x01\x00')
+[20/May/2022 01:21:58] " " 400 -
+Internal Server Error: /post/index/
+Traceback (most recent call last):
+  File "/home/ubuntu/.local/lib/python3.6/site-packages/django/core/handlers/exception.py", line 47, in inner
+    response = get_response(request)
+  File "/home/ubuntu/.local/lib/python3.6/site-packages/django/core/handlers/base.py", line 181, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/ubuntu/server/THU_HELPER/views.py", line 739, in get_post_index
+    user = User.objects.get(id=author)
+  File "/home/ubuntu/.local/lib/python3.6/site-packages/django/db/models/manager.py", line 85, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+  File "/home/ubuntu/.local/lib/python3.6/site-packages/django/db/models/query.py", line 437, in get
+    self.model._meta.object_name
+THU_HELPER.models.User.DoesNotExist: User matching query does not exist.
+[20/May/2022 02:12:34] "POST /post/index/ HTTP/1.1" 500 70223
+Internal Server Error: /post/index/
+Traceback (most recent call last):
+  File "/home/ubuntu/.local/lib/python3.6/site-packages/django/core/handlers/exception.py", line 47, in inner
+    response = get_response(request)
+  File "/home/ubuntu/.local/lib/python3.6/site-packages/django/core/handlers/base.py", line 181, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/ubuntu/server/THU_HELPER/views.py", line 739, in get_post_index
+    user = User.objects.get(id=author)
+  File "/home/ubuntu/.local/lib/python3.6/site-packages/django/db/models/manager.py", line 85, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+  File "/home/ubuntu/.local/lib/python3.6/site-packages/django/db/models/query.py", line 437, in get
+    self.model._meta.object_name
+THU_HELPER.models.User.DoesNotExist: User matching query does not exist.
+[20/May/2022 02:12:35] "POST /post/index/ HTTP/1.1" 500 70223
+1
+标题
+[20/May/2022 02:12:46] "POST /operator/search/ HTTP/1.1" 200 969
+Internal Server Error: /post/index/
+Traceback (most recent call last):
+  File "/home/ubuntu/.local/lib/python3.6/site-packages/django/core/handlers/exception.py", line 47, in inner
+    response = get_response(request)
+  File "/home/ubuntu/.local/lib/python3.6/site-packages/django/core/handlers/base.py", line 181, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/ubuntu/server/THU_HELPER/views.py", line 739, in get_post_index
+    user = User.objects.get(id=author)
+  File "/home/ubuntu/.local/lib/python3.6/site-packages/django/db/models/manager.py", line 85, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+  File "/home/ubuntu/.local/lib/python3.6/site-packages/django/db/models/query.py", line 437, in get
+    self.model._meta.object_name
+THU_HELPER.models.User.DoesNotExist: User matching query does not exist.
+[20/May/2022 02:12:48] "POST /post/index/ HTTP/1.1" 500 70223
+Internal Server Error: /post/index/
+Traceback (most recent call last):
+  File "/home/ubuntu/.local/lib/python3.6/site-packages/django/core/handlers/exception.py", line 47, in inner
+    response = get_response(request)
+  File "/home/ubuntu/.local/lib/python3.6/site-packages/django/core/handlers/base.py", line 181, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/ubuntu/server/THU_HELPER/views.py", line 739, in get_post_index
+    user = User.objects.get(id=author)
+  File "/home/ubuntu/.local/lib/python3.6/site-packages/django/db/models/manager.py", line 85, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+  File "/home/ubuntu/.local/lib/python3.6/site-packages/django/db/models/query.py", line 437, in get
+    self.model._meta.object_name
+THU_HELPER.models.User.DoesNotExist: User matching query does not exist.
+[20/May/2022 02:12:48] "POST /post/index/ HTTP/1.1" 500 70223
+
+默认
+Internal Server Error: /operator/search/
+Traceback (most recent call last):
+  File "/home/ubuntu/.local/lib/python3.6/site-packages/django/core/handlers/exception.py", line 47, in inner
+    response = get_response(request)
+  File "/home/ubuntu/.local/lib/python3.6/site-packages/django/core/handlers/base.py", line 181, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/ubuntu/server/THU_HELPER/views.py", line 1243, in index_search
+    user = User.objects.get(id=author)
+  File "/home/ubuntu/.local/lib/python3.6/site-packages/django/db/models/manager.py", line 85, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+  File "/home/ubuntu/.local/lib/python3.6/site-packages/django/db/models/query.py", line 437, in get
+    self.model._meta.object_name
+THU_HELPER.models.User.DoesNotExist: User matching query does not exist.
+[20/May/2022 02:12:50] "POST /operator/search/ HTTP/1.1" 500 71040
+Internal Server Error: /post/index/
+Traceback (most recent call last):
+  File "/home/ubuntu/.local/lib/python3.6/site-packages/django/core/handlers/exception.py", line 47, in inner
+    response = get_response(request)
+  File "/home/ubuntu/.local/lib/python3.6/site-packages/django/core/handlers/base.py", line 181, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/ubuntu/server/THU_HELPER/views.py", line 739, in get_post_index
+    user = User.objects.get(id=author)
+  File "/home/ubuntu/.local/lib/python3.6/site-packages/django/db/models/manager.py", line 85, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+  File "/home/ubuntu/.local/lib/python3.6/site-packages/django/db/models/query.py", line 437, in get
+    self.model._meta.object_name
+THU_HELPER.models.User.DoesNotExist: User matching query does not exist.
+[20/May/2022 02:13:05] "POST /post/index/ HTTP/1.1" 500 70223
+Internal Server Error: /post/index/
+Traceback (most recent call last):
+  File "/home/ubuntu/.local/lib/python3.6/site-packages/django/core/handlers/exception.py", line 47, in inner
+    response = get_response(request)
+  File "/home/ubuntu/.local/lib/python3.6/site-packages/django/core/handlers/base.py", line 181, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/ubuntu/server/THU_HELPER/views.py", line 739, in get_post_index
+    user = User.objects.get(id=author)
+  File "/home/ubuntu/.local/lib/python3.6/site-packages/django/db/models/manager.py", line 85, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+  File "/home/ubuntu/.local/lib/python3.6/site-packages/django/db/models/query.py", line 437, in get
+    self.model._meta.object_name
+THU_HELPER.models.User.DoesNotExist: User matching query does not exist.
+[20/May/2022 02:13:05] "POST /post/index/ HTTP/1.1" 500 70223
+/home/ubuntu/server/THU_HELPER/views.py changed, reloading.
+Watching for file changes with StatReloader
+Performing system checks...
+
+System check identified no issues (0 silenced).
+May 20, 2022 - 02:45:55
+Django version 3.2.10, using settings 'THU_HELPER.settings'
+Starting development server at http://0.0.0.0:8001/
+Quit the server with CONTROL-C.
+[20/May/2022 02:48:34] "POST /user/init/ HTTP/1.1" 200 11
+[20/May/2022 02:59:11] "POST /user/init/ HTTP/1.1" 200 11
+[20/May/2022 02:59:58] "POST /user/init/ HTTP/1.1" 200 11
+/home/ubuntu/server/THU_HELPER/urls.py changed, reloading.
+Watching for file changes with StatReloader
+Performing system checks...
+
+Exception in thread django-main-thread:
+Traceback (most recent call last):
+  File "/usr/lib/python3.6/threading.py", line 916, in _bootstrap_inner
+    self.run()
+  File "/usr/lib/python3.6/threading.py", line 864, in run
+    self._target(*self._args, **self._kwargs)
+  File "/home/ubuntu/.local/lib/python3.6/site-packages/django/utils/autoreload.py", line 64, in wrapper
+    fn(*args, **kwargs)
+  File "/home/ubuntu/.local/lib/python3.6/site-packages/django/core/management/commands/runserver.py", line 118, in inner_run
+    self.check(display_num_errors=True)
+  File "/home/ubuntu/.local/lib/python3.6/site-packages/django/core/management/base.py", line 423, in check
+    databases=databases,
+  File "/home/ubuntu/.local/lib/python3.6/site-packages/django/core/checks/registry.py", line 76, in run_checks
+    new_errors = check(app_configs=app_configs, databases=databases)
+  File "/home/ubuntu/.local/lib/python3.6/site-packages/django/core/checks/urls.py", line 13, in check_url_config
+    return check_resolver(resolver)
+  File "/home/ubuntu/.local/lib/python3.6/site-packages/django/core/checks/urls.py", line 23, in check_resolver
+    return check_method()
+  File "/home/ubuntu/.local/lib/python3.6/site-packages/django/urls/resolvers.py", line 416, in check
+    for pattern in self.url_patterns:
+  File "/home/ubuntu/.local/lib/python3.6/site-packages/django/utils/functional.py", line 48, in __get__
+    res = instance.__dict__[self.name] = self.func(instance)
+  File "/home/ubuntu/.local/lib/python3.6/site-packages/django/urls/resolvers.py", line 602, in url_patterns
+    patterns = getattr(self.urlconf_module, "urlpatterns", self.urlconf_module)
+  File "/home/ubuntu/.local/lib/python3.6/site-packages/django/utils/functional.py", line 48, in __get__
+    res = instance.__dict__[self.name] = self.func(instance)
+  File "/home/ubuntu/.local/lib/python3.6/site-packages/django/urls/resolvers.py", line 595, in urlconf_module
+    return import_module(self.urlconf_name)
+  File "/usr/lib/python3.6/importlib/__init__.py", line 126, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+  File "<frozen importlib._bootstrap>", line 994, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 971, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 955, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 665, in _load_unlocked
+  File "<frozen importlib._bootstrap_external>", line 678, in exec_module
+  File "<frozen importlib._bootstrap>", line 219, in _call_with_frames_removed
+  File "/home/ubuntu/server/THU_HELPER/urls.py", line 25, in <module>
+    path('user/login/', views.login),
+AttributeError: module 'THU_HELPER.views' has no attribute 'login'
+
+/home/ubuntu/server/THU_HELPER/views.py changed, reloading.
+Watching for file changes with StatReloader
+Performing system checks...
+
+System check identified no issues (0 silenced).
+May 20, 2022 - 03:37:28
+Django version 3.2.10, using settings 'THU_HELPER.settings'
+Starting development server at http://0.0.0.0:8001/
+Quit the server with CONTROL-C.
+/home/ubuntu/server/THU_HELPER/views.py changed, reloading.
+Watching for file changes with StatReloader
+Performing system checks...
+
+System check identified no issues (0 silenced).
+May 20, 2022 - 03:38:31
+Django version 3.2.10, using settings 'THU_HELPER.settings'
+Starting development server at http://0.0.0.0:8001/
+Quit the server with CONTROL-C.
+/home/ubuntu/server/THU_HELPER/views.py changed, reloading.
+Watching for file changes with StatReloader
+Performing system checks...
+
+System check identified no issues (0 silenced).
+May 20, 2022 - 03:39:04
+Django version 3.2.10, using settings 'THU_HELPER.settings'
+Starting development server at http://0.0.0.0:8001/
+Quit the server with CONTROL-C.
+/home/ubuntu/server/THU_HELPER/views.py changed, reloading.
+Watching for file changes with StatReloader
+Performing system checks...
+
+System check identified no issues (0 silenced).
+May 20, 2022 - 03:42:04
+Django version 3.2.10, using settings 'THU_HELPER.settings'
+Starting development server at http://0.0.0.0:8001/
+Quit the server with CONTROL-C.
+/home/ubuntu/server/THU_HELPER/views.py changed, reloading.
+Watching for file changes with StatReloader
+Performing system checks...
+
+System check identified no issues (0 silenced).
+May 20, 2022 - 03:42:56
+Django version 3.2.10, using settings 'THU_HELPER.settings'
+Starting development server at http://0.0.0.0:8001/
+Quit the server with CONTROL-C.
+/home/ubuntu/server/THU_HELPER/views.py changed, reloading.
+Watching for file changes with StatReloader
+Performing system checks...
+
+System check identified no issues (0 silenced).
+May 20, 2022 - 03:53:24
+Django version 3.2.10, using settings 'THU_HELPER.settings'
+Starting development server at http://0.0.0.0:8001/
+Quit the server with CONTROL-C.
+/home/ubuntu/server/THU_HELPER/views.py changed, reloading.
+Watching for file changes with StatReloader
+Performing system checks...
+
+System check identified no issues (0 silenced).
+May 20, 2022 - 04:03:45
+Django version 3.2.10, using settings 'THU_HELPER.settings'
+Starting development server at http://0.0.0.0:8001/
+Quit the server with CONTROL-C.
+/home/ubuntu/server/THU_HELPER/views.py changed, reloading.
+Watching for file changes with StatReloader
+Performing system checks...
+
+System check identified no issues (0 silenced).
+May 20, 2022 - 04:18:03
+Django version 3.2.10, using settings 'THU_HELPER.settings'
+Starting development server at http://0.0.0.0:8001/
+Quit the server with CONTROL-C.
+/home/ubuntu/server/THU_HELPER/views.py changed, reloading.
+Watching for file changes with StatReloader
+Performing system checks...
+
+System check identified no issues (0 silenced).
+May 20, 2022 - 04:24:33
+Django version 3.2.10, using settings 'THU_HELPER.settings'
+Starting development server at http://0.0.0.0:8001/
+Quit the server with CONTROL-C.
+/home/ubuntu/server/THU_HELPER/urls.py changed, reloading.
+Watching for file changes with StatReloader
+Performing system checks...
+
+System check identified no issues (0 silenced).
+May 20, 2022 - 04:26:02
+Django version 3.2.10, using settings 'THU_HELPER.settings'
+Starting development server at http://0.0.0.0:8001/
+Quit the server with CONTROL-C.
+/home/ubuntu/server/THU_HELPER/views.py changed, reloading.
+Watching for file changes with StatReloader
+Performing system checks...
+
+System check identified no issues (0 silenced).
+May 20, 2022 - 04:50:06
+Django version 3.2.10, using settings 'THU_HELPER.settings'
+Starting development server at http://0.0.0.0:8001/
+Quit the server with CONTROL-C.
+[20/May/2022 04:59:28] "GET /pic/8487441.jpg/ HTTP/1.1" 200 218159
+Not Found: /favicon.ico
+[20/May/2022 04:59:28] "GET /favicon.ico HTTP/1.1" 404 6173
+/home/ubuntu/server/THU_HELPER/views.py changed, reloading.
+Watching for file changes with StatReloader
+Performing system checks...
+
+Exception in thread django-main-thread:
+Traceback (most recent call last):
+  File "/usr/lib/python3.6/threading.py", line 916, in _bootstrap_inner
+    self.run()
+  File "/usr/lib/python3.6/threading.py", line 864, in run
+    self._target(*self._args, **self._kwargs)
+  File "/home/ubuntu/.local/lib/python3.6/site-packages/django/utils/autoreload.py", line 64, in wrapper
+    fn(*args, **kwargs)
+  File "/home/ubuntu/.local/lib/python3.6/site-packages/django/core/management/commands/runserver.py", line 118, in inner_run
+    self.check(display_num_errors=True)
+  File "/home/ubuntu/.local/lib/python3.6/site-packages/django/core/management/base.py", line 423, in check
+    databases=databases,
+  File "/home/ubuntu/.local/lib/python3.6/site-packages/django/core/checks/registry.py", line 76, in run_checks
+    new_errors = check(app_configs=app_configs, databases=databases)
+  File "/home/ubuntu/.local/lib/python3.6/site-packages/django/core/checks/urls.py", line 13, in check_url_config
+    return check_resolver(resolver)
+  File "/home/ubuntu/.local/lib/python3.6/site-packages/django/core/checks/urls.py", line 23, in check_resolver
+    return check_method()
+  File "/home/ubuntu/.local/lib/python3.6/site-packages/django/urls/resolvers.py", line 416, in check
+    for pattern in self.url_patterns:
+  File "/home/ubuntu/.local/lib/python3.6/site-packages/django/utils/functional.py", line 48, in __get__
+    res = instance.__dict__[self.name] = self.func(instance)
+  File "/home/ubuntu/.local/lib/python3.6/site-packages/django/urls/resolvers.py", line 602, in url_patterns
+    patterns = getattr(self.urlconf_module, "urlpatterns", self.urlconf_module)
+  File "/home/ubuntu/.local/lib/python3.6/site-packages/django/utils/functional.py", line 48, in __get__
+    res = instance.__dict__[self.name] = self.func(instance)
+  File "/home/ubuntu/.local/lib/python3.6/site-packages/django/urls/resolvers.py", line 595, in urlconf_module
+    return import_module(self.urlconf_name)
+  File "/usr/lib/python3.6/importlib/__init__.py", line 126, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+  File "<frozen importlib._bootstrap>", line 994, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 971, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 955, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 665, in _load_unlocked
+  File "<frozen importlib._bootstrap_external>", line 678, in exec_module
+  File "<frozen importlib._bootstrap>", line 219, in _call_with_frames_removed
+  File "/home/ubuntu/server/THU_HELPER/urls.py", line 18, in <module>
+    from . import views
+  File "/home/ubuntu/server/THU_HELPER/views.py", line 160
+    name = request.POST.get('signature', '')'
+                                            ^
+SyntaxError: EOL while scanning string literal
+
+/home/ubuntu/server/THU_HELPER/views.py changed, reloading.
+Watching for file changes with StatReloader
+Performing system checks...
+
+System check identified no issues (0 silenced).
+May 20, 2022 - 05:31:45
+Django version 3.2.10, using settings 'THU_HELPER.settings'
+Starting development server at http://0.0.0.0:8001/
+Quit the server with CONTROL-C.
+[20/May/2022 05:38:37] code 400, message Bad request version ('À\x13À')
+[20/May/2022 05:38:37] You're accessing the development server over HTTPS, but it only supports HTTP.
+
+[20/May/2022 05:38:40] code 400, message Bad request version ('À\x13À')
+[20/May/2022 05:38:40] You're accessing the development server over HTTPS, but it only supports HTTP.
+
+Not Found: /
+[20/May/2022 05:38:47] "GET / HTTP/1.1" 404 6122
+[20/May/2022 05:38:47,280] - Broken pipe from ('111.7.96.151', 52178)
+
+Not Found: /
+[20/May/2022 05:38:50] "GET / HTTP/1.1" 404 6122
+[20/May/2022 05:38:50,319] - Broken pipe from ('111.7.96.149', 41344)
+
+[20/May/2022 05:38:52] code 400, message Bad request version ('À\x13À')
+[20/May/2022 05:38:52] You're accessing the development server over HTTPS, but it only supports HTTP.
+
+Not Found: /
+[20/May/2022 05:39:02] "GET / HTTP/1.1" 404 6122
+[20/May/2022 05:39:02,589] - Broken pipe from ('111.7.96.150', 29560)
+
+/home/ubuntu/server/THU_HELPER/views.py changed, reloading.
+Watching for file changes with StatReloader
+Performing system checks...
+
+System check identified no issues (0 silenced).
+May 20, 2022 - 05:52:02
+Django version 3.2.10, using settings 'THU_HELPER.settings'
+Starting development server at http://0.0.0.0:8001/
+Quit the server with CONTROL-C.
+Internal Server Error: /post/index/
+Traceback (most recent call last):
+  File "/home/ubuntu/.local/lib/python3.6/site-packages/django/core/handlers/exception.py", line 47, in inner
+    response = get_response(request)
+  File "/home/ubuntu/.local/lib/python3.6/site-packages/django/core/handlers/base.py", line 181, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/ubuntu/server/THU_HELPER/views.py", line 738, in get_post_index
+    user = User.objects.get(id=author)
+  File "/home/ubuntu/.local/lib/python3.6/site-packages/django/db/models/manager.py", line 85, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+  File "/home/ubuntu/.local/lib/python3.6/site-packages/django/db/models/query.py", line 437, in get
+    self.model._meta.object_name
+THU_HELPER.models.User.DoesNotExist: User matching query does not exist.
+[20/May/2022 06:30:17] "POST /post/index/ HTTP/1.1" 500 70289
+Internal Server Error: /post/index/
+Traceback (most recent call last):
+  File "/home/ubuntu/.local/lib/python3.6/site-packages/django/core/handlers/exception.py", line 47, in inner
+    response = get_response(request)
+  File "/home/ubuntu/.local/lib/python3.6/site-packages/django/core/handlers/base.py", line 181, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/ubuntu/server/THU_HELPER/views.py", line 738, in get_post_index
+    user = User.objects.get(id=author)
+  File "/home/ubuntu/.local/lib/python3.6/site-packages/django/db/models/manager.py", line 85, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+  File "/home/ubuntu/.local/lib/python3.6/site-packages/django/db/models/query.py", line 437, in get
+    self.model._meta.object_name
+THU_HELPER.models.User.DoesNotExist: User matching query does not exist.
+[20/May/2022 06:30:18] "POST /post/index/ HTTP/1.1" 500 70289
+Internal Server Error: /post/index/
+Traceback (most recent call last):
+  File "/home/ubuntu/.local/lib/python3.6/site-packages/django/core/handlers/exception.py", line 47, in inner
+    response = get_response(request)
+  File "/home/ubuntu/.local/lib/python3.6/site-packages/django/core/handlers/base.py", line 181, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/ubuntu/server/THU_HELPER/views.py", line 738, in get_post_index
+    user = User.objects.get(id=author)
+  File "/home/ubuntu/.local/lib/python3.6/site-packages/django/db/models/manager.py", line 85, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+  File "/home/ubuntu/.local/lib/python3.6/site-packages/django/db/models/query.py", line 437, in get
+    self.model._meta.object_name
+THU_HELPER.models.User.DoesNotExist: User matching query does not exist.
+[20/May/2022 06:30:32] "POST /post/index/ HTTP/1.1" 500 70289
+Internal Server Error: /post/index/
+Traceback (most recent call last):
+  File "/home/ubuntu/.local/lib/python3.6/site-packages/django/core/handlers/exception.py", line 47, in inner
+    response = get_response(request)
+  File "/home/ubuntu/.local/lib/python3.6/site-packages/django/core/handlers/base.py", line 181, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/ubuntu/server/THU_HELPER/views.py", line 738, in get_post_index
+    user = User.objects.get(id=author)
+  File "/home/ubuntu/.local/lib/python3.6/site-packages/django/db/models/manager.py", line 85, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+  File "/home/ubuntu/.local/lib/python3.6/site-packages/django/db/models/query.py", line 437, in get
+    self.model._meta.object_name
+THU_HELPER.models.User.DoesNotExist: User matching query does not exist.
+[20/May/2022 06:30:32] "POST /post/index/ HTTP/1.1" 500 70289
