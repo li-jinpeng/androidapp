@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string-array name="orderArray">
-        <item>默认</item>
-        <item>标题</item>
-        <item>内容</item>
-        <item>用户</item>
-        <item>类型</item>
+        <item>@string/DEFAULT</item>
+        <item>@string/BIAOTI</item>
+        <item>@string/NEIRONG</item>
+        <item>@string/YONGHU</item>
+        <item>@string/LEIXING</item>
     </string-array>
     <string-array name="view_types_dialog">
-        <item name="image">图片</item>
+        <item name="image">@string/TUPIAN</item>
     </string-array>
 
     <string-array name="t_s_type">
-        <item name="teacher">导师</item>
-        <item name="student">学生</item>
+        <item name="teacher">@string/DAOSHI</item>
+        <item name="student">@string/XUESHENG</item>
     </string-array>
 
 </resources>

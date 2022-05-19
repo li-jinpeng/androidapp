@@ -169,8 +169,15 @@
                         android:layout_height="35dp"
                         android:layout_alignParentRight="true"
                         android:layout_marginRight="18dp"
-                        android:background="@drawable/ic_edit_black_24dp"></Button>
+                        android:background="@drawable/ic_edit_black_24dp"/>
 
+                    <Button
+                        android:id="@+id/btn_change_password"
+                        android:layout_width="35dp"
+                        android:layout_height="35dp"
+                        android:layout_marginRight="100dp"
+                        android:layout_alignParentRight="true"
+                        android:background="@drawable/ic_key"/>
                 </RelativeLayout>
             </androidx.appcompat.widget.Toolbar>
 

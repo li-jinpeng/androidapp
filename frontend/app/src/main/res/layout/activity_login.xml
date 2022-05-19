@@ -67,6 +67,22 @@
         android:orientation="horizontal">
 
         <Button
+            android:id="@+id/info"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="50dp"
+            android:layout_marginTop="0dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginBottom="10dp"
+            android:background="@android:color/transparent"
+            android:drawableLeft="@drawable/ic_info"
+            android:drawablePadding="6dp"
+            android:padding="4dp"
+            android:shadowColor="@android:color/transparent"
+            android:text="登录信息"
+            android:textColor="@android:color/white" />
+
+        <Button
             android:id="@+id/logon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
