@@ -73,7 +73,7 @@ public class ChangePasswordActivity extends AppCompatActivity {
                             Response response = client.newCall(request).execute();
                             btn.setText("修改成功");
                             Intent intent = new Intent(ChangePasswordActivity.this,MainActivity.class);
-                            intent.putExtra("message","pass");
+                            intent.putExtra("message","info");
                             startActivity(intent);
                         }catch (Exception e){
                             e.printStackTrace();
@@ -88,7 +88,7 @@ public class ChangePasswordActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(ChangePasswordActivity.this,MainActivity.class);
-                intent.putExtra("message","pass");
+                intent.putExtra("message","info");
                 startActivity(intent);
             }
         });

@@ -59,7 +59,7 @@ public class EditInfoActivity extends BaseActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(EditInfoActivity.this,MainActivity.class);
-                intent.putExtra("message","pass");
+                intent.putExtra("message","info");
                 startActivity(intent);
             }
         });

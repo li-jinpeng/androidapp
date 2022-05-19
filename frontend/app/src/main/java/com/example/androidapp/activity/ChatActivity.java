@@ -120,7 +120,7 @@ public class ChatActivity extends BaseActivity {
     @OnClick(R.id.toolbar)
     public void onClickReturnTo() {
         Intent intent = new Intent(this, MainActivity.class);
-        intent.putExtra("message","back");
+        intent.putExtra("message","chat");
         startActivity(intent);
     }
 

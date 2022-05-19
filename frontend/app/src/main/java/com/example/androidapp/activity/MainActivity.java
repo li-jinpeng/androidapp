@@ -11,7 +11,6 @@ import com.example.androidapp.R;
 import com.example.androidapp.adapter.MainActivityPagerAdapter;
 import com.example.androidapp.fragment.main.DashboardFragment;
 import com.example.androidapp.util.BasicInfo;
-import com.example.androidapp.util.Global;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import butterknife.ButterKnife;
@@ -44,7 +43,6 @@ public class MainActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Log.d("TAG", "这是user_id"+Global.user_id);
         ButterKnife.bind(this);
 
         navView = findViewById(R.id.nav_view);
@@ -99,16 +97,23 @@ public class MainActivity extends BaseActivity {
 
         Intent intent = getIntent();
         String message = intent.getStringExtra("message");
-        if(message!=null)
-        {
-            if(message.equals("back")){
-            viewPager.setCurrentItem(1);
-            navView.getMenu().findItem(R.id.navigation_conversations).setChecked(true);}
-            if(message.equals("pass")){
-                viewPager.setCurrentItem(2);
-                navView.getMenu().findItem(R.id.navigation_dashboard).setChecked(true);}
+        if(message!=null) {
+            Log.v("1",message);
+            switch (message) {
+                case "chat":
+                    viewPager.setCurrentItem(1);
+                    navView.getMenu().findItem(R.id.navigation_conversations).setChecked(true);
+                    break;
+                case "info":
+                    viewPager.setCurrentItem(2);
+                    navView.getMenu().findItem(R.id.navigation_dashboard).setChecked(true);
+                    break;
+                default:
+                    viewPager.setCurrentItem(0);
+                    navView.getMenu().findItem(R.id.navigation_home).setChecked(true);
+                    break;
+            }
         }
-
     }
 
 
