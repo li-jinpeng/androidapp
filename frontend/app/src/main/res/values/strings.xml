@@ -66,4 +66,15 @@
     <string name="SENDMUSIC">上传音乐</string>
     <string name="SENDVIDEO">上传视频</string>
     <string name="DRAFT">草稿箱</string>
+
+    <string name="DEFAULT">默认</string>
+    <string name="BIAOTI">标题</string>
+    <string name="NEIRONG">内容</string>
+    <string name="YONGHU">用户</string>
+    <string name="LEIXING">类型</string>
+    <string name="TUPIAN">图片</string>
+    <string name="DAOSHI">导师</string>
+    <string name="XUESHENG">学生</string>
+    <string name="draft_button">draft_button</string>
+
 </resources>
