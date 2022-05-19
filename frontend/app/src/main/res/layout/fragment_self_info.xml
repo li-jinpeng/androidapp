@@ -193,33 +193,6 @@
                     tools:text="19900999999"></TextView>
             </LinearLayout>
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:paddingLeft="20dp"
-                android:paddingTop="5dp"
-                android:paddingRight="20dp"
-                android:paddingBottom="5dp">
-
-                <TextView
-                    style="@style/personal_homepage_show_style"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="邮箱"
-                    android:textColor="?android:attr/textColorPrimary"></TextView>
-
-                <TextView
-                    android:id="@+id/email"
-                    style="@style/personal_homepage_show_style"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginRight="6dp"
-                    android:autoLink="email"
-                    android:textColor="?android:attr/textColorSecondary"
-                    tools:text="199@qq.com"></TextView>
-            </LinearLayout>
-
 
 
             <LinearLayout

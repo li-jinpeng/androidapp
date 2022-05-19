@@ -33,7 +33,7 @@
             android:background="@drawable/shape_username_box"
             android:drawableStart="@drawable/ic_person_black_24dp"
             android:drawablePadding="10dp"
-            android:hint="@string/ACCOUNT"
+            android:hint="邮箱"
             android:inputType="textPersonName"
             android:maxLines="1"
             android:padding="15dp"
@@ -112,6 +112,7 @@
 
 
         <Button
+            android:onClick="btn"
             android:id="@+id/logon"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -124,7 +125,6 @@
             android:shadowColor="@android:color/transparent"
             android:text="@string/LOGON"
             android:textSize="16sp" />
-
 
     </LinearLayout>
 
