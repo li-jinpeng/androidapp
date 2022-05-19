@@ -5,14 +5,15 @@
       <map>
         <entry key="..\:/Users/86156/Desktop/frontend/app/src/main/res/drawable/ic_people_black_24dp.xml" value="0.126" />
         <entry key="..\:/Users/86156/Desktop/frontend/app/src/main/res/drawable/line1.xml" value="0.1" />
+        <entry key="..\:/Users/86156/Desktop/frontend/app/src/main/res/layout/activity_change_password.xml" value="0.2" />
         <entry key="..\:/Users/86156/Desktop/frontend/app/src/main/res/layout/activity_chat.xml" value="0.1" />
         <entry key="..\:/Users/86156/Desktop/frontend/app/src/main/res/layout/activity_detail.xml" value="0.1" />
-        <entry key="..\:/Users/86156/Desktop/frontend/app/src/main/res/layout/activity_edit_info.xml" value="0.20437956204379562" />
+        <entry key="..\:/Users/86156/Desktop/frontend/app/src/main/res/layout/activity_edit_info.xml" value="0.264" />
         <entry key="..\:/Users/86156/Desktop/frontend/app/src/main/res/layout/activity_edit_self_info.xml" value="0.25364583333333335" />
         <entry key="..\:/Users/86156/Desktop/frontend/app/src/main/res/layout/activity_homepage.xml" value="0.24094202898550723" />
         <entry key="..\:/Users/86156/Desktop/frontend/app/src/main/res/layout/activity_info.xml" value="0.25364583333333335" />
         <entry key="..\:/Users/86156/Desktop/frontend/app/src/main/res/layout/activity_login.xml" value="0.25364583333333335" />
-        <entry key="..\:/Users/86156/Desktop/frontend/app/src/main/res/layout/activity_logon.xml" value="0.2" />
+        <entry key="..\:/Users/86156/Desktop/frontend/app/src/main/res/layout/activity_logon.xml" value="0.1" />
         <entry key="..\:/Users/86156/Desktop/frontend/app/src/main/res/layout/activity_main.xml" value="0.1621376811594203" />
         <entry key="..\:/Users/86156/Desktop/frontend/app/src/main/res/layout/activity_query.xml" value="0.14479166666666668" />
         <entry key="..\:/Users/86156/Desktop/frontend/app/src/main/res/layout/activity_query_result.xml" value="0.14479166666666668" />
@@ -20,7 +21,7 @@
         <entry key="..\:/Users/86156/Desktop/frontend/app/src/main/res/layout/focus_button.xml" value="0.24094202898550723" />
         <entry key="..\:/Users/86156/Desktop/frontend/app/src/main/res/layout/fragment_chat.xml" value="0.2" />
         <entry key="..\:/Users/86156/Desktop/frontend/app/src/main/res/layout/fragment_conversation.xml" value="0.20437956204379562" />
-        <entry key="..\:/Users/86156/Desktop/frontend/app/src/main/res/layout/fragment_dashboard.xml" value="0.1" />
+        <entry key="..\:/Users/86156/Desktop/frontend/app/src/main/res/layout/fragment_dashboard.xml" value="0.2" />
         <entry key="..\:/Users/86156/Desktop/frontend/app/src/main/res/layout/fragment_follow_list.xml" value="0.1621376811594203" />
         <entry key="..\:/Users/86156/Desktop/frontend/app/src/main/res/layout/fragment_follow_nav.xml" value="0.1621376811594203" />
         <entry key="..\:/Users/86156/Desktop/frontend/app/src/main/res/layout/fragment_home.xml" value="0.1480978260869565" />

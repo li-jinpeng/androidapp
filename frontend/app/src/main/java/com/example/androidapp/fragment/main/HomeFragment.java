@@ -41,7 +41,7 @@ public class HomeFragment extends Fragment {
     private String responseData;
     private Gson gson;
     private int lock;
-    private String host = "http://101.43.128.148:8001";
+    private String host = "http://101.43.128.148:8000";
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
 

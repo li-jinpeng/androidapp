@@ -3,9 +3,6 @@ package com.example.androidapp.activity;
 import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -26,11 +23,21 @@ import com.example.androidapp.R;
 import com.example.androidapp.util.Global;
 import com.example.androidapp.util.Hint;
 
+import com.example.androidapp.util.PostDetail;
+import com.example.androidapp.util.login_info;
 import com.example.androidapp.util.Valid;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import okhttp3.FormBody;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 
 
 /**
@@ -46,8 +53,6 @@ public class LoginActivity extends BaseActivity {
 
     @BindView(R.id.login_password)
     FormEditText passwordEditText;
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,40 +91,47 @@ public class LoginActivity extends BaseActivity {
             public void afterTextChanged(Editable s) {
             }
         });
-
-        // 权限申请
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED)
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 100);
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED)
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA}, 100);
-
-        SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences("user", Context.MODE_PRIVATE);
-        boolean hasLogin = sharedPreferences.getBoolean("hasLogin", false);
-        if (hasLogin) {
-            String type = sharedPreferences.getString("type", "");
-            String account = sharedPreferences.getString("account", "");
-            String password = sharedPreferences.getString("password", "");
-            if (type.equals("") || account.equals("") || password.equals("")) {
-                SharedPreferences.Editor editor = sharedPreferences.edit();
-                editor.putBoolean("hasLogin", false);
-                editor.commit();
-            } else {
-                Global.INTRO = false;
-                Hint.startActivityLoad(this);
-                //new LoginRequest(this.handleLogin, type, account, password).send();
-            }
+    Button btn = findViewById(R.id.login);
+    btn.setOnClickListener(new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        String account = accountEditText.getText().toString();
+                        String password = passwordEditText.getText().toString();
+                        FormBody.Builder builder = new  FormBody.Builder()
+                                .add("password", password)
+                                .add("account",account);
+                        OkHttpClient client = new OkHttpClient();
+                        Request request = new Request.Builder()
+                                .url(Global.SERVER_URL + "/user/login/")
+                                .post(builder.build())
+                                .build();
+                        Response response = client.newCall(request).execute();
+                        Gson gson = new Gson();
+                        String responseData = response.body().string();
+                        login_info my_info = gson.fromJson(responseData,login_info.class);
+                        if (my_info.type.equals("ok")) {
+                            Global.user_id = my_info.message;
+                            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                            startActivity(intent);
+                        }
+                        else{
+                            Button info_btn = findViewById(R.id.info);
+                            info_btn.setText(my_info.message);
+                        }
+                    }catch (Exception e){
+                        e.printStackTrace();
+                    }
+                }
+            }).start();
         }
-
+    });
 
     }
 
-
-
-    @OnClick(R.id.login)
-    public void onClickLogin() {
-        Intent intent = new Intent(this, MainActivity.class);
-        startActivity(intent);
-    }
 
     @OnClick(R.id.logon)
     public void onClickLogon() {

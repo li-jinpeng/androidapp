@@ -20,6 +20,7 @@ import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
 
 import com.example.androidapp.R;
+import com.example.androidapp.activity.ChangePasswordActivity;
 import com.example.androidapp.activity.EditInfoActivity;
 import com.example.androidapp.adapter.HomepagePagerAdapter;
 import com.example.androidapp.entity.ApplicationInfo;
@@ -80,6 +81,9 @@ public class DashboardFragment
     @BindView(R.id.btn_edit)
     Button button;
 
+    @BindView(R.id.btn_change_password)
+    Button button1;
+
     @BindView(R.id.visit_homepage_title)
     TextView title;
 
@@ -128,6 +132,14 @@ public class DashboardFragment
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getActivity(), EditInfoActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        button1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), ChangePasswordActivity.class);
                 startActivity(intent);
             }
         });

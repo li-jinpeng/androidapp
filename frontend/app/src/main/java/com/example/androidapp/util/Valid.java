@@ -31,7 +31,7 @@ public class Valid {
      * 2 ~ 10 个字符
      */
     public static boolean isAccount(String s) {
-        return s.matches("^[^0-9][\\w]{1,9}$");
+        return s.matches("^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(.[a-zA-Z0-9_-]+)+$");
     }
 
     /**
@@ -76,7 +76,7 @@ public class Valid {
 
     public static class AccountValidator extends Validator {
         public AccountValidator() {
-            super("账号需由字母、数字、下划线组成；不以数字开头；2 ~ 10 个字符");
+            super("账号需为合法邮箱");
         }
 
         @Override

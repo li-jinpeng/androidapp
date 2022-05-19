@@ -38,9 +38,6 @@ public class SelfInfoFragment extends Fragment {
     @BindView(R.id.phone)
     TextView phone;
 
-    @BindView(R.id.email)
-    TextView email;
-
     @BindView(R.id.address)
     TextView address;
 
@@ -62,7 +59,6 @@ public class SelfInfoFragment extends Fragment {
         major.setText("software");
         studentNumber.setText("2019013254");
         phone.setText("15660603091");
-        email.setText("lijp9@mails.cn");
         address.setText("紫荆一号楼");
         introduction.setText("一个大三学生");
         return view;
