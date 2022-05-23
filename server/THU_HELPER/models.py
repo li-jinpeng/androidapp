@@ -8,7 +8,7 @@ class Post(models.Model):
     content = models.TextField()
     image = models.TextField()
     time = models.DateTimeField(auto_now_add=True)
-    type = models.IntegerField()
+    type = models.TextField()
     author = models.TextField()
     money = models.TextField()
     thumbs = models.IntegerField(default=0)

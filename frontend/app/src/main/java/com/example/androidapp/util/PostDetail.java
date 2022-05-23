@@ -9,6 +9,8 @@ public class PostDetail {
     public String imagePath;
     public String type;
     public String user_id;
+    public String thumbs;
+    public Integer thumb;
     public String avatar;
     public String dep;
     public String sender;

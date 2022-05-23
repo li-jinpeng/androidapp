@@ -2,6 +2,8 @@ package com.example.androidapp.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -42,6 +44,7 @@ public class EditInfoActivity extends BaseActivity {
      ******************************/
     @BindView(R.id.logon2_name)
     FormEditText nameEditText;
+    private Handler handler;
 
     @BindView(R.id.logon2_school)
     FormEditText intro_;
@@ -77,10 +80,9 @@ public class EditInfoActivity extends BaseActivity {
                                     .post(builder.build())
                                     .build();
                             Response response = client.newCall(request).execute();
-                            btn.setText("修改完成");
-                            Intent intent = new Intent(EditInfoActivity.this,MainActivity.class);
-                            intent.putExtra("message","info");
-                            startActivity(intent);
+                            Message msg = new Message();
+                            msg.what = 1;
+                            handler.sendMessage(msg);
                         }catch (Exception e){
 
                             e.printStackTrace();
@@ -90,17 +92,17 @@ public class EditInfoActivity extends BaseActivity {
             }
         });
 
-        Button bt1 = findViewById(R.id.returnButton);
-        bt1.setOnClickListener(new View.OnClickListener() {
+        handler = new Handler(){ //创建Handler
             @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(EditInfoActivity.this,MainActivity.class);
-                intent.putExtra("message","info");
-                startActivity(intent);
+            public void handleMessage(Message msg) {
+                switch (msg.what){ //区分不同的消息，对不同进度条组件执行操作
+                    case 1:
+                        btn.setText("修改成功");
+                    default:
+                        break;
+                }
             }
-        });
-
+        };
     }
-
 
 }

@@ -46,6 +46,7 @@ urlpatterns = [
     path('post/detail/', views.get_post_detail),
     path('post/init/', views.new_post),
     path('post/done/', views.finish_post),
+    path('post/good/', views.good_post),
     path('course/index/', views.get_course_index),
     path('course/detail/', views.get_course_detail),
     path('course/add_score/', views.add_course_score),

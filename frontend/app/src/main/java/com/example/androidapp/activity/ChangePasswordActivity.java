@@ -3,19 +3,28 @@ package com.example.androidapp.activity;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.andreabaccega.widget.FormEditText;
+import com.bumptech.glide.Glide;
 import com.example.androidapp.R;
 import com.example.androidapp.util.Global;
 import com.example.androidapp.util.Valid;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
+
+import java.net.MalformedURLException;
+import java.net.URL;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import de.hdodenhof.circleimageview.CircleImageView;
 import okhttp3.FormBody;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -29,7 +38,7 @@ public class ChangePasswordActivity extends AppCompatActivity {
 
     @BindView(R.id.logon)
     Button btn;
-
+    private Handler handler;
     private String password;
 
     @Override
@@ -71,10 +80,9 @@ public class ChangePasswordActivity extends AppCompatActivity {
                                     .post(builder.build())
                                     .build();
                             Response response = client.newCall(request).execute();
-                            btn.setText("修改成功");
-                            Intent intent = new Intent(ChangePasswordActivity.this,MainActivity.class);
-                            intent.putExtra("message","info");
-                            startActivity(intent);
+                            Message msg = new Message();
+                            msg.what = 1;
+                            handler.sendMessage(msg);
                         }catch (Exception e){
                             e.printStackTrace();
                         }
@@ -83,15 +91,16 @@ public class ChangePasswordActivity extends AppCompatActivity {
             }
         });
 
-        Button bt1 = findViewById(R.id.returnButton);
-        bt1.setOnClickListener(new View.OnClickListener() {
+        handler = new Handler(){ //创建Handler
             @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(ChangePasswordActivity.this,MainActivity.class);
-                intent.putExtra("message","info");
-                startActivity(intent);
+            public void handleMessage(Message msg) {
+                switch (msg.what){ //区分不同的消息，对不同进度条组件执行操作
+                    case 1:
+                        btn.setText("修改成功");
+                    default:
+                        break;
+                }
             }
-        });
-
+        };
     }
 }

@@ -68,7 +68,39 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.MyViewHolder> 
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(view.getContext(), Detail.class);
+                TextView text_ = holder.itemView.findViewById(R.id.id);
+                String id_ = text_.getText().toString();
+                intent.putExtra("id",id_);
                 view.getContext().startActivity(intent);
+            }
+        });
+
+        holder.itemView.findViewById(R.id.good).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
+                            TextView text_ = holder.itemView.findViewById(R.id.id);
+                            String id_ = text_.getText().toString();
+                            FormBody.Builder builder = new  FormBody.Builder()
+                                    .add("id", id_)
+                                    .add("type", "1")
+                                    .add("user_id", Global.user_id)
+                                    .add("reply_type", "2");
+                            OkHttpClient client = new OkHttpClient();
+                            Request request = new Request.Builder()
+                                    .url(Global.SERVER_URL + "/operator/edit/")
+                                    .post(builder.build())
+                                    .build();
+                            Response response = client.newCall(request).execute();
+                        }catch (Exception e){
+                            e.printStackTrace();
+                        }
+                    }
+                }).start();
+
             }
         });
 
@@ -162,6 +194,9 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.MyViewHolder> 
         bindView(holder,position);
         TextView text = holder.itemView.findViewById(R.id.user_id);
         text.setText(data.get(position).user_id);
+        TextView text1 = holder.itemView.findViewById(R.id.id);
+        text1.setText(data.get(position).id);
+
         //通过点击改变状态
     }
 
@@ -175,7 +210,6 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.MyViewHolder> 
     public class MyViewHolder extends RecyclerView.ViewHolder {
         ImageView image,avatar;
         TextView content,user_name,date,title,follow,thumbs;
-        LinearLayout image1;
         String post_id;
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -186,40 +220,6 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.MyViewHolder> 
             user_name = itemView.findViewById(R.id.user_name);
             date = itemView.findViewById(R.id.time);
             thumbs = itemView.findViewById(R.id.thumbs);
-            image1 = itemView.findViewById(R.id.image1);
-            content.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Intent intent = new Intent(view.getContext(), Detail.class);
-                    intent.putExtra("id",post_id);
-                    view.getContext().startActivity(intent);
-                }
-            });
-            image1.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    new Thread(new Runnable() {
-                        @Override
-                        public void run() {
-                            try {
-                                FormBody.Builder builder = new  FormBody.Builder()
-                                        .add("id", post_id)
-                                        .add("type", "1")
-                                        .add("user_id", Global.user_id)
-                                        .add("reply_type", "2");
-                                OkHttpClient client = new OkHttpClient();
-                                Request request = new Request.Builder()
-                                        .url(Global.SERVER_URL + "/operator/edit/")
-                                        .post(builder.build())
-                                        .build();
-                                Response response = client.newCall(request).execute();
-                            }catch (Exception e){
-                                e.printStackTrace();
-                            }
-                        }
-                    }).start();
-                }
-            });
             follow = itemView.findViewById(R.id.follow);
         }
     }
@@ -234,10 +234,10 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.MyViewHolder> 
         holder.content.setText(data.get(position).content);
         holder.user_name.setText(data.get(position).sender);
         holder.date.setText(data.get(position).time);
-         holder.thumbs.setText(data.get(position).thumbs);
+        holder.thumbs.setText(data.get(position).thumbs);
         holder.post_id = data.get(position).id;
         if (data.get(position).thumb!=0)
-            holder.thumbs.setTextColor(Color.GREEN);
+            holder.thumbs.setTextColor(Color.RED);
         else
             holder.thumbs.setTextColor(Color.BLACK);
         holder.follow.setText(data.get(position).follow);

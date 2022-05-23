@@ -1,6 +1,7 @@
 package com.example.androidapp.fragment.main;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.ContextMenu;
@@ -11,9 +12,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.Switch;
 import android.widget.TextView;
 
 
@@ -58,10 +61,12 @@ public class HomeFragment extends Fragment {
     private List<PostDetail> temp_list;
     private RecyclerView recycleView;
     private EditText editText;
-    private String temp;
+    private String temp,t1,t2;
     private String responseData;
+    private TextView text,all,attention,time,thumbs;
     private Gson gson;
     private String host = Global.SERVER_URL;
+    private Switch attention_switch,order_switch;
     private int lock = 0;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -69,13 +74,17 @@ public class HomeFragment extends Fragment {
 
         View root = inflater.inflate(R.layout.fragment_home, container, false);
         unbinder = ButterKnife.bind(this, root);
-
         Initview();
-
-        TextView text = root.findViewById(R.id.selectText);
+        text = root.findViewById(R.id.selectText);
+        all = root.findViewById(R.id.all);
+        attention = root.findViewById(R.id.attention);
+        time = root.findViewById(R.id.time);
+        thumbs = root.findViewById(R.id.thumbs);
         recycleView = root.findViewById(R.id.recycleView);
         editText = root.findViewById(R.id.search_view);
         spinner = root.findViewById(R.id.orderSpinner);
+        attention_switch = root.findViewById(R.id.switch_button);
+        order_switch = root.findViewById(R.id.order_button);
         LinearLayoutManager manager = new LinearLayoutManager(getActivity());
         manager.setOrientation(RecyclerView.VERTICAL);
         recycleView.setLayoutManager(manager);
@@ -155,8 +164,40 @@ public class HomeFragment extends Fragment {
             }
         });
 
+        attention_switch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    all.setTextColor(Color.BLACK);
+                    attention.setTextColor(Color.GREEN);
+                }
+                else {
+                    all.setTextColor(Color.GREEN);
+                    attention.setTextColor(Color.BLACK);
+                }
+                text.callOnClick();
+            }
+        });
+
+        order_switch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    time.setTextColor(Color.BLACK);
+                    thumbs.setTextColor(Color.GREEN);
+                }
+                else {
+                    time.setTextColor(Color.GREEN);
+                    thumbs.setTextColor(Color.BLACK);
+                }
+                text.callOnClick();
+            }
+        });
+
         return root;
     }
+
+
 
     private void Initview(){
         this.registerForContextMenu(imageview);
