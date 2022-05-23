@@ -1,302 +1,82 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fitsSystemWindows="true"
-    tools:context=".activity.EditInfoActivity">
+    android:background="@drawable/bg"
+    android:paddingTop="?attr/actionBarSize">
 
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbar"
+    <Button
+        android:id="@+id/returnButton"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:background="@drawable/ic_keyboard_arrow_left_white_24dp" />
+
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/white"
-        app:title="修改信息"
-        app:titleTextColor="@color/text_color">
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:padding="20dp">
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-            <TextView
-                android:id="@+id/returnButton1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+        <ImageView
+            android:layout_width="90dp"
+            android:layout_height="wrap_content" />
 
-                android:layout_gravity="end"
-                android:layout_marginEnd="10dp"
-                android:layout_marginRight="15dp"
-                android:clickable="true"
-                android:text="返回"
-                android:textColor="@color/theme_blue"
-                android:textSize="16sp" />
-
-            <TextView
-                android:id="@+id/edit_info_save"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_gravity="end"
-                android:layout_marginEnd="10dp"
-                android:layout_marginRight="15dp"
-                android:clickable="true"
-                android:text="保存"
-                android:textColor="@color/theme_blue"
-                android:textSize="16sp" />
-        </RelativeLayout>
-
-    </androidx.appcompat.widget.Toolbar>
-
-
-
-    <ScrollView
-        android:layout_below="@id/toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="15dp">
-
-        <androidx.cardview.widget.CardView
+        <com.andreabaccega.widget.FormEditText
+            android:id="@+id/logon2_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:cardCornerRadius="5dp"
-            app:cardPreventCornerOverlap="true"
-            app:cardUseCompatPadding="true"
-            app:contentPaddingBottom="4dp"
-            app:contentPaddingTop="4dp">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:divider="@drawable/shape_line"
-                android:orientation="vertical"
-                android:padding="0dp"
-                android:showDividers="middle"
-
-                >
-
-                <LinearLayout
-
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:paddingLeft="20dp"
-                    android:paddingTop="5dp"
-                    android:paddingRight="20dp"
-                    android:paddingBottom="5dp">
-
-                    <TextView
-                        style="@style/personal_homepage_edit_style"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="姓名"
-                        android:textColor="?android:attr/textColorPrimary"></TextView>
-
-                    <com.andreabaccega.widget.FormEditText
-                        android:id="@+id/edit_name"
-                        style="@style/personal_homepage_edit_style"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="@null"
-                        android:hint="填写姓名"
-                        android:inputType="textPersonName"
-                        android:maxLines="1"
-                        android:textColor="?android:attr/textColorSecondary"
-                        app:emptyErrorString="@string/CANNOT_BE_NULL"></com.andreabaccega.widget.FormEditText>
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:paddingLeft="20dp"
-                    android:paddingTop="5dp"
-                    android:paddingRight="20dp"
-                    android:paddingBottom="5dp">
-
-                    <TextView
-                        style="@style/personal_homepage_edit_style"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="个性签名"
-                        android:textColor="?android:attr/textColorPrimary"></TextView>
-
-                    <com.andreabaccega.widget.FormEditText
-                        android:id="@+id/edit_signature"
-                        style="@style/personal_homepage_edit_style"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="@null"
-                        android:hint="填写个性签名 (20字以内)"
-                        android:inputType="textPersonName"
-                        android:maxLength="20"
-                        android:singleLine="true"
-                        android:textColor="?android:attr/textColorSecondary"
-                        app:emptyErrorString="@string/CANNOT_BE_NULL"></com.andreabaccega.widget.FormEditText>
-
-                </LinearLayout>
+            android:layout_margin="10dp"
+            android:background="@drawable/shape_username_box"
+            android:drawableStart="@drawable/png_black_24dp_name"
+            android:drawablePadding="10dp"
+            android:hint="@string/NAME"
+            android:inputType="textPersonName"
+            android:maxLines="1"
+            android:padding="15dp"
+            android:textColor="@color/white"
+            android:textColorHighlight="@color/white"
+            android:textColorHint="@color/white"
+            app:emptyErrorString="@string/CANNOT_BE_NULL" />
 
 
+        <com.andreabaccega.widget.FormEditText
+            android:id="@+id/logon2_school"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:background="@drawable/shape_username_box"
+            android:drawableStart="@drawable/png_black_24dp_school"
+            android:drawablePadding="10dp"
+            android:hint="个性签名"
+            android:inputType="textPersonName"
+            android:maxLines="1"
+            android:padding="15dp"
+            android:textColor="@color/white"
+            android:textColorHighlight="@color/white"
+            android:textColorHint="@color/white"
+            app:emptyErrorString="@string/CANNOT_BE_NULL" />
 
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:paddingLeft="20dp"
-                    android:paddingTop="5dp"
-                    android:paddingRight="20dp"
-                    android:paddingBottom="5dp">
+        <Button
+            android:onClick="btn"
+            android:id="@+id/logon"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/shape_login_button"
+            android:padding="15dp"
+            android:shadowColor="@android:color/transparent"
+            android:text="提交"
+            android:textSize="16sp" />
 
-                    <TextView
-                        style="@style/personal_homepage_edit_style"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="院系"
-                        android:textColor="?android:attr/textColorPrimary"></TextView>
-
-                    <com.andreabaccega.widget.FormEditText
-                        android:id="@+id/edit_department"
-                        style="@style/personal_homepage_edit_style"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="@null"
-                        android:hint="填写院系"
-                        android:inputType="textPersonName"
-                        android:maxLines="1"
-                        android:textColor="?android:attr/textColorSecondary"
-                        app:emptyErrorString="@string/CANNOT_BE_NULL"></com.andreabaccega.widget.FormEditText>
-                </LinearLayout>
+    </LinearLayout>
 
 
-
-
-                <LinearLayout
-                    android:id="@+id/layout_student_number"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:paddingLeft="20dp"
-                    android:paddingTop="5dp"
-                    android:paddingRight="20dp"
-                    android:paddingBottom="5dp">
-
-                    <TextView
-                        style="@style/personal_homepage_edit_style"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="学号"
-                        android:textColor="?android:attr/textColorPrimary"></TextView>
-
-                    <com.andreabaccega.widget.FormEditText
-                        android:id="@+id/edit_student_number"
-                        style="@style/personal_homepage_edit_style"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="@null"
-                        android:hint="填写学号"
-                        android:inputType="number"
-                        android:maxLines="1"
-                        android:textColor="?android:attr/textColorSecondary"
-                        app:emptyErrorString="@string/CANNOT_BE_NULL"></com.andreabaccega.widget.FormEditText>
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:paddingLeft="20dp"
-                    android:paddingTop="5dp"
-                    android:paddingRight="20dp"
-                    android:paddingBottom="5dp">
-
-                    <TextView
-                        style="@style/personal_homepage_edit_style"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="电话"
-                        android:textColor="?android:attr/textColorPrimary"></TextView>
-
-                    <com.andreabaccega.widget.FormEditText
-                        android:id="@+id/edit_phone"
-                        style="@style/personal_homepage_edit_style"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="@null"
-                        android:hint="填写电话号码"
-                        android:inputType="number"
-                        android:maxLines="1"
-                        android:textColor="?android:attr/textColorSecondary"
-                        app:emptyErrorString="@string/CANNOT_BE_NULL"></com.andreabaccega.widget.FormEditText>
-                </LinearLayout>
-
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:paddingLeft="20dp"
-                    android:paddingTop="5dp"
-                    android:paddingRight="20dp"
-                    android:paddingBottom="5dp">
-
-                    <TextView
-                        style="@style/personal_homepage_edit_style"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="地址"
-                        android:textColor="?android:attr/textColorPrimary"></TextView>
-
-                    <com.andreabaccega.widget.FormEditText
-                        android:id="@+id/edit_address"
-                        style="@style/personal_homepage_edit_style"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="@null"
-                        android:hint="填写地址"
-                        android:inputType="textPersonName"
-                        android:maxLength="30"
-                        android:singleLine="true"
-                        android:textColor="?android:attr/textColorSecondary"
-                        app:emptyErrorString="@string/CANNOT_BE_NULL"></com.andreabaccega.widget.FormEditText>
-                </LinearLayout>
-
-                <LinearLayout
-
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:paddingLeft="20dp"
-                    android:paddingTop="5dp"
-                    android:paddingRight="20dp"
-                    android:paddingBottom="5dp">
-
-                    <TextView
-                        style="@style/personal_homepage_edit_style"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginRight="6dp"
-                        android:text="个人介绍"
-                        android:textColor="?android:attr/textColorPrimary"></TextView>
-
-                    <com.andreabaccega.widget.FormEditText
-                        android:id="@+id/edit_intro"
-                        style="@style/personal_homepage_edit_style"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="@null"
-                        android:hint="填写个人介绍 (500字以内)"
-                        android:maxLength="500"
-                        android:maxLines="5"
-                        android:textColor="?android:attr/textColorSecondary"
-                        app:emptyErrorString="@string/CANNOT_BE_NULL"></com.andreabaccega.widget.FormEditText>
-                </LinearLayout>
-
-
-            </LinearLayout>
-
-        </androidx.cardview.widget.CardView>
-
-    </ScrollView>
 
 </RelativeLayout>

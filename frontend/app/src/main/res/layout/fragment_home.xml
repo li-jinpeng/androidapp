@@ -19,7 +19,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
 
-        <de.hdodenhof.circleimageview.CircleImageView
+        <ImageView
             android:id="@+id/imageButton"
             android:layout_width="50dp"
             android:layout_height="50dp"
@@ -28,7 +28,7 @@
             android:background="@color/transparent"
             android:clickable="true"
             android:padding="5dp"
-            android:src="@drawable/ic_school"
+            android:src="@drawable/ic_theadd"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />

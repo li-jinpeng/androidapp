@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -19,31 +20,45 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
 
+import com.bumptech.glide.Glide;
 import com.example.androidapp.R;
 import com.example.androidapp.activity.ChangePasswordActivity;
 import com.example.androidapp.activity.EditInfoActivity;
+import com.example.androidapp.activity.user_list;
 import com.example.androidapp.adapter.HomepagePagerAdapter;
 import com.example.androidapp.entity.ApplicationInfo;
 import com.example.androidapp.entity.RecruitmentInfo;
 import com.example.androidapp.request.user.GetInfoPictureRequest;
 import com.example.androidapp.util.BasicInfo;
 import com.example.androidapp.util.GifSizeFilter;
+import com.example.androidapp.util.Global;
+import com.example.androidapp.util.HomeDetail;
 import com.example.androidapp.util.MyImageLoader;
 import com.example.androidapp.util.SizeConverter;
+import com.example.androidapp.util.visit_detail;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.tabs.TabLayout;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.zhihu.matisse.Matisse;
 import com.zhihu.matisse.MimeType;
 import com.zhihu.matisse.engine.impl.GlideEngine;
 import com.zhihu.matisse.filter.Filter;
 import com.zhihu.matisse.internal.entity.CaptureStrategy;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import de.hdodenhof.circleimageview.CircleImageView;
 import fm.jiecao.jcvideoplayer_lib.JCVideoPlayer;
+import okhttp3.FormBody;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 
 
 /**
@@ -53,46 +68,36 @@ public class DashboardFragment
         extends Fragment {
 
     private static final int REQUEST_CODE_CHOOSE = 11;
-
     @BindView(R.id.toolbar)
     Toolbar toolbar;
-
     @BindView(R.id.tab_layout)
     TabLayout tabLayout;
-
     @BindView(R.id.img_avatar)
     ImageView imgAvatar;
-
     @BindView(R.id.homepage_name)
     TextView name;
-
-    @BindView(R.id.signature)
-    TextView signature;
-
     @BindView(R.id.num_focus)
     TextView numFocus;
-
     @BindView(R.id.num_focused)
     TextView numFocused;
-
     @BindView(R.id.view_pager)
     ViewPager viewPager;
-
     @BindView(R.id.btn_edit)
     Button button;
-
     @BindView(R.id.btn_change_password)
     Button button1;
-
     @BindView(R.id.visit_homepage_title)
     TextView title;
-
     @BindView(R.id.visit_homepage_appbar)
     AppBarLayout app_bar;
+    @BindView(R.id.left)
+    LinearLayout left;
+    @BindView(R.id.right)
+    LinearLayout right;
 
-    public ArrayList<ApplicationInfo> mApplicationList;
-    public ArrayList<RecruitmentInfo> mRecruitmentList;
     private HomepagePagerAdapter pagerAdapter;
+    private int lock = 0;
+    private HomeDetail info;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -100,33 +105,6 @@ public class DashboardFragment
         View root = inflater.inflate(R.layout.fragment_dashboard, container, false);
         ButterKnife.bind(this, root);
 
-        tabLayout.addTab(tabLayout.newTab().setText("个人信息"));
-        tabLayout.addTab(tabLayout.newTab().setText("个人动态"));
-        tabLayout.setBackgroundColor(Color.WHITE);
-        tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
-
-        pagerAdapter = new HomepagePagerAdapter(getChildFragmentManager(), tabLayout.getTabCount());
-        viewPager.setAdapter(pagerAdapter);
-        viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
-        viewPager.setOffscreenPageLimit(2);
-
-        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
-            @Override
-            public void onTabSelected(TabLayout.Tab tab) {
-                viewPager.setCurrentItem(tab.getPosition());
-                JCVideoPlayer.releaseAllVideos();
-            }
-
-            @Override
-            public void onTabUnselected(TabLayout.Tab tab) {
-
-            }
-
-            @Override
-            public void onTabReselected(TabLayout.Tab tab) {
-
-            }
-        });
 
         button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -144,12 +122,90 @@ public class DashboardFragment
             }
         });
 
-        title.setText("我的个人主页");
-        numFocus.setText("10");
-        numFocused.setText("10");
-        signature.setText("自我签名");
-        name.setText("ljp");
 
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    FormBody.Builder builder = new  FormBody.Builder()
+                            .add("id",Global.user_id);
+                    OkHttpClient client = new OkHttpClient();
+                    Request request = new Request.Builder()
+                            .url(Global.SERVER_URL + "/user/get/home/")
+                            .post(builder.build())
+                            .build();
+                    Response response = client.newCall(request).execute();
+                    String responseData = response.body().string();
+                    Gson gson = new Gson();
+                    info = gson.fromJson(responseData,new TypeToken<HomeDetail>(){}.getType());
+                    lock = 1;
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+            }
+        }).start();
+
+        while (lock ==0){
+            continue;
+        }
+
+        try {
+            URL url = new URL(info.ava);
+            Glide.with(this).load(url).into(imgAvatar);
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+
+        title.setText("我的个人主页");
+        numFocus.setText(info.follow);
+        numFocused.setText(info.followed);
+        name.setText(info.name);
+
+        left.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getContext(), user_list.class);
+                intent.putExtra("type","关注");
+                getContext().startActivity(intent);
+            }
+        });
+
+        right.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getContext(), user_list.class);
+                intent.putExtra("type","被关注");
+                getContext().startActivity(intent);
+            }
+        });
+
+
+
+        tabLayout.addTab(tabLayout.newTab().setText("个人信息"));
+        tabLayout.addTab(tabLayout.newTab().setText("个人动态"));
+        tabLayout.setBackgroundColor(Color.WHITE);
+        tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
+
+        pagerAdapter = new HomepagePagerAdapter(getChildFragmentManager(), tabLayout.getTabCount(),info);
+        viewPager.setAdapter(pagerAdapter);
+        viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
+        viewPager.setOffscreenPageLimit(2);
+
+        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                viewPager.setCurrentItem(tab.getPosition());
+                JCVideoPlayer.releaseAllVideos();
+            }
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+
+            }
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
+            }
+        });
 
         return root;
     }
@@ -157,66 +213,8 @@ public class DashboardFragment
     @Override
     public void onStart() {
         super.onStart();
-        /*
-        numFocus.setText(String.valueOf(BasicInfo.WATCH_LIST.size()));
-        numFocused.setText(String.valueOf(BasicInfo.FAN_LIST.size()));
-        signature.setText(BasicInfo.mSignature);
-        name.setText(BasicInfo.mName);
-        */
 
 
     }
-/*
-    public void changeFocus() {
-        numFocus.setText(String.valueOf(BasicInfo.WATCH_LIST.size()));
-    }
-
-    @OnClick(R.id.img_avatar)
-    void changeAvatar() {
-        Matisse.from(getActivity())
-                .choose(MimeType.ofImage(), false)
-                .countable(true)
-                .capture(true)
-                .captureStrategy(
-                        new CaptureStrategy(true, "com.zhihu.matisse.sample.fileprovider", "test"))
-                .maxSelectable(1)
-                .addFilter(new GifSizeFilter(320, 320, 5 * Filter.K * Filter.K))
-                .gridExpectedSize(
-                        getResources().getDimensionPixelSize(R.dimen.grid_expected_size))
-                .restrictOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT)
-                .thumbnailScale(0.85f)
-                .imageEngine(new GlideEngine())
-                .setOnSelectedListener((uriList, pathList) -> {
-                    Log.e("onSelected", "onSelected: pathList=" + pathList);
-                })
-                .showSingleMediaType(true)
-                .originalEnable(true)
-                .maxOriginalSize(10)
-                .autoHideToolbarOnSingleTap(true)
-                .setOnCheckedListener(isChecked -> {
-                    Log.e("isChecked", "onCheck: isChecked=" + isChecked);
-                })
-                .forResult(REQUEST_CODE_CHOOSE);
-    }
-
-    public void getAvatar(String path) {
-        if (path == null) {
-            GetInfoPictureRequest request;
-            if (type.equals("S"))
-                request = new GetInfoPictureRequest(type, null, String.valueOf(id));
-            else request = new GetInfoPictureRequest(type, String.valueOf(id), null);
-            try {
-                MyImageLoader.loadImage(imgAvatar, request.getWholeUrl());
-            } catch (Exception e) {
-            }
-        } else {
-            try {
-
-                MyImageLoader.loadImage(imgAvatar);
-            } catch (Exception e) {
-
-            }
-        }
-    }*/
 
 }

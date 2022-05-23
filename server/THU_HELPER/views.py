@@ -62,13 +62,24 @@ def get_user_home(request):
     id = request.POST.get('id', '')
     user = User.objects.get(id=id)
     res = {}
-    res["id"] = user.id
-    res["nickname"] = user.nickname
+    res["account"] = user.email
+    res["name"] = user.nickname
     res["ava"] = user.profile
-    res["icon"] = translate(user.score)
-    res["visit"] = translate(user.visit)
-    res["identified"] = user.identified
-    return JsonResponse({'data': res})
+    res["intro"]=user.wechat_id
+    
+    follows = Operator.objects.filter(type=6).filter(user_id=id)
+    count = 0
+    for follow in follows:
+        count+=1
+    res["follow"] = str(count)
+    
+    followeds = Operator.objects.filter(type=6).filter(reply_id=id)
+    count = 0
+    for follow in followeds:
+        count+=1
+    res["followed"] = str(count)
+    
+    return JsonResponse(res)
 
 def login(request):
     password = request.POST.get('password', '')
@@ -99,42 +110,21 @@ def change_password(request):
     
 
 def get_user_detail(request):
-    user_id = request.POST.get('user_id', '')
     id = request.POST.get('id', '')
+    user_id = request.POST.get('user_id','')
     user = User.objects.get(id=id)
     res = {}
-    if user_id == id:
-        res["state"] = 0
-    elif Operator.objects.filter(type=5).filter(user_id=id).filter(reply_id=user_id).count() == 0:
-        res["state"] = 1
-    else:
-        res["state"] = 2
-    if res["state"] == 2:
-        user.visit = user.visit + 1
-    res["id"] = user.id
-    res["nickname"] = user.nickname
+    res["name"] = user.nickname
     res["ava"] = user.profile
-    res["dep"] = user.department
-    res["identified"] = user.identified
-    res["name"] = user.name
-    res["number"] = user.studentID
-    res["gender"] = user.gender
-    res["coins"] = user.score
-    res["visit"] = user.visit
-    if res["gender"] == "男":
-        res["gender_"] = 1
-    elif res["gender"] == "女":
-        res["gender_"] = 0
+    res["intro"] = user.wechat_id
+    res["account"] = user.email
+    res["user_id"] = user.id 
+    follow = Operator.objects.filter(user_id = user_id).filter(reply_id = id).filter(type = 6)
+    if follow:
+        res["follow"] = "已关注"
     else:
-        res["gender_"] = -1
-        res["gender"] = "未知"
-    res["wechat"] = user.wechat_id
-    res["email"] = user.email
-    res["phone"] = user.phone
-    res["address"] = user.address
-    res["birth"] = user.birth
-    res["grade"] = user.grade
-    return JsonResponse({'data': res})
+        res["follow"] = "未关注"
+    return JsonResponse(res,safe=False)
 
 def new_user(request):
     nickname = request.POST.get('name', '')
@@ -151,29 +141,13 @@ def new_user(request):
 
 def edit_user(request):
     id = request.POST.get('id', '')
-    nickname = request.POST.get('name', '')
-    studentID = request.POST.get('num', '')
-    department = request.POST.get('dep', '')
-    phone = request.POST.get('phone', '')
-    address = request.POST.get('address', '')
     wechat_id = request.POST.get('intro', '')
-    name = request.POST.get('signature', '')
-
+    nickname = request.POST.get('name','')
     user = User.objects.get(id=id)
     if nickname != '':
         user.nickname = nickname
-    if studentID != '':
-        user.studentID = studentID
-    if department != '':
-        user.department = department
-    if name != '':
-        user.name = name
     if wechat_id !='':
         user.wechat_id = wechat_id
-    if phone != '':
-        user.phone = phone
-    if address != '':
-        user.address = address
     user.save()
     return JsonResponse("success!", safe=False)
 
@@ -414,7 +388,63 @@ def user_blacklist(request):
         op = Operator.objects.filter(type=5).filter(user_id=user_id).filter(reply_id=black_id)
         op.delete()
     return JsonResponse("success!", safe=False)
+    
+def user_follow(request):
+    user_id = request.POST.get('user_id', '')
+    black_id = request.POST.get('follow_id', '')
+    print(black_id)
+    flag = Operator.objects.filter(type=6).filter(user_id=user_id).filter(reply_id=black_id).count()
+    if flag == 0:  # 操作记录不存在
+        op = Operator()
+        op.reply_id = black_id
+        op.user_id = user_id
+        op.type = 6
+        op.save()
+    else:
+        op = Operator.objects.filter(type=6).filter(user_id=user_id).filter(reply_id=black_id)
+        op.delete()
+    return JsonResponse("success!", safe=False)
+    
+def user_follows(request):
+    user_id = request.POST.get('id','')
+    res = []
+    ops = Operator.objects.filter(type=6).filter(user_id = user_id)
+    for op in ops:
+        id_ = op.reply_id
+        print(id_)
+        user = User.objects.get(id = id_)
+        item ={}
+        item["ava"] = user.profile
+        item["user_id"] = user.id
+        item["name"] = user.nickname
+        follow = Operator.objects.filter(type=6).filter(user_id=user_id).filter(reply_id=user.id)
+        if follow:
+            item["follow"] = "已关注"
+        else:
+            item["follow"] = "未关注"
+        res.append(item)
+    return JsonResponse(res, safe=False)
 
+def user_followeds(request):
+    user_id = request.POST.get('id','')
+    res = []
+    ops = Operator.objects.filter(type=6).filter(reply_id = user_id)
+
+    for op in ops:
+        id_ = op.user_id
+    
+        user = User.objects.get(id = id_)
+        item = {}
+        item["ava"] = user.profile
+        item["user_id"] = user.id
+        item["name"] = user.nickname
+        follow = Operator.objects.filter(type=6).filter(user_id=user_id).filter(reply_id=user.id)
+        if follow:
+            item["follow"] = "已关注"
+        else:
+            item["follow"] = "未关注"
+        res.append(item)
+    return JsonResponse(res, safe=False)
 #-------------------------------------------
 
 def post_reply(request):
@@ -713,6 +743,7 @@ def new_food(request):#新建美食记录
 
 #-------------------------------------------分割线以下为评事相关
 def get_post_index(request):
+    user_id = request.POST.get('id','')
     tag = request.POST.get('tag', '')
     if tag == '':
         posts = Post.objects.filter(hide=0).order_by("-time")
@@ -742,6 +773,11 @@ def get_post_index(request):
         if item["dep"] == "" or item["dep"] == None:
             item["dep"] = "未知"
         item["sender"] = user.nickname
+        follow = Operator.objects.filter(type=6).filter(user_id=user_id).filter(reply_id=user.id)
+        if follow:
+            item["follow"] = "已关注"
+        else:
+            item["follow"] = "未关注"
         List.append(item)
     return JsonResponse(List,safe=False)
 
@@ -1210,6 +1246,7 @@ def edit_operator(request):
     return JsonResponse("success!", safe=False)
 
 def index_search(request):
+    user_id = request.POST.get('id','')
     search = request.POST.get('search', '')
     type = request.POST.get('type', '')
     print(search)
@@ -1246,6 +1283,11 @@ def index_search(request):
         if item["dep"] == "" or item["dep"] == None:
             item["dep"] = "未知"
         item["sender"] = user.nickname
+        follow = Operator.objects.filter(type=6).filter(user_id=user_id).filter(reply_id=user.id)
+        if follow:
+            item["follow"] = "已关注"
+        else:
+            item["follow"] = "未关注"
         res.append(item)
 
     return JsonResponse(res, safe=False)

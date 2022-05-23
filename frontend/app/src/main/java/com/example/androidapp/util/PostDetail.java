@@ -12,4 +12,5 @@ public class PostDetail {
     public String avatar;
     public String dep;
     public String sender;
+    public String follow;
 }

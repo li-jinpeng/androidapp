@@ -27,6 +27,7 @@ import com.example.androidapp.R;
 import com.example.androidapp.activity.PublicActivity;
 
 import com.example.androidapp.adapter.HomeAdapter;
+import com.example.androidapp.util.Global;
 import com.example.androidapp.util.PostDetail;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -51,7 +52,6 @@ public class HomeFragment extends Fragment {
     @BindView(R.id.imageButton)
     ImageView imageview;
 
-
     private Spinner spinner;
     private String spinner_content;
     private List<PostDetail> post_list;
@@ -62,7 +62,6 @@ public class HomeFragment extends Fragment {
     private String responseData;
     private Gson gson;
     private int lock;
-    private String host = "http://101.43.128.148:9999";
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -84,10 +83,10 @@ public class HomeFragment extends Fragment {
             @Override
             public void run() {
                 try {
-                    FormBody.Builder builder = new  FormBody.Builder();
+                    FormBody.Builder builder = new  FormBody.Builder().add("id", Global.user_id);
                     OkHttpClient client = new OkHttpClient();
                     Request request = new Request.Builder()
-                            .url(host + "/post/index/")
+                            .url(Global.SERVER_URL + "/post/index/")
                             .post(builder.build())
                             .build();
                     Response response = client.newCall(request).execute();
@@ -112,10 +111,10 @@ public class HomeFragment extends Fragment {
                     public void run() {
                         try {
                             spinner_content = spinner.getSelectedItem().toString();
-                            FormBody.Builder builder = new  FormBody.Builder().add("search", temp).add("type", spinner_content);
+                            FormBody.Builder builder = new  FormBody.Builder().add("search", temp).add("type", spinner_content).add("id",Global.user_id);
                             OkHttpClient client = new OkHttpClient();
                             Request request = new Request.Builder()
-                                    .url(host + "/operator/search/")
+                                    .url(Global.SERVER_URL + "/operator/search/")
                                     .post(builder.build())
                                     .build();
                             Response response = client.newCall(request).execute();
@@ -123,7 +122,6 @@ public class HomeFragment extends Fragment {
                             gson = new Gson();
                             temp_list = gson.fromJson(responseData,new TypeToken<List<PostDetail>>(){}.getType());
                             lock = 1;
-
                         }catch (Exception e){
                             e.printStackTrace();
                             text.setText(responseData);

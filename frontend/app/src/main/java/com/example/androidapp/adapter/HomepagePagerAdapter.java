@@ -8,8 +8,10 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentStatePagerAdapter;
 
+import com.example.androidapp.activity.visit;
 import com.example.androidapp.fragment.homepage.SelfInfoFragment;
 import com.example.androidapp.fragment.main.HomeFragment;
+import com.example.androidapp.util.HomeDetail;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -19,21 +21,22 @@ import org.jetbrains.annotations.NotNull;
  */
 public class HomepagePagerAdapter extends FragmentStatePagerAdapter {
     int mNumOfTabs;
+    HomeDetail info;
     SparseArray<Fragment> registeredFragments = new SparseArray<>();
 
-    public HomepagePagerAdapter(@NonNull FragmentManager fm, int NumOfTabs) {
+    public HomepagePagerAdapter(@NonNull FragmentManager fm, int NumOfTabs, HomeDetail info) {
         super(fm);
         this.mNumOfTabs = NumOfTabs;
+        this.info = info;
     }
 
     @NonNull
     @Override
     public Fragment getItem(int position) {
-
         switch (position) {
             case 0:
                 //return new HomeFragment();
-                return new SelfInfoFragment();
+                return new SelfInfoFragment(info);
             default:
                 return new HomeFragment();
                 //return new StudyInfoFragment();
