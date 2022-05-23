@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string-array name="orderArray">
-        <item>@string/DEFAULT</item>
         <item>@string/BIAOTI</item>
         <item>@string/NEIRONG</item>
         <item>@string/YONGHU</item>

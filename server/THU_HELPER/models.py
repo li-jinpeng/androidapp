@@ -8,7 +8,7 @@ class Post(models.Model):
     content = models.TextField()
     image = models.TextField()
     time = models.DateTimeField(auto_now_add=True)
-    type = models.IntegerField()
+    type = models.TextField()
     author = models.TextField()
     money = models.TextField()
     thumbs = models.IntegerField(default=0)
@@ -81,7 +81,7 @@ class Food(models.Model):
 
 class Operator(models.Model):
     id = models.TextField(primary_key=True, default=uuid.uuid4, editable=False)
-    type = models.IntegerField()#暂定1点赞、2收藏、3评分、4举报、5拉黑
+    type = models.IntegerField()#暂定1点赞、2收藏、3评分、4举报、5拉黑、6关注
     user_id = models.TextField()
     reply_id = models.TextField()
     first_score = models.IntegerField(default=0)

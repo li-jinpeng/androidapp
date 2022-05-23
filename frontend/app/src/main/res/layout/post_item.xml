@@ -23,7 +23,7 @@
             android:id="@+id/avatar"
             android:layout_width="50dp"
             android:layout_height="50dp"
-            android:layout_marginLeft="10dp"
+            android:layout_marginLeft="20dp"
             android:layout_weight="1"
             android:background="@color/transparent"
             android:clickable="true"
@@ -125,7 +125,7 @@
             android:layout_marginRight="10dp"
             android:src="@drawable/ic_good"/>
         <TextView
-            android:id="@+id/comment"
+            android:id="@+id/thumbs"
             android:layout_width="wrap_content"
             android:layout_height="20dp"
             android:layout_marginRight="20dp"

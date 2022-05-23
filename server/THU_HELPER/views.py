@@ -754,34 +754,25 @@ def get_post_detail(request):
     res["sendname"] = get_user_nickname(post.author)
     res["date"] = post.time.strftime('%m-%d %H:%M')
     res["ava"] = get_user_ava(post.author)
+    res["title"] = post.title
     res["text"] = post.content
-    res["pic"] = post.image.split(",")
-    tag = post.tag
-    res["type"] = tag
-    if tag == "寻物":
-        res["type_"] = 1
-    elif tag == "闲置物品":
-        res["type_"] = 2
-    elif tag == "求助":
-        res["type_"] = 3
-    elif tag == "倾诉":
-        res["type_"] = 4
-    elif tag == "代取物品":
-        res["type_"] = 5
+    if post.image==None:
+        res["pic"] = [];
     else:
-        res["type_"] = 0
+        res["pic"] = post.image.split(",")
+    res["type"] = post.type
     res["likes"] = post.thumbs
     res["store"] = post.stores
     res["reports"] = post.reports
     res["like"] = Operator.objects.filter(type=1).filter(user_id=user_id).filter(reply_id=id).count()
     res["sto"] = Operator.objects.filter(type=2).filter(user_id=user_id).filter(reply_id=id).count()
     res["reported"] = Operator.objects.filter(type=4).filter(user_id=user_id).filter(reply_id=id).count()
-    res["done"] = Reply.objects.filter(author=user_id).filter(reply_id=id).count()
-    if res["done"] > 0:
-        res["done"] = 1
-    res["icons"] = post.icons
-    res["money"] = post.money
-    res["finished"] = post.done
+    #res["done"] = Reply.objects.filter(author=user_id).filter(reply_id=id).count()
+    #if res["done"] > 0:
+        #res["done"] = 1
+    #res["icons"] = post.icons
+    #res["money"] = post.money
+    #res["finished"] = post.done
     response = []
     users = []
     tmp1 = []
@@ -838,7 +829,8 @@ def get_post_detail(request):
     response = sorted(response, key=lambda keys: keys["date"])
     for item in response:
         item["date"] = item["date"].strftime('%m-%d %H:%M')
-    return JsonResponse({'data': res, "response": response, "users" : users})
+    res["response"] = response
+    return JsonResponse(res, safe=False)
 
 
 def new_post(request):#新建帖子记录
@@ -1212,17 +1204,25 @@ def edit_operator(request):
 def index_search(request):
     search = request.POST.get('search', '')
     type = request.POST.get('type', '')
-    print(search)
-    print(type)
+    order = request.POST.get('order', '')
+    user_id = request.POST.get('user_id', '')
+    attention = request.POST.get('attention', '')
+    mine = request.POST.get('')
     search_tag = search.split(",")
     res = []
-    posts = Post.objects.order_by("-time")
+    if order == "1":
+        posts = Post.objects.order_by("-thumbs")
+    else:
+        posts = Post.objects.order_by("-time")
     if type == "内容":
         for tag in search_tag:
             posts = posts.filter(content__icontains=tag)
     elif type == "标题":
         for tag in search_tag:
             posts = posts.filter(title__icontains=tag)
+    elif type == "类型":
+        for tag in search_tag:
+            posts = posts.filter(type__icontains=tag)
     for post in posts:
         item = {}
         item["id"] = post.id
@@ -1236,8 +1236,8 @@ def index_search(request):
             temp = post.image.split(",")
             item["image"] = True
             item["imagePath"] = temp[0]
-        tag = post.tag
-        item["type"] = tag
+        item["type"] = post.type
+        item["thumbs"] = post.thumbs
         author = post.author
         user = User.objects.get(id=author)
         item["avatar"] = user.profile
@@ -1246,7 +1246,20 @@ def index_search(request):
         if item["dep"] == "" or item["dep"] == None:
             item["dep"] = "未知"
         item["sender"] = user.nickname
-        res.append(item)
+        thumb = Operator.objects.filter(type=1).filter(user_id=user_id).filter(reply_id=post.id).count()
+        item["thumb"] = thumb
+        flag = 1
+        if type == "用户":
+            for tag in search_tag:
+                if tag not in item["sender"]:
+                    flag = 0
+        if mine == "1":
+            if item["user_id"]!=user_id:
+                flag = 0
+        if attention == "1":
+            flag = Operator.objects.filter(type=6).filter(user_id=user_id).filter(reply_id=item["user_id"]).count()
+        if flag != 0:
+            res.append(item)
 
     return JsonResponse(res, safe=False)
 
