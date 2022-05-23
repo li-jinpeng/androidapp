@@ -1246,14 +1246,18 @@ def edit_operator(request):
     return JsonResponse("success!", safe=False)
 
 def index_search(request):
-    user_id = request.POST.get('id','')
     search = request.POST.get('search', '')
     type = request.POST.get('type', '')
-    print(search)
-    print(type)
+    order = request.POST.get('order', '')
+    user_id = request.POST.get('user_id', '')
+    attention = request.POST.get('attention', '')
+    mine = request.POST.get('')
     search_tag = search.split(",")
     res = []
-    posts = Post.objects.order_by("-time")
+    if order == "1":
+        posts = Post.objects.order_by("-thumbs")
+    else:
+        posts = Post.objects.order_by("-time")
     if type == "内容":
         for tag in search_tag:
             posts = posts.filter(content__icontains=tag)
@@ -1283,12 +1287,27 @@ def index_search(request):
         if item["dep"] == "" or item["dep"] == None:
             item["dep"] = "未知"
         item["sender"] = user.nickname
+        
         follow = Operator.objects.filter(type=6).filter(user_id=user_id).filter(reply_id=user.id)
         if follow:
             item["follow"] = "已关注"
         else:
             item["follow"] = "未关注"
-        res.append(item)
+        
+        thumb = Operator.objects.filter(type=1).filter(user_id=user_id).filter(reply_id=post.id).count()
+        item["thumb"] = thumb
+        flag = 1
+        if type == "用户":
+            for tag in search_tag:
+                if tag not in item["sender"]:
+                    flag = 0
+        if mine == "1":
+            if item["user_id"]!=user_id:
+                flag = 0
+        if attention == "1":
+            flag = Operator.objects.filter(type=6).filter(user_id=user_id).filter(reply_id=item["user_id"]).count()
+        if flag != 0:
+            res.append(item)
 
     return JsonResponse(res, safe=False)
 
