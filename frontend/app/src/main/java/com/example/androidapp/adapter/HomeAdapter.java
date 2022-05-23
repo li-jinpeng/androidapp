@@ -6,16 +6,13 @@ import android.util.Log;
 import android.graphics.Color;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.widget.PopupMenu;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentStatePagerAdapter;
@@ -23,15 +20,13 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.androidapp.R;
-import com.example.androidapp.activity.ChangePasswordActivity;
 import com.example.androidapp.activity.Detail;
-import com.example.androidapp.activity.EditInfoActivity;
-import com.example.androidapp.activity.MainActivity;
-import com.example.androidapp.activity.visit;
 import com.example.androidapp.fragment.homepage.SelfInfoFragment;
 import com.example.androidapp.fragment.main.HomeFragment;
 import com.example.androidapp.util.Global;
 import com.example.androidapp.util.PostDetail;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -83,86 +78,12 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.MyViewHolder> 
         return holder;
     }
 
-    private void showPopupMenu(View view,String id) {
-        // View当前PopupMenu显示的相对View的位置
-        PopupMenu popupMenu = new PopupMenu(view.getContext(), view);
-        // menu布局
-        popupMenu.getMenuInflater().inflate(R.menu.avatar, popupMenu.getMenu());
-        // menu的item点击事件
-        popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem item) {
-                switch (item.getItemId()){
-                    case R.id.visit:
-                        Intent intent = new Intent(view.getContext(), visit.class);
-                        intent.putExtra("id",id);
-                        view.getContext().startActivity(intent);
-                        break;
-                    case R.id.follow:
-                        new Thread(new Runnable() {
-                            @Override
-                            public void run() {
-                                try {
-
-                                    FormBody.Builder builder = new  FormBody.Builder()
-                                            .add("user_id", Global.user_id)
-                                            .add("follow_id",id);
-                                    OkHttpClient client = new OkHttpClient();
-                                    Request request = new Request.Builder()
-                                            .url(Global.SERVER_URL + "/user/follow/")
-                                            .post(builder.build())
-                                            .build();
-                                    Response response = client.newCall(request).execute();
-                                }catch (Exception e){
-                                    e.printStackTrace();
-                                }
-                            }
-                        }).start();
-                        Toast.makeText(view.getContext(), "操作成功", Toast.LENGTH_SHORT).show();
-                        break;
-
-                    case R.id.black:
-                        new Thread(new Runnable() {
-                            @Override
-                            public void run() {
-                                try {
-
-                                    FormBody.Builder builder = new  FormBody.Builder()
-                                            .add("user_id", Global.user_id)
-                                            .add("black_id",id);
-                                    OkHttpClient client = new OkHttpClient();
-                                    Request request = new Request.Builder()
-                                            .url(Global.SERVER_URL + "/user/blacklist/")
-                                            .post(builder.build())
-                                            .build();
-                                    Response response = client.newCall(request).execute();
-                                }catch (Exception e){
-                                    e.printStackTrace();
-                                }
-                            }
-                        }).start();
-                        Toast.makeText(view.getContext(), "拉黑成功", Toast.LENGTH_SHORT).show();
-                        break;
-                }
-                return false;
-            }
-        });
-        // PopupMenu关闭事件
-        popupMenu.setOnDismissListener(new PopupMenu.OnDismissListener() {
-            @Override
-            public void onDismiss(PopupMenu menu) {
-            }
-        });
-
-        popupMenu.show();
-    }
-
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
+
         bindView(holder,position);
-        TextView text = holder.itemView.findViewById(R.id.user_id);
-        text.setText(data.get(position).user_id);
         //通过点击改变状态
+
     }
 
     @Override
@@ -221,6 +142,8 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.MyViewHolder> 
                 }
             });
             follow = itemView.findViewById(R.id.follow);
+
+
         }
     }
 
@@ -234,7 +157,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.MyViewHolder> 
         holder.content.setText(data.get(position).content);
         holder.user_name.setText(data.get(position).sender);
         holder.date.setText(data.get(position).time);
-         holder.thumbs.setText(data.get(position).thumbs);
+        holder.thumbs.setText(data.get(position).thumbs);
         holder.post_id = data.get(position).id;
         if (data.get(position).thumb!=0)
             holder.thumbs.setTextColor(Color.GREEN);

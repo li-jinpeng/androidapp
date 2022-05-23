@@ -101,7 +101,7 @@
             android:background="@drawable/shape_username_box"
             android:drawableStart="@drawable/png_black_24dp_school"
             android:drawablePadding="10dp"
-            android:hint="个人简介"
+            android:hint="个性签名"
             android:inputType="textPersonName"
             android:maxLines="1"
             android:padding="15dp"

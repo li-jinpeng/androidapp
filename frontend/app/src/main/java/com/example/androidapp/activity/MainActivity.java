@@ -65,6 +65,8 @@ public class MainActivity extends BaseActivity {
         });
 
 
+
+
         viewPager = findViewById(R.id.nav_host_fragment);
         mMainActivityPagerAdapter = new MainActivityPagerAdapter(getSupportFragmentManager());
         viewPager.setAdapter(mMainActivityPagerAdapter);

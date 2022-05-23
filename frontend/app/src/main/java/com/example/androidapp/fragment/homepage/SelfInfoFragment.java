@@ -9,8 +9,6 @@ import android.widget.TextView;
 import androidx.fragment.app.Fragment;
 
 import com.example.androidapp.R;
-import com.example.androidapp.activity.Detail;
-import com.example.androidapp.util.HomeDetail;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -27,22 +25,42 @@ public class SelfInfoFragment extends Fragment {
     @BindView(R.id.account)
     TextView account;
 
+    @BindView(R.id.department)
+    TextView department;
+
+    @BindView(R.id.major)
+    TextView major;
+
+    @BindView(R.id.student_number)
+    TextView studentNumber;
+
+
+    @BindView(R.id.phone)
+    TextView phone;
+
+    @BindView(R.id.address)
+    TextView address;
+
     @BindView(R.id.introduction)
     TextView introduction;
 
     private Unbinder unbinder;
-    private HomeDetail info;
 
-    public SelfInfoFragment(HomeDetail info) { this.info = info;}
+    public SelfInfoFragment() { }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_self_info, container, false);
         unbinder = ButterKnife.bind(this, view);
        // setInfo();
-        account.setText(info.account);
-        name.setText(info.name);
-        introduction.setText(info.intro);
+        account.setText("ljp");
+        name.setText("ljp");
+        department.setText("software");
+        major.setText("software");
+        studentNumber.setText("2019013254");
+        phone.setText("15660603091");
+        address.setText("紫荆一号楼");
+        introduction.setText("一个大三学生");
         return view;
     }
 
