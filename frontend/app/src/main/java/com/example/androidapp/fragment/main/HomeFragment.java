@@ -61,7 +61,8 @@ public class HomeFragment extends Fragment {
     private String temp;
     private String responseData;
     private Gson gson;
-    private int lock;
+    private String host = Global.SERVER_URL;
+    private int lock = 0;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -83,10 +84,10 @@ public class HomeFragment extends Fragment {
             @Override
             public void run() {
                 try {
-                    FormBody.Builder builder = new  FormBody.Builder().add("id", Global.user_id);
+                    FormBody.Builder builder = new  FormBody.Builder().add("user_id", Global.user_id);
                     OkHttpClient client = new OkHttpClient();
                     Request request = new Request.Builder()
-                            .url(Global.SERVER_URL + "/post/index/")
+                            .url(host + "/operator/search/")
                             .post(builder.build())
                             .build();
                     Response response = client.newCall(request).execute();
@@ -111,7 +112,20 @@ public class HomeFragment extends Fragment {
                     public void run() {
                         try {
                             spinner_content = spinner.getSelectedItem().toString();
-                            FormBody.Builder builder = new  FormBody.Builder().add("search", temp).add("type", spinner_content).add("id",Global.user_id);
+                            if (attention_switch.isChecked())
+                                t1 = "1";
+                            else
+                                t1 = "0";
+                            if (order_switch.isChecked())
+                                t2 = "1";
+                            else
+                                t2 = "0";
+                            FormBody.Builder builder = new  FormBody.Builder()
+                                    .add("search", temp)
+                                    .add("type", spinner_content)
+                                    .add("user_id", Global.user_id)
+                                    .add("attention", t1)
+                                    .add("order", t2);
                             OkHttpClient client = new OkHttpClient();
                             Request request = new Request.Builder()
                                     .url(Global.SERVER_URL + "/operator/search/")
