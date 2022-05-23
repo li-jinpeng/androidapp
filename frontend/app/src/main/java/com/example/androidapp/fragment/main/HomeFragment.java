@@ -1,6 +1,7 @@
 package com.example.androidapp.fragment.main;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.ContextMenu;
@@ -11,9 +12,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.Switch;
 import android.widget.TextView;
 
 
@@ -27,6 +30,7 @@ import com.example.androidapp.R;
 import com.example.androidapp.activity.PublicActivity;
 
 import com.example.androidapp.adapter.HomeAdapter;
+import com.example.androidapp.util.Global;
 import com.example.androidapp.util.PostDetail;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -58,12 +62,13 @@ public class HomeFragment extends Fragment {
     private List<PostDetail> temp_list;
     private RecyclerView recycleView;
     private EditText editText;
-    private String temp;
+    private Switch attention_switch,order_switch;
+    private String temp,t1,t2;
     private String responseData;
+    private TextView text,all,attention,time,thumbs;
     private Gson gson;
-    private int lock;
-    private String host = "http://101.43.128.148:9999";
-
+    private String host = Global.SERVER_URL;
+    private int lock = 0;
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
 
@@ -72,10 +77,16 @@ public class HomeFragment extends Fragment {
 
         Initview();
 
-        TextView text = root.findViewById(R.id.selectText);
+        text = root.findViewById(R.id.selectText);
+        all = root.findViewById(R.id.all);
+        attention = root.findViewById(R.id.attention);
+        time = root.findViewById(R.id.time);
+        thumbs = root.findViewById(R.id.thumbs);
         recycleView = root.findViewById(R.id.recycleView);
         editText = root.findViewById(R.id.search_view);
         spinner = root.findViewById(R.id.orderSpinner);
+        attention_switch = root.findViewById(R.id.switch_button);
+        order_switch = root.findViewById(R.id.order_button);
         LinearLayoutManager manager = new LinearLayoutManager(getActivity());
         manager.setOrientation(RecyclerView.VERTICAL);
         recycleView.setLayoutManager(manager);
@@ -84,10 +95,10 @@ public class HomeFragment extends Fragment {
             @Override
             public void run() {
                 try {
-                    FormBody.Builder builder = new  FormBody.Builder();
+                    FormBody.Builder builder = new  FormBody.Builder().add("user_id", Global.user_id);
                     OkHttpClient client = new OkHttpClient();
                     Request request = new Request.Builder()
-                            .url(host + "/post/index/")
+                            .url(host + "/operator/search/")
                             .post(builder.build())
                             .build();
                     Response response = client.newCall(request).execute();
@@ -112,7 +123,20 @@ public class HomeFragment extends Fragment {
                     public void run() {
                         try {
                             spinner_content = spinner.getSelectedItem().toString();
-                            FormBody.Builder builder = new  FormBody.Builder().add("search", temp).add("type", spinner_content);
+                            if (attention_switch.isChecked())
+                                t1 = "1";
+                            else
+                                t1 = "0";
+                            if (order_switch.isChecked())
+                                t2 = "1";
+                            else
+                                t2 = "0";
+                            FormBody.Builder builder = new  FormBody.Builder()
+                                    .add("search", temp)
+                                    .add("type", spinner_content)
+                                    .add("user_id", Global.user_id)
+                                    .add("attention", t1)
+                                    .add("order", t2);
                             OkHttpClient client = new OkHttpClient();
                             Request request = new Request.Builder()
                                     .url(host + "/operator/search/")
@@ -123,7 +147,6 @@ public class HomeFragment extends Fragment {
                             gson = new Gson();
                             temp_list = gson.fromJson(responseData,new TypeToken<List<PostDetail>>(){}.getType());
                             lock = 1;
-
                         }catch (Exception e){
                             e.printStackTrace();
                             text.setText(responseData);
@@ -143,6 +166,35 @@ public class HomeFragment extends Fragment {
             }
         });
 
+        attention_switch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    all.setTextColor(Color.BLACK);
+                    attention.setTextColor(Color.GREEN);
+                }
+                else {
+                    all.setTextColor(Color.GREEN);
+                    attention.setTextColor(Color.BLACK);
+                }
+                text.callOnClick();
+            }
+        });
+
+        order_switch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    time.setTextColor(Color.BLACK);
+                    thumbs.setTextColor(Color.GREEN);
+                }
+                else {
+                    time.setTextColor(Color.GREEN);
+                    thumbs.setTextColor(Color.BLACK);
+                }
+                text.callOnClick();
+            }
+        });
         return root;
     }
 
@@ -191,7 +243,8 @@ public class HomeFragment extends Fragment {
         unbinder.unbind();
     }
 
-    public void Search_post(View view){
+    public void Search()
+    {
 
     }
 
