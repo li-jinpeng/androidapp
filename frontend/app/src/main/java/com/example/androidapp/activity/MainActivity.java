@@ -9,8 +9,6 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.example.androidapp.R;
 import com.example.androidapp.adapter.MainActivityPagerAdapter;
-import com.example.androidapp.fragment.main.DashboardFragment;
-import com.example.androidapp.util.BasicInfo;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import butterknife.ButterKnife;
@@ -47,7 +45,6 @@ public class MainActivity extends BaseActivity {
 
         navView = findViewById(R.id.nav_view);
 
-        BasicInfo.NAV_VIEW = navView;
         navView.removeBadge(R.id.navigation_conversations);
         navView.setOnNavigationItemSelectedListener(menuItem -> {
             switch (menuItem.getItemId()) {

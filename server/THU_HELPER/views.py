@@ -80,6 +80,22 @@ def get_user_home(request):
     res["followed"] = str(count)
     
     return JsonResponse(res)
+    
+def change_avatar(request):
+    myfile = request.FILES.get('image','')
+    user_id = request.POST.get('user_id','')
+    user = User.objects.get(id=user_id)
+    if myfile:
+        dir = "pic/" + myfile.name
+        w = open(dir,'wb+')
+        for chunk in myfile.chunks():   
+            w.write(chunk)
+        w.close()
+        user.profile = (myserver + "/" + dir)
+        user.save()
+        return JsonResponse({'message':"success"})
+    else:
+        return JsonResponse({'message':"fail"})
 
 def login(request):
     password = request.POST.get('password', '')
@@ -211,20 +227,6 @@ def user_store(request):
             res.append(item)
     return JsonResponse({'data': res})
 
-def user_draft(request):
-    id = request.POST.get('id', '')
-    drafts = Draft.objects.filter(author=id).order_by('-time')
-    res = []
-    for draft in drafts:
-        item = {}
-        item["id"] = draft.id
-        item["title"] = draft.title
-        item["content"] = draft.content
-        item["time"] = draft.time.strftime('%m-%d %H:%M')
-        item["type"] = draft.type
-        item["author"] = draft.author
-        res.append(item)
-    return JsonResponse({'data': res})
 
 def user_record(request):
     id = request.POST.get('id', '')
@@ -487,86 +489,47 @@ def post_reply(request):
 def get_message_index(request):
     id = request.POST.get('id', '')
     res = []
-    talker_list = []
-    messages = []
-    sends = Message.objects.filter(send_id=id).order_by("-time").filter(sender_del=0)
+    users = []
+
     receives = Message.objects.filter(receive_id=id).order_by("-time").filter(receiver_del=0)
+    
     for message in receives:
-        item = {}
-        item["data"] = message
-        item["time"] = message.time
-        messages.append(item)
-    for message in sends:
-        item = {}
-        item["data"] = message
-        item["time"] = message.time
-        messages.append(item)
-    messages = sorted(messages, key=lambda keys: keys["time"])
-    messages.reverse()
-    for message in messages:
-        message = message["data"]
-        receive_id = message.receive_id
-        send_id = message.send_id
-        if receive_id == id:
-            if send_id in talker_list:
-                if message.looked == 0:
-                    for item in res:
-                        if item["id"] == send_id:
-                            item["num"] = item["num"] + 1
-            else:
-                talker_list.append(send_id)
-                item = {}
-                item["id"] = send_id
-                item["num"] = 1 - message.looked
-                item["msg"] = message.content
-                item["time"] = message.time
-                item["sender"] = get_user_nickname(send_id)
-                item["image"] = get_user_ava(send_id)
-                res.append(item)
+        if message.send_id not in users:
+            users.append(message.send_id)
+            item = {}
+            item["id"] = message.send_id
+            item["sender"] = get_user_nickname(message.send_id)
+            item["msg"] = message.content 
+            item["year"] = message.time.year
+            item["mon"] = message.time.month
+            item["day"] = message.time.day
+            item["hour"] = message.time.hour
+            item["min"] = int(message.time.strftime("%M"))
+            item['num'] = Message.objects.filter(receive_id=id).filter(send_id=message.send_id).filter(looked=0).count()
+            res.append(item)
         else:
-            if receive_id in talker_list:
-                continue
-            else:
-                talker_list.append(receive_id)
-                item = {}
-                item["id"] = receive_id
-                item["num"] = 0
-                item["msg"] = message.content
-                item["time"] = message.time
-                item["sender"] = get_user_nickname(receive_id)
-                item["image"] = get_user_ava(receive_id)
-                res.append(item)
-    for item in res:
-        item["time"] = item["time"].strftime('%Y-%m-%d %H:%M')
-    return JsonResponse({'data': res})
+            continue
+    return JsonResponse(res,safe=False)
 
 def get_message_detail(request):
-    send_id = request.POST.get('send_id', '')
-    receive_id = request.POST.get('receive_id', '')
+    user_id = request.POST.get('user_id', '')
+    id = request.POST.get('id', '')
     res = []
-    sends = Message.objects.filter(send_id=send_id).filter(receive_id=receive_id).filter(sender_del=0)
-    receivename = get_user_nickname(receive_id)
-    for message in sends:
-        item = {}
-        item["self"] = 1
-        item["text"] = message.content
-        item["date"] = message.time
-        res.append(item)
-    receives = Message.objects.filter(send_id=receive_id).filter(receive_id=send_id).filter(receiver_del=0)
-    for message in receives:
+    msgs = Message.objects.filter(send_id=id).filter(receive_id=user_id).order_by("-time").filter(sender_del=0)
+    
+    for message in msgs:
         message.looked = 1
         message.save()
         item = {}
-        item["self"] = 0
-        item["text"] = message.content
-        item["date"] = message.time
-        res.append(item)
-    res = sorted(res, key=lambda keys: keys["date"])
-    send_ava = get_user_ava(send_id)
-    receive_ava = get_user_ava(receive_id)
-    for item in res:
-        item["date"] = item["date"].strftime('%m-%d %H:%M')
-    return JsonResponse({'data': res, 'myava': send_ava, 'taava': receive_ava,  'nickname':receivename})
+        item["sender"] = get_user_nickname(message.send_id)
+        item["msg"] = message.content 
+        item["year"] = message.time.year
+        item["mon"] = message.time.month
+        item["day"] = message.time.day
+        item["hour"] = message.time.hour
+        item["min"] = int(message.time.strftime("%M"))
+        res.append(item)    
+    return JsonResponse(res,safe=False)
 
 def send_message(request):
     send_id = request.POST.get('send_id', '')
@@ -1309,7 +1272,6 @@ def index_search(request):
     return JsonResponse(res, safe=False)
 
 def new_draft(request):#新建草稿
-
     title = request.POST.get('title', '')
     content = request.POST.get('content', '')
     user_id = request.POST.get('user_id', '')
@@ -1332,7 +1294,67 @@ def new_draft(request):#新建草稿
     draft.content = check_word(content)
     draft.author = user_id
     draft.save()
-    return JsonResponse("success!", safe=False)
+    res = []
+    drafts = Draft.objects.filter(author=user_id).order_by("-time")
+    for draft in drafts:
+        item = {}
+        item["id"] = draft.id
+        item["titie"] = draft.title
+        item["content"] = draft.content
+        item["time"] = draft.time.strftime('%m-%d %H:%M')
+        res.append(item)
+    return JsonResponse(res, safe=False)
+
+def get_draft(request):
+    user_id = request.POST.get('user_id', '')
+    res = []
+    drafts = Draft.objects.filter(author=user_id).order_by("-time")
+    for draft in drafts:
+        item = {}
+        item["id"] = draft.id
+        item["titie"] = draft.title
+        item["content"] = draft.content
+        item["time"] = draft.time.strftime('%m-%d %H:%M')
+        res.append(item)
+    return JsonResponse(res, safe=False)
+
+def edit_draft(request):
+    id = request.POST.get('id', '')
+    title = request.POST.get('title', '')
+    content = request.POST.get('content', '')
+    user_id = request.POST.get('user_id', '')
+    drafts = Draft.objects.filter(id=id)
+    for draft in drafts:
+        draft.title = title
+        draft.content = content
+        draft.save()
+    res = []
+    drafts = Draft.objects.filter(author=user_id).order_by("-time")
+    for draft in drafts:
+        item = {}
+        item["id"] = draft.id
+        item["titie"] = draft.title
+        item["content"] = draft.content
+        item["time"] = draft.time.strftime('%m-%d %H:%M')
+        res.append(item)
+    return JsonResponse(res, safe=False)
+
+
+def delete_draft(request):
+    id = request.POST.get('id', '')
+    user_id = request.POST.get('user_id', '')
+    draft = Draft.objects.filter(id=id)
+    draft.delete()
+    res = []
+    drafts = Draft.objects.filter(author=user_id).order_by("-time")
+    for draft in drafts:
+        item = {}
+        item["id"] = draft.id
+        item["titie"] = draft.title
+        item["content"] = draft.content
+        item["time"] = draft.time.strftime('%m-%d %H:%M')
+        res.append(item)
+    return JsonResponse(res, safe=False)
 
 #--------------------------图片----------------------------
 

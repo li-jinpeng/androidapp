@@ -15,11 +15,12 @@ public class Dialog implements IDialog<Message>, Comparable<Dialog> {
     private String dialogPhoto; // 头像
     private String dialogName;  // 名称
     private Message lastMessage; // 最后一条消息
+    private String user_id;
 
     private int unreadCount; // 未读数量
 
     public Dialog(String id, String name, String photo,
-                  ArrayList<User> users, Message lastMessage, int unreadCount) {
+                  ArrayList<User> users, Message lastMessage, int unreadCount,String user_id) {
 
         this.id = id;
         this.dialogName = name;
@@ -27,6 +28,7 @@ public class Dialog implements IDialog<Message>, Comparable<Dialog> {
         this.users = users;
         this.lastMessage = lastMessage;
         this.unreadCount = unreadCount;
+        this.user_id = user_id;
     }
 
     @Override

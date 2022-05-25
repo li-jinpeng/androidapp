@@ -1,31 +1,17 @@
 package com.example.androidapp.activity;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.text.Editable;
-import android.text.TextWatcher;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
 import com.andreabaccega.widget.FormEditText;
 import com.example.androidapp.R;
-import com.example.androidapp.entity.OptionItems;
-import com.example.androidapp.request.user.LogonRequest;
 import com.example.androidapp.util.Global;
-import com.example.androidapp.util.Hint;
-import com.example.androidapp.util.PostDetail;
-import com.example.androidapp.util.Valid;
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
-
-import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 import okhttp3.FormBody;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;

@@ -17,6 +17,11 @@ public class User implements IUser {
     private String type;   //用户类型 S/T
     private String userId; // 对方id
 
+    public User(String id) {
+        this.id = id;
+
+    }
+
     public User(String id, String name, String avatar, boolean online) {
         this.id = id;
         this.name = name;
@@ -64,11 +69,4 @@ public class User implements IUser {
         return avatar;
     }
 
-    public boolean isOnline() {
-        return online;
-    }
-
-    public String getUserId() {
-        return userId;
-    }
 }

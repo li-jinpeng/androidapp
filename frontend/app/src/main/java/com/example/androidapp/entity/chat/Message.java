@@ -3,6 +3,7 @@ package com.example.androidapp.entity.chat;
 import com.stfalcon.chatkit.commons.models.IMessage;
 import com.stfalcon.chatkit.commons.models.MessageContentType;
 
+import java.util.Calendar;
 import java.util.Date;
 
 
@@ -15,7 +16,7 @@ public class Message implements IMessage,
 
     private String id;
     private String text;
-    private Date createdAt; // 时间
+    private Calendar cal;
     private User user; // 用户，"0"是自己，"1"是对方，但用户信息都是对方的
     private Image image; // 图片url
     private Voice voice;
@@ -24,28 +25,19 @@ public class Message implements IMessage,
     private String dateString;
 
     public Message(String id, User user, String text) {
-
-        Date date = new Date();
         this.id = id;
         this.text = text;
         this.user = user;
-        this.createdAt = date;
+
     }
 
-    public Message(String id, User user, String text, Date createdAt) {
+    public Message(String id, User user, String text, Calendar cal) {
         this.id = id;
         this.text = text;
         this.user = user;
-        this.createdAt = createdAt;
+        this.cal = cal;
     }
 
-    public Message(String id, User user, String text, Date createdAt, Boolean read) {
-        this.id = id;
-        this.text = text;
-        this.user = user;
-        this.createdAt = createdAt;
-        this.read = read;
-    }
 
     public String getDateString() {
         return dateString;
@@ -76,11 +68,11 @@ public class Message implements IMessage,
 
     @Override
     public Date getCreatedAt() {
-        return createdAt;
+        return cal.getTime();
     }
 
-    public void setCreatedAt(Date createdAt) {
-        this.createdAt = createdAt;
+    public void setCreatedAt(Calendar cal) {
+        this.cal = cal;
     }
 
     @Override

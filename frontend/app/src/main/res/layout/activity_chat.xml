@@ -32,7 +32,8 @@
     <com.scwang.smartrefresh.layout.SmartRefreshLayout
         android:id="@+id/refreshLayout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="60dp"
         android:layout_below="@id/divider3">
 
         <com.stfalcon.chatkit.messages.MessagesList
@@ -59,7 +60,5 @@
             app:textAutoLink="all" />
 
     </com.scwang.smartrefresh.layout.SmartRefreshLayout>
-
-
 
 </RelativeLayout>

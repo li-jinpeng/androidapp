@@ -21,7 +21,6 @@ import com.example.androidapp.R;
 
 
 import com.example.androidapp.util.Global;
-import com.example.androidapp.util.Hint;
 
 import com.example.androidapp.util.PostDetail;
 import com.example.androidapp.util.login_info;

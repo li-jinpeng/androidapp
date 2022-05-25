@@ -1,12 +1,8 @@
 package com.example.androidapp.fragment.main;
 
 import android.content.Intent;
-import android.content.pm.ActivityInfo;
 import android.graphics.Color;
-import android.graphics.drawable.GradientDrawable;
-import android.graphics.drawable.VectorDrawable;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,34 +22,18 @@ import com.example.androidapp.activity.ChangePasswordActivity;
 import com.example.androidapp.activity.EditInfoActivity;
 import com.example.androidapp.activity.user_list;
 import com.example.androidapp.adapter.HomepagePagerAdapter;
-import com.example.androidapp.entity.ApplicationInfo;
-import com.example.androidapp.entity.RecruitmentInfo;
-import com.example.androidapp.request.user.GetInfoPictureRequest;
-import com.example.androidapp.util.BasicInfo;
-import com.example.androidapp.util.GifSizeFilter;
 import com.example.androidapp.util.Global;
 import com.example.androidapp.util.HomeDetail;
-import com.example.androidapp.util.MyImageLoader;
-import com.example.androidapp.util.SizeConverter;
-import com.example.androidapp.util.visit_detail;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.tabs.TabLayout;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.zhihu.matisse.Matisse;
-import com.zhihu.matisse.MimeType;
-import com.zhihu.matisse.engine.impl.GlideEngine;
-import com.zhihu.matisse.filter.Filter;
-import com.zhihu.matisse.internal.entity.CaptureStrategy;
 
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
-import de.hdodenhof.circleimageview.CircleImageView;
 import fm.jiecao.jcvideoplayer_lib.JCVideoPlayer;
 import okhttp3.FormBody;
 import okhttp3.OkHttpClient;
