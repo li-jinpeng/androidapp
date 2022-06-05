@@ -1,12 +1,15 @@
 package com.example.androidapp.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.viewpager.widget.ViewPager;
 
 
 import com.bumptech.glide.Glide;
 import com.example.androidapp.R;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -14,13 +17,20 @@ import android.os.Message;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.androidapp.adapter.HomeAdapter;
+import com.example.androidapp.adapter.HomepagePagerAdapter;
+import com.example.androidapp.fragment.main.DashboardFragment;
 import com.example.androidapp.util.Global;
+import com.example.androidapp.util.HomeDetail;
 import com.example.androidapp.util.PostDetail;
 import com.example.androidapp.util.visit_detail;
+import com.google.android.material.appbar.AppBarLayout;
+import com.google.android.material.tabs.TabLayout;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -29,17 +39,22 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindView;
 import de.hdodenhof.circleimageview.CircleImageView;
+import fm.jiecao.jcvideoplayer_lib.JCVideoPlayer;
 import okhttp3.FormBody;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 
 public class visit extends AppCompatActivity {
-private visit_detail info;
-private int lock = 0;
-private Handler handler;
-private visit that = this;
+
+    private HomepagePagerAdapter pagerAdapter;
+    private HomeDetail info;
+    private visit_detail info1;
+    private Handler handler;
+    private visit that = this;
+    public String the_id;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,9 +62,35 @@ private visit that = this;
         setContentView(R.layout.activity_visit);
 
         Intent intent = getIntent();
-        String the_id = intent.getStringExtra("id");
+        the_id = intent.getStringExtra("id");
+        show();
+        TextView title=findViewById(R.id.visit_homepage_title1);
+        title.setText("Ta的主页");
+        TabLayout tabLayout = findViewById(R.id.tab_layout);
+        ImageView imgAvatar = findViewById(R.id.img_avatar);
+        TextView name=findViewById(R.id.homepage_name);
+        TextView numFocus=findViewById(R.id.num_focus);
+        TextView numFocused=findViewById(R.id.num_focused);
+        ViewPager viewPager=findViewById(R.id.view_pager);
+        tabLayout.addTab(tabLayout.newTab().setText("Ta的动态"));
+        tabLayout.addTab(tabLayout.newTab().setText("Ta的信息"));
+        tabLayout.setBackgroundColor(Color.WHITE);
+        tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
+        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                viewPager.setCurrentItem(tab.getPosition());
+                JCVideoPlayer.releaseAllVideos();
+            }
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
 
-        lock = 0;
+            }
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+            }
+        });
+
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -64,16 +105,16 @@ private visit that = this;
                     Response response = client.newCall(request).execute();
                     String responseData = response.body().string();
                     Gson gson = new Gson();
-                    info = gson.fromJson(responseData,new TypeToken<visit_detail>(){}.getType());
+                    info1 = gson.fromJson(responseData,new TypeToken<visit_detail>(){}.getType());
                     Message msg = new Message();
-                    msg.what = 1;
+                    msg.what = 2;
                     handler.sendMessage(msg);
                 }catch (Exception e){
                     e.printStackTrace();
                 }
             }
         }).start();
-        Button btn = findViewById(R.id.btn);
+        TextView btn = findViewById(R.id.btn_follow);
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -91,7 +132,7 @@ private visit that = this;
                                     .build();
                             Response response = client.newCall(request).execute();
                             Message msg = new Message();
-                            msg.what = 2;
+                            msg.what = 3;
                             handler.sendMessage(msg);
                         }catch (Exception e){
                             e.printStackTrace();
@@ -101,44 +142,65 @@ private visit that = this;
             }
         });
 
-        handler = new Handler(){ //创建Handler
-            @Override
-            public void handleMessage(Message msg) {
-                switch (msg.what){ //区分不同的消息，对不同进度条组件执行操作
-                    case 1:
 
-                        CircleImageView image = findViewById(R.id.img_avatar);
+        handler = new Handler(){
+            @Override
+            public  void handleMessage(Message msg){
+                switch (msg.what){
+                    case 1:
                         try {
                             URL url = new URL(info.ava);
-                            Glide.with(that).load(url).into(image);
+                            Glide.with(that).load(url).into(imgAvatar);
                         } catch (MalformedURLException e) {
                             e.printStackTrace();
                         }
-                        TextView name = findViewById(R.id.name_);
-                        TextView name2 = findViewById(R.id.name);
+                        numFocus.setText(info.follow);
+                        numFocused.setText(info.followed);
                         name.setText(info.name);
-                        name2.setText(info.name);
-                        TextView acc = findViewById(R.id.account);
-                        acc.setText(info.account);
-                        TextView intro = findViewById(R.id.introduction);
-                        intro.setText(info.intro);
-                        btn.setText(info.follow);
+                            pagerAdapter = new HomepagePagerAdapter(getSupportFragmentManager(), tabLayout.getTabCount(), info,the_id);
+                            viewPager.setAdapter(pagerAdapter);
                         break;
                     case 2:
-                        Log.d("", "进来了");
+                        btn.setText(info1.follow);
+                        break;
+                    case 3:
                         if(btn.getText().toString().equals("已关注"))
                             btn.setText("未关注");
                         else{
                             btn.setText("已关注");
                         }
-                    default:
-                        break;
+                    default: break;
                 }
             }
         };
 
 
+    }
 
+    public void show(){
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    FormBody.Builder builder = new  FormBody.Builder()
+                            .add("id",the_id);
+                    OkHttpClient client = new OkHttpClient();
+                    Request request = new Request.Builder()
+                            .url(Global.SERVER_URL + "/user/get/home/")
+                            .post(builder.build())
+                            .build();
+                    Response response = client.newCall(request).execute();
+                    String responseData = response.body().string();
+                    Gson gson = new Gson();
+                    info = gson.fromJson(responseData,new TypeToken<HomeDetail>(){}.getType());
+                    Message msg = new Message();
+                    msg.what = 1;
+                    handler.sendMessage(msg);
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+            }
+        }).start();
     }
 
 

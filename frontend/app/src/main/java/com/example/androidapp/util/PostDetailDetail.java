@@ -13,7 +13,8 @@ public class PostDetailDetail {
     public String type;
     public String likes;
     public String store;
+    public int like;
     public String sto;
     public String reported;
-    public List<String> response;
+    public List<ResponseDetail> response;
 }

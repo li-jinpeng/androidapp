@@ -34,6 +34,7 @@ urlpatterns = [
     path('user/change_password/', views.change_password),
     path('user/avatar/',views.change_avatar),
     path('reply/post/', views.post_reply),
+    path('reply/delete/', views.delete_reply),
     path('message/index/', views.get_message_index),
     path('message/send/', views.send_message),
     path('message/detail/', views.get_message_detail),
@@ -62,5 +63,4 @@ urlpatterns = [
     path('judge_identy/', views.judge_identy),
     path('change_identy/',views.change_identy),
     path('get_doc/',views.get_doc),
-   
 ]

@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:background="@drawable/line1"
+    android:layout_marginTop="10dp"
+    android:layout_marginLeft="10dp"
+    android:layout_marginRight="10dp"
+    android:layout_height="wrap_content">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:id="@+id/draft_bar"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:id="@+id/draft_title"
+            android:layout_height="@dimen/single_height"
+            android:layout_marginStart="@dimen/edit_leftright_margin"
+            android:layout_marginTop="@dimen/edit_top_margin"
+            android:layout_marginEnd="@dimen/edit_leftright_margin"
+            android:textSize="14sp"
+            android:gravity="center_vertical"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
+
+        <TextView
+            android:id="@+id/draft_delete"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/single_height"
+            android:layout_gravity="end"
+            android:layout_marginTop="@dimen/edit_top_margin"
+            android:layout_marginEnd="@dimen/edit_leftright_margin"
+            android:gravity="center_vertical"
+            android:text="@string/DELETE"
+            android:textColor="@color/red"
+            android:textSize="14sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <TextView
+        android:id="@+id/draft_content"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/content_height"
+        android:layout_marginStart="@dimen/edit_leftright_margin"
+        android:layout_marginTop="@dimen/edit_top_margin"
+        android:layout_marginEnd="@dimen/edit_leftright_margin"
+        android:gravity="top"
+        android:textSize="14sp"
+        app:layout_constraintTop_toBottomOf="@id/draft_bar" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

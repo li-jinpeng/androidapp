@@ -402,6 +402,13 @@ def user_follow(request):
         op.user_id = user_id
         op.type = 6
         op.save()
+        message = Message()
+        message.send_id = "notice_follow"
+        message.receive_id = black_id
+        message.content = get_user_nickname(user_id)+"关注了您！"
+        message.looked = 0
+        message.save()
+        
     else:
         op = Operator.objects.filter(type=6).filter(user_id=user_id).filter(reply_id=black_id)
         op.delete()
@@ -482,7 +489,19 @@ def post_reply(request):
                 author = User.objects.get(id=reply_.author)
     author.visit = author.visit + 10
     author.save()
+    message = Message()
+    message.send_id = "notice_comment"
+    message.receive_id = author.id
+    message.content = "“" + user.nickname + "”" + "评论了您的作品<" + post.title +">"
+    message.looked = 0
+    message.save()
     return JsonResponse("success!", safe=False)
+
+def delete_reply(request):
+    id = request.POST.get('id', '')
+    reply = Reply.objects.filter(id=id)
+    reply.delete()
+    return JsonResponse("success", safe=False)
 
 #-------------------------------------------分割线为以下消息相关
 
@@ -839,7 +858,7 @@ def new_post(request):#新建帖子记录
     content = request.POST.get('content', '')
     user_id = request.POST.get('user_id', '')
     post_id = request.POST.get('post_id','')
-
+    
     if post_id == "init":
         post = Post()
         post.content = check_word(content)
@@ -853,6 +872,15 @@ def new_post(request):#新建帖子记录
             w.close()
             post.image = (myserver + "/" + dir + ";")
         post.save()
+        operators = Operator.objects.filter(type=6).filter(reply_id=user_id)
+        user = User.objects.get(id=user_id)
+        for operator in operators:
+          message = Message()
+          message.send_id = "notice_upgrade"
+          message.receive_id = operator.user_id
+          message.content = "你关注的“" + user.nickname + "”" + "发表了作品<" + post.title +">"
+          message.looked = 0
+          message.save()
         return JsonResponse({'id':post.id})
     else:
         post = Post.objects.get(id=post_id)
@@ -1072,6 +1100,12 @@ def edit_operator(request):
             post = Post.objects.get(id=id)
             if type == 1:
                 post.thumbs = post.thumbs + 1
+                message = Message()
+                message.send_id = "notice_like"
+                message.receive_id = post.author
+                message.content = "“" + user.nickname + "”" + "点赞了您的作品<" + post.title +">"
+                message.looked = 0
+                message.save()
                 if user.task & 1 == 0:
                     user.task = user.task | 1
                     user.score = user.score + 10
@@ -1205,6 +1239,7 @@ def edit_operator(request):
     return JsonResponse("success!", safe=False)
 
 def index_search(request):
+    user_type = request.POST.get('user_type','')
     search = request.POST.get('search', '')
     type = request.POST.get('type', '')
     order = request.POST.get('order', '')
@@ -1236,7 +1271,7 @@ def index_search(request):
             item["image"] = False
             item["imagePath"] = ""
         else:
-            temp = post.image.split(",")
+            temp = post.image.split(";")
             item["image"] = True
             item["imagePath"] = temp[0]
         item["type"] = post.type
@@ -1257,18 +1292,21 @@ def index_search(request):
         thumb = Operator.objects.filter(type=1).filter(user_id=user_id).filter(reply_id=post.id).count()
         item["thumb"] = thumb
         flag = 1
-        if type == "用户":
-            for tag in search_tag:
-                if tag not in item["sender"]:
-                    flag = 0
         if mine == "1":
             if item["user_id"]!=user_id:
                 flag = 0
         if attention == "1":
             flag = Operator.objects.filter(type=6).filter(user_id=user_id).filter(reply_id=item["user_id"]).count()
+        if type == "用户":
+            for tag in search_tag:
+                if tag not in item["sender"]:
+                    flag = 0
         if flag != 0:
-            res.append(item)
-
+            if user_type != 'all':
+                if item['user_id']==user_type:
+                    res.append(item)
+            else:
+                res.append(item)
     return JsonResponse(res, safe=False)
 
 def new_draft(request):#新建草稿

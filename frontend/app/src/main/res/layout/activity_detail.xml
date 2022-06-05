@@ -63,30 +63,26 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <GridView
-        android:id="@+id/GridView"
-        app:layout_constraintTop_toBottomOf="@+id/top_bar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="20dp"
-        android:verticalSpacing="10dp"
-        android:columnWidth="90dp"
-        android:numColumns="3"
-        android:stretchMode="columnWidth"
-        android:background="@drawable/line"
-        android:gravity="center"
-        tools:ignore="MissingConstraints">
-    </GridView>
+
 
     <TextView
         android:id="@+id/text"
-        app:layout_constraintTop_toBottomOf="@+id/GridView"
+        app:layout_constraintTop_toBottomOf="@+id/top_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="16dp"
         android:background="@drawable/line"
         android:layout_margin="20dp"
         tools:ignore="MissingConstraints" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/pic"
+        app:layout_constraintTop_toBottomOf="@+id/text"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        tools:ignore="MissingConstraints">
+    </androidx.recyclerview.widget.RecyclerView>
+
 
     <LinearLayout
         android:id="@+id/image"
@@ -95,37 +91,49 @@
         android:layout_marginTop="10dp"
         android:layout_marginBottom="10dp"
         android:gravity="right"
-        app:layout_constraintTop_toBottomOf="@+id/text"
+        app:layout_constraintTop_toBottomOf="@+id/pic"
         tools:ignore="MissingConstraints">
         <ImageView
             android:id="@+id/good"
             android:layout_width="30dp"
             android:layout_height="30dp"
-            android:layout_marginRight="30dp"
+            android:layout_marginRight="10dp"
             android:src="@drawable/ic_good"/>
+        <TextView
+            android:id="@+id/good_text"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginRight="20dp"
+            android:text="0"
+            android:textSize="20sp"
+            />
         <ImageView
             android:id="@+id/comment"
             android:layout_width="30dp"
             android:layout_height="30dp"
-            android:layout_marginRight="20dp"
-            android:src="@drawable/ic_good"
+            android:layout_marginRight="10dp"
+            android:src="@drawable/ic_chat_black_24dp"
+            />
+        <TextView
+            android:id="@+id/comment_text"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:layout_marginRight="10dp"
+            android:text="回复"
+            android:textSize="20sp"
             />
     </LinearLayout>
 
-    <GridView
+    <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/com"
         app:layout_constraintTop_toBottomOf="@+id/image"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="20dp"
-        android:verticalSpacing="10dp"
-        android:columnWidth="200dp"
-        android:numColumns="1"
-        android:stretchMode="columnWidth"
-        android:background="@drawable/line"
-        android:gravity="center"
+        android:layout_height="0dp"
+        android:layout_marginTop="10dp"
         tools:ignore="MissingConstraints">
-    </GridView>
-
+    </androidx.recyclerview.widget.RecyclerView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

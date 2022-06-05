@@ -3,6 +3,8 @@ package com.example.androidapp.fragment.main;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.util.Log;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
@@ -25,13 +27,16 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.androidapp.R;
 
 import com.example.androidapp.activity.PublicActivity;
 
 import com.example.androidapp.adapter.HomeAdapter;
+import com.example.androidapp.adapter.PostAdapter;
 import com.example.androidapp.util.Global;
 import com.example.androidapp.util.PostDetail;
+import com.example.androidapp.util.PostDetailDetail;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -68,7 +73,15 @@ public class HomeFragment extends Fragment {
     private String host = Global.SERVER_URL;
     private Switch attention_switch,order_switch;
     private int lock = 0;
+    private HomeFragment that = this;
+    private Handler handler;
+    private Message msg;
+    public String type;
 
+    public HomeFragment(String type)
+    {
+        this.type = type;
+    }
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
 
@@ -93,7 +106,7 @@ public class HomeFragment extends Fragment {
             @Override
             public void run() {
                 try {
-                    FormBody.Builder builder = new  FormBody.Builder().add("user_id", Global.user_id);
+                    FormBody.Builder builder = new  FormBody.Builder().add("user_id", Global.user_id).add("user_type",that.type);
                     OkHttpClient client = new OkHttpClient();
                     Request request = new Request.Builder()
                             .url(host + "/operator/search/")
@@ -103,8 +116,9 @@ public class HomeFragment extends Fragment {
                     responseData = response.body().string();
                     gson = new Gson();
                     post_list = gson.fromJson(responseData,new TypeToken<List<PostDetail>>(){}.getType());
-                    homeAdapter = new HomeAdapter(getActivity(),post_list);
+                    homeAdapter = new HomeAdapter(getActivity(),post_list,that);
                     recycleView.setAdapter(homeAdapter);
+
                 }catch (Exception e){
                     e.printStackTrace();
                 }
@@ -114,53 +128,7 @@ public class HomeFragment extends Fragment {
         text.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                temp = editText.getText().toString();
-                lock = 0;
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        try {
-                            spinner_content = spinner.getSelectedItem().toString();
-                            if (attention_switch.isChecked())
-                                t1 = "1";
-                            else
-                                t1 = "0";
-                            if (order_switch.isChecked())
-                                t2 = "1";
-                            else
-                                t2 = "0";
-                            FormBody.Builder builder = new  FormBody.Builder()
-                                    .add("search", temp)
-                                    .add("type", spinner_content)
-                                    .add("user_id", Global.user_id)
-                                    .add("attention", t1)
-                                    .add("order", t2);
-                            OkHttpClient client = new OkHttpClient();
-                            Request request = new Request.Builder()
-                                    .url(Global.SERVER_URL + "/operator/search/")
-                                    .post(builder.build())
-                                    .build();
-                            Response response = client.newCall(request).execute();
-                            responseData = response.body().string();
-                            gson = new Gson();
-                            temp_list = gson.fromJson(responseData,new TypeToken<List<PostDetail>>(){}.getType());
-                            lock = 1;
-                        }catch (Exception e){
-                            e.printStackTrace();
-                            text.setText(responseData);
-                        }
-                    }
-                }).start();
-                while(lock==0)
-                {
-                    continue;
-                }
-                post_list.clear();
-                for (int i = 0;i<temp_list.size();i++)
-                {
-                    post_list.add(temp_list.get(i));
-                }
-                homeAdapter.notifyDataSetChanged();
+                refresh();
             }
         });
 
@@ -220,9 +188,7 @@ public class HomeFragment extends Fragment {
                 intent.setClass(getActivity(), PublicActivity.class);
                 startActivity(intent);
                 break;
-            case R.id.menu2:
-                Log.v("2","2");
-                break;
+
         }
         return super.onOptionsItemSelected(item);
     }
@@ -244,8 +210,58 @@ public class HomeFragment extends Fragment {
         unbinder.unbind();
     }
 
-    public void Search_post(View view){
-
-    }
+    public void refresh()
+    {
+        temp = editText.getText().toString();
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    spinner_content = spinner.getSelectedItem().toString();
+                    if (attention_switch.isChecked())
+                        t1 = "1";
+                    else
+                        t1 = "0";
+                    if (order_switch.isChecked())
+                        t2 = "1";
+                    else
+                        t2 = "0";
+                    FormBody.Builder builder = new  FormBody.Builder()
+                            .add("search", temp)
+                            .add("type", spinner_content)
+                            .add("user_id", Global.user_id)
+                            .add("attention", t1)
+                            .add("user_type",that.type)
+                            .add("order", t2);
+                    OkHttpClient client = new OkHttpClient();
+                    Request request = new Request.Builder()
+                            .url(Global.SERVER_URL + "/operator/search/")
+                            .post(builder.build())
+                            .build();
+                    Response response = client.newCall(request).execute();
+                    responseData = response.body().string();
+                    gson = new Gson();
+                    temp_list = gson.fromJson(responseData,new TypeToken<List<PostDetail>>(){}.getType());
+                    msg = new Message();
+                    msg.what = 1;
+                    handler.sendMessage(msg);
+                }catch (Exception e){
+                    e.printStackTrace();
+                    text.setText(responseData);
+                }
+            }
+        }).start();
+        handler = new Handler(){ //创建Handler
+            @Override
+            public void handleMessage(Message msg) {
+                post_list.clear();
+                for (int i = 0;i<temp_list.size();i++)
+                {
+                    post_list.add(temp_list.get(i));
+                }
+                homeAdapter.notifyDataSetChanged();
+            }
+        };
+    };
 
 }

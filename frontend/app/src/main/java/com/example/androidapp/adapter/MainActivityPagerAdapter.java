@@ -27,7 +27,7 @@ public class MainActivityPagerAdapter extends FragmentStatePagerAdapter {
     public Fragment getItem(int position) {
         switch (position) {
             case 0:
-                return new HomeFragment();
+                return new HomeFragment("all");
             case 1:
                 return new ChatFragment();
             default:

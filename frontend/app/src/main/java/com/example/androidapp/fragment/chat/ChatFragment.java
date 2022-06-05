@@ -1,9 +1,13 @@
 package com.example.androidapp.fragment.chat;
 
 import android.annotation.SuppressLint;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -36,6 +40,8 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.UUID;
 
 import butterknife.ButterKnife;
@@ -61,8 +67,22 @@ public class ChatFragment extends Fragment implements DateFormatter.Formatter {
     private List<message_index> post_list;
     private ChatFragment that = this;
 
+    private static Handler mHandler = new Handler(Looper.getMainLooper());
 
+    private Runnable mTimeCounterRunnable = new Runnable() {
+        @Override
+        public void run() {
+            show();
+            mHandler.postDelayed(this, 2 * 1000);
+        }
+    };
 
+    BroadcastReceiver myBroadcastReceive = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            show();
+        }
+    };
     @SuppressLint("HandlerLeak")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -75,36 +95,12 @@ public class ChatFragment extends Fragment implements DateFormatter.Formatter {
         imageLoader = (imageView, url, payload) -> {
             Picasso.get().load(url).placeholder(R.drawable.ic_avatarholder).into(imageView);
         };
-        ;
 
         dialogsAdapter = new DialogsListAdapter<>(imageLoader);
         //dialogs = new ArrayList<>();
 
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    FormBody.Builder builder = new  FormBody.Builder()
-                            .add("id", Global.user_id);
-                    OkHttpClient client = new OkHttpClient();
-                    Request request = new Request.Builder()
-                            .url(Global.SERVER_URL + "/message/index/")
-                            .post(builder.build())
-                            .build();
-                    Response response = client.newCall(request).execute();
-                    responseData = response.body().string();
-                    Gson gson = new Gson();
-                    post_list = gson.fromJson(responseData,new TypeToken<List<message_index>>(){}.getType());
-                    android.os.Message msg = new android.os.Message();
-                    msg.what = 1;
-                    handler.sendMessage(msg);
-                }catch (Exception e){
-                    e.printStackTrace();
-                }
-            }
-        }).start();
-
-
+        show();
+        mHandler.postDelayed(mTimeCounterRunnable,2000);
         handler = new Handler(){ //创建Handler
             @Override
             public void handleMessage(android.os.Message msg) {
@@ -131,13 +127,12 @@ public class ChatFragment extends Fragment implements DateFormatter.Formatter {
                         }
                         dialogsAdapter.setItems(chats);
                         dialogsAdapter.setDatesFormatter(that);
+                        break;
                     default:
                         break;
                 }
             }
         };
-
-
 
         dialogsAdapter.setOnDialogClickListener(new DialogsListAdapter.OnDialogClickListener() {
             @Override
@@ -150,9 +145,38 @@ public class ChatFragment extends Fragment implements DateFormatter.Formatter {
             }
         });
         dialogsList.setAdapter(dialogsAdapter);
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction("MESSAGE"); //这个ACTION和后面activity的ACTION一样就行，要不然收不到的
+        getActivity().registerReceiver(myBroadcastReceive, intentFilter);
         return root;
     }
 
+public void show(){
+    Thread td = new Thread(new Runnable() {
+        @Override
+        public void run() {
+            try {
+                FormBody.Builder builder = new  FormBody.Builder()
+                        .add("id", Global.user_id);
+                OkHttpClient client = new OkHttpClient();
+                Request request = new Request.Builder()
+                        .url(Global.SERVER_URL + "/message/index/")
+                        .post(builder.build())
+                        .build();
+                Response response = client.newCall(request).execute();
+                responseData = response.body().string();
+                Gson gson = new Gson();
+                post_list = gson.fromJson(responseData,new TypeToken<List<message_index>>(){}.getType());
+                android.os.Message msg = new android.os.Message();
+                msg.what = 1;
+                handler.sendMessage(msg);
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+        }
+    });
+    td.start();
+}
 
     @Override
     public void onStart() {
@@ -169,7 +193,7 @@ public class ChatFragment extends Fragment implements DateFormatter.Formatter {
     public void onDestroy() {
         super.onDestroy();
         unbinder.unbind();
-        //getActivity().unregisterReceiver(myBroadcastReceive);
+        getActivity().unregisterReceiver(myBroadcastReceive);
     }
 
     @Override

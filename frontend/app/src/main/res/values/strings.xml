@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">T2S-APP</string>
+    <string name="app_name">第十组大作业</string>
     <string name="title_home">首页</string>
     <string name="title_dashboard">我的</string>
     <string name="title_notifications">通知</string>
@@ -82,10 +82,12 @@
     <string name="second_fragment_label">Second Fragment</string>
     <string name="next">Next</string>
     <string name="previous">Previous</string>
+    <string name="DELETE">删除</string>
 
     <string name="hello_first_fragment">Hello first fragment</string>
     <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="CHANGE_AVATAR">修改头像</string>
 
 </resources>

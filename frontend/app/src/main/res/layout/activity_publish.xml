@@ -107,7 +107,20 @@
             android:layout_toEndOf="@id/pov_img"
             android:gravity="center_vertical"
             android:text="@string/SENDPOV"
-            android:textSize="16sp" />
+            android:textSize="16sp"
+            />
+
+        <TextView
+            android:id="@+id/currentpos"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentEnd="true"
+            android:layout_gravity="end"
+            android:gravity="center_vertical"
+            android:padding="10dp"
+            android:scaleType="fitCenter"
+            android:text=""
+            android:textSize="16sp"/>
     </RelativeLayout>
 
     <RelativeLayout

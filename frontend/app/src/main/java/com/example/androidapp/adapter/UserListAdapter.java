@@ -2,6 +2,8 @@ package com.example.androidapp.adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Handler;
+import android.os.Message;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -39,6 +41,7 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.MyView
     private List<visit_detail> data;
     private Context context;
     private View inflater;
+    public Handler hander;
     /*构造函数*/
     public UserListAdapter(Context context, List<visit_detail> data) {
         this.context = context;
@@ -57,13 +60,13 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.MyView
             public void onClick(View view) {
                 TextView text1 = holder.itemView.findViewById(R.id.user_id);
                 String userid = text1.getText().toString();
-                showPopupMenu(holder.itemView.findViewById(R.id.avatar),userid);
+                showPopupMenu(holder.itemView.findViewById(R.id.avatar),userid,hander);
             }
         });
         return holder;
     }
 
-    private void showPopupMenu(View view,String id) {
+    private void showPopupMenu(View view,String id,Handler hander) {
         // View当前PopupMenu显示的相对View的位置
         PopupMenu popupMenu = new PopupMenu(view.getContext(), view);
         // menu布局
@@ -93,6 +96,9 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.MyView
                                             .post(builder.build())
                                             .build();
                                     Response response = client.newCall(request).execute();
+                                    Message msg = new Message();
+                                    msg.what = 1;
+                                    hander.sendMessage(msg);
                                 }catch (Exception e){
                                     e.printStackTrace();
                                 }
@@ -116,6 +122,9 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.MyView
                                             .post(builder.build())
                                             .build();
                                     Response response = client.newCall(request).execute();
+                                    Message msg = new Message();
+                                    msg.what = 2;
+                                    hander.sendMessage(msg);
                                 }catch (Exception e){
                                     e.printStackTrace();
                                 }

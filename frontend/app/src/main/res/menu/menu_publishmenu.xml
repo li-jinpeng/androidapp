@@ -4,8 +4,4 @@
         android:id="@+id/menu1"
         android:title="发布动态"
         />
-    <item
-        android:id="@+id/menu2"
-        android:title="我的草稿"
-        />
 </menu>

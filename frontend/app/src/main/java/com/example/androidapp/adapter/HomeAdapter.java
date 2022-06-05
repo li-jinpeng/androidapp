@@ -2,6 +2,8 @@ package com.example.androidapp.adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Handler;
+import android.os.Message;
 import android.util.Log;
 import android.graphics.Color;
 import android.util.SparseArray;
@@ -52,10 +54,14 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.MyViewHolder> 
     private List<PostDetail> data;
     private Context context;
     private View inflater;
+    private HomeFragment p;
+    private Handler handler;
+    private Message msg;
     /*构造函数*/
-    public HomeAdapter(Context context, List<PostDetail> data) {
+    public HomeAdapter(Context context, List<PostDetail> data, HomeFragment parent) {
         this.context = context;
         this.data = data;
+        this.p = parent;
     }
 
     @NonNull
@@ -95,12 +101,20 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.MyViewHolder> 
                                     .post(builder.build())
                                     .build();
                             Response response = client.newCall(request).execute();
+                            msg = new Message();
+                            msg.what = 1;
+                            handler.sendMessage(msg);
                         }catch (Exception e){
                             e.printStackTrace();
                         }
                     }
                 }).start();
-
+                handler = new Handler(){ //创建Handler
+                    @Override
+                    public void handleMessage(Message msg) {
+                        p.refresh();
+                    }
+                };
             }
         });
 
@@ -135,7 +149,6 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.MyViewHolder> 
                             @Override
                             public void run() {
                                 try {
-
                                     FormBody.Builder builder = new  FormBody.Builder()
                                             .add("user_id", Global.user_id)
                                             .add("follow_id",id);
