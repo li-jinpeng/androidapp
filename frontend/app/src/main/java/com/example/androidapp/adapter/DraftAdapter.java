@@ -47,18 +47,7 @@ public class DraftAdapter extends RecyclerView.Adapter<DraftAdapter.MyViewHolder
         //创建viewHolder，绑定每一项的布局为item
         inflater= LayoutInflater.from(context).inflate(R.layout.draft_item,parent,false);
         holder = new MyViewHolder(inflater);
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                DraftDetail tmp = data.get(holder.getAdapterPosition());
-                deletedraft(holder.getAdapterPosition());
-                Intent intent = new Intent(view.getContext(), PublicActivity.class);
-                intent.putExtra("draftcontent", tmp.content);
-                intent.putExtra("drafttitle", tmp.titie);
-                view.getContext().startActivity(intent);
 
-            }
-        });
         runnable = new Runnable(){
             public void run(){
                 notifyDataSetChanged();
@@ -73,6 +62,20 @@ public class DraftAdapter extends RecyclerView.Adapter<DraftAdapter.MyViewHolder
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
         bindView(holder,position);
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                DraftDetail tmp = data.get(holder.getAdapterPosition());
+                deletedraft(holder.getAdapterPosition());
+                Intent intent = new Intent(view.getContext(), PublicActivity.class);
+                intent.putExtra("draftcontent", tmp.content);
+                intent.putExtra("drafttitle", tmp.titie);
+                view.getContext().startActivity(intent);
+
+            }
+        });
+
         holder.delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

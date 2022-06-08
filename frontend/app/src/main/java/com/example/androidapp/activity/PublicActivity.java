@@ -81,13 +81,16 @@ public class PublicActivity extends AppCompatActivity {
     @BindView(R.id.currentpos)
     TextView currentpos;
 
-    private String title;
-    private String content;
+    @BindView(R.id.currentmusic)
+    TextView currentmusic;
+
+    @BindView(R.id.currentvideo)
+    TextView currentvideo;
+    private String filename;
     private String id;
     private Retrofit mRetrofit;
-    private String host = "http://101.43.128.148:9999";
     private List<String> UploadResult = new ArrayList<>() ;
-
+    private String type = "文字";
     private SelectPlotAdapter adapter;
     private ArrayList<String> allSelectList;//所有的图片集合
     private ArrayList<String> categoryLists;//查看图片集合
@@ -111,7 +114,7 @@ public class PublicActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         edittitle.setText(intent.getStringExtra("drafttitle"));
         editcontent.setText(intent.getStringExtra("draftcontent"));
-        mRetrofit = new Retrofit.Builder().baseUrl(host).build();
+        mRetrofit = new Retrofit.Builder().baseUrl(Global.SERVER_URL).build();
         if (null == allSelectList) {
             allSelectList = new ArrayList();
         }
@@ -147,7 +150,7 @@ public class PublicActivity extends AppCompatActivity {
                         .build();
                 OkHttpClient client = new OkHttpClient();
                 Request request = new Request.Builder()
-                        .url(host + "/draft/delete/")
+                        .url(Global.SERVER_URL + "/draft/delete/")
                         .post(build)
                         .build();
                 try {
@@ -247,6 +250,9 @@ public class PublicActivity extends AppCompatActivity {
             @Override
             public void add() {
                 //可添加的最大张数=9-当前已选的张数
+                type = "图文";
+                currentmusic.setText("");
+                currentvideo.setText("");
                 filepathList.clear();
                 int size = 9 - allSelectList.size();
                 Tools.galleryPictures(PublicActivity.this, size);
@@ -273,8 +279,6 @@ public class PublicActivity extends AppCompatActivity {
                         .isNotPreviewDownload(true)//是否显示保存弹框
                         .imageEngine(GlideEngine.createGlideEngine()) // 选择器展示不出图片则添加
                         .openExternalPreview(position, selectList);
-                //②:自定义布局预览
-                //Tools.startPhotoViewActivity(MainActivity.this, categoryLists, position);
             }
         });
     }
@@ -295,8 +299,7 @@ public class PublicActivity extends AppCompatActivity {
                         deleteDraft();
                     }
                     Intent intent = new Intent(PublicActivity.this, MainActivity.class);
-                    intent.putExtra("message", "public");
-                    startActivityForResult(intent, 1);
+                    startActivity(intent);
                 }
             });
             defaultBuilder.setPositiveButton("是",new DialogInterface.OnClickListener() {
@@ -304,8 +307,7 @@ public class PublicActivity extends AppCompatActivity {
                 public void onClick(DialogInterface dialog, int which) {
                     editDraft();
                     Intent intent = new Intent(PublicActivity.this, MainActivity.class);
-                    intent.putExtra("message", "public");
-                    startActivityForResult(intent, 1);
+                    startActivity(intent);
                 }
             });
             AlertDialog alertDialog = defaultBuilder.create();
@@ -313,8 +315,7 @@ public class PublicActivity extends AppCompatActivity {
         }
         else{
             Intent intent = new Intent(PublicActivity.this, MainActivity.class);
-            intent.putExtra("message", "public");
-            startActivityForResult(intent, 1);
+            startActivity(intent);
         }
     }
 
@@ -336,8 +337,16 @@ public class PublicActivity extends AppCompatActivity {
                     }
                     file = uriToFileApiQ(uri, this);
                     filepathList.add(file.getPath());
+                    filename = file.getName();
+
                     Log.v("name",file.getName());
-                    Toast.makeText(this, file.toString(), Toast.LENGTH_SHORT).show();
+                    if(type == "音频"){
+                        currentmusic.setText(filename);
+                        currentvideo.setText("");
+                    }else if (type == "视频") {
+                        currentmusic.setText("");
+                        currentvideo.setText(filename);
+                    }
                     break;
                 case PictureConfig.CHOOSE_REQUEST:
                     // 结果回调
@@ -414,10 +423,10 @@ public class PublicActivity extends AppCompatActivity {
                 Log.e(TAG, "标题: " + title);
                 Log.e(TAG, "内容: " + content);
                 Intent intent = new Intent(this, MainActivity.class);
-                intent.putExtra("message", "public");
-                startActivityForResult(intent, 1);
+                startActivity(intent);
                 break;
             case R.id.addmusic:
+                type = "音频";
                 Intent intent2 = new Intent(Intent.ACTION_GET_CONTENT);
                 intent2.setType("audio/*");
                 intent2.addCategory(Intent.CATEGORY_OPENABLE);
@@ -428,6 +437,7 @@ public class PublicActivity extends AppCompatActivity {
                 Toast.makeText(this, currentloc, Toast.LENGTH_LONG).show();
                 break;
             case R.id.addvideo:
+                type = "视频";
                 Intent intent3 = new Intent(Intent.ACTION_GET_CONTENT);
                 intent3.setType("video/*");
                 intent3.addCategory(Intent.CATEGORY_OPENABLE);
@@ -444,7 +454,7 @@ public class PublicActivity extends AppCompatActivity {
         MultipartBody body;
         if(path != null) {
             File file = new File(path);
-            Log.e("name", file.getName());
+            Log.e("path", file.getPath());
             RequestBody requestFile = RequestBody.Companion.create(MediaType.parse("multipart/form-data"), file);
 
             body =
@@ -454,7 +464,9 @@ public class PublicActivity extends AppCompatActivity {
                             .addFormDataPart("user_id", Global.user_id)
                             .addFormDataPart("title", edittitle.getText().toString())
                             .addFormDataPart("content", editcontent.getText().toString())
-                            .addFormDataPart("file", file.getName(), requestFile)
+                            .addFormDataPart("image", file.getName(), requestFile)
+                            .addFormDataPart("location",currentloc)
+                            .addFormDataPart("type",type)
                             .build();
         }
         else{
@@ -467,6 +479,8 @@ public class PublicActivity extends AppCompatActivity {
                             .addFormDataPart("title", edittitle.getText().toString())
                             .addFormDataPart("content", editcontent.getText().toString())
                             .addFormDataPart("file","null",requestBody)
+                            .addFormDataPart("location",currentloc)
+                            .addFormDataPart("type",type)
                             .build();
         }
         return body;
