@@ -222,7 +222,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.MyViewHolder> 
     //内部类，绑定控件
     public class MyViewHolder extends RecyclerView.ViewHolder {
         ImageView image,avatar;
-        TextView content,user_name,date,title,follow,thumbs;
+        TextView content,user_name,date,title,follow,thumbs,location,type;
         String post_id;
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -234,13 +234,18 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.MyViewHolder> 
             date = itemView.findViewById(R.id.time);
             thumbs = itemView.findViewById(R.id.thumbs);
             follow = itemView.findViewById(R.id.follow);
+            type = itemView.findViewById(R.id.type);
+            location = itemView.findViewById(R.id.location);
         }
     }
 
     //自定义方法，用于绑定数据
     public void bindView(@NonNull MyViewHolder holder, int position){
         String imageUrl = data.get(position).imagePath;
-        Glide.with(context).load(imageUrl).into(holder.image);
+        if (data.get(position).type.equals("图文"))
+            Glide.with(context).load(imageUrl).into(holder.image);
+        else
+            Glide.with(context).load("").into(holder.image);
         imageUrl = data.get(position).avatar;
         Glide.with(context).load(imageUrl).into(holder.avatar);
         holder.title.setText("<"+data.get(position).title+">");
@@ -248,6 +253,8 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.MyViewHolder> 
         holder.user_name.setText(data.get(position).sender);
         holder.date.setText(data.get(position).time);
         holder.thumbs.setText(data.get(position).thumbs);
+        holder.type.setText(data.get(position).type);
+        holder.location.setText(data.get(position).location);
         holder.post_id = data.get(position).id;
         if (data.get(position).thumb!=0)
             holder.thumbs.setTextColor(Color.RED);

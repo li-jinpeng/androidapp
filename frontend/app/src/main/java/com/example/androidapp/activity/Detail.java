@@ -2,6 +2,7 @@ package com.example.androidapp.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.PopupMenu;
+import androidx.core.app.ShareCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -13,6 +14,9 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.media.AudioManager;
+import android.media.MediaPlayer;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -26,9 +30,13 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.MediaController;
+import android.widget.RelativeLayout;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.VideoView;
 
 import java.io.InputStream;
 import java.net.HttpURLConnection;
@@ -60,7 +68,7 @@ import okhttp3.Response;
 public class Detail extends AppCompatActivity {
 
     private String id;
-    private TextView name,date,text,thumbs,reply;
+    private TextView name,date,text,thumbs,reply,share,thumb_list;
     private ImageView good,comment;
     private CircleImageView ava;
     private String responseData;
@@ -72,6 +80,8 @@ public class Detail extends AppCompatActivity {
     private Handler handler;
     private Detail that = this;
     private ImageAdapter imageAdapter;
+    private VideoView video;
+    private MediaPlayer music;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -89,6 +99,22 @@ public class Detail extends AppCompatActivity {
         comment = findViewById(R.id.comment);
         pictureView = findViewById(R.id.pic);
         recycleView = findViewById(R.id.com);
+        thumb_list = findViewById(R.id.thumb_list);
+        video = findViewById(R.id.video);
+        share = findViewById(R.id.share);
+        share.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String txt = text.getText().toString();
+                String mimeType = "text/plain";
+                ShareCompat.IntentBuilder
+                        .from(that)
+                        .setType(mimeType)
+                        .setChooserTitle("分享")
+                        .setText(txt)
+                        .startChooser();
+            }
+        });
         good.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -239,8 +265,84 @@ public class Detail extends AppCompatActivity {
                 builder.show();
             }
         });
-        refresh();
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    FormBody.Builder builder = new  FormBody.Builder().add("id", id).add("user_id", Global.user_id);
+                    OkHttpClient client = new OkHttpClient();
+                    Request request = new Request.Builder()
+                            .url(Global.SERVER_URL + "/post/detail/")
+                            .post(builder.build())
+                            .build();
+                    Response response = client.newCall(request).execute();
+                    responseData = response.body().string();
+                    gson = new Gson();
+                    postInfo = gson.fromJson(responseData,new TypeToken<PostDetailDetail>(){}.getType());
+                    name.setText(postInfo.sendname);
+                    date.setText(postInfo.date);
+                    text.setText(postInfo.text);
+                    thumbs.setText(postInfo.likes);
+                    thumb_list.setText(postInfo.thumb_list);
+                    if (postInfo.like!=0)
+                        thumbs.setTextColor(Color.RED);
+                    else
+                        thumbs.setTextColor(Color.BLACK);
+                    msg = new Message();
+                    msg.what = 1;
+                    handler.sendMessage(msg);
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+            }
+        }).start();
+        handler = new Handler(){ //创建Handler
+            @Override
+            public void handleMessage(Message msg) {
+                Glide.with(that).load(postInfo.ava).into(ava);
+                LinearLayoutManager manager = new LinearLayoutManager(that);
+                manager.setOrientation(RecyclerView.VERTICAL);
+                recycleView.setLayoutManager(manager);
+                postAdapter = new PostAdapter(that,postInfo.response,that);
+                recycleView.setAdapter(postAdapter);
+                if (postInfo.type.equals("图文")) {
+                    LinearLayoutManager manager1 = new LinearLayoutManager(that);
+                    manager1.setOrientation(RecyclerView.HORIZONTAL);
+                    pictureView.setLayoutManager(manager1);
+                    imageAdapter = new ImageAdapter(that, postInfo.pic);
+                    pictureView.setAdapter(imageAdapter);
+                }
+                else
+                    pictureView.setVisibility(View.GONE);
+                if (postInfo.type.equals("视频")) {
+                    playVideo(postInfo.pic.get(0).substring(0,postInfo.pic.get(0).length() - 1));
+                }
+                else
+                    video.setVisibility(View.GONE);
+                if (postInfo.type.equals("音频")) {
+                    playVideo(postInfo.pic.get(0).substring(0,postInfo.pic.get(0).length() - 1));
+                }
+                ava.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        showPopupMenu(ava,postInfo.author);
+                    }
+                });
+            }
+        };
 
+    }
+    public void playVideo(String url)
+    {
+        LinearLayout r = findViewById(R.id.videoLayout);
+        r.setVisibility(View.VISIBLE);
+        video.setKeepScreenOn(true);
+        video.setVisibility(View.VISIBLE);
+        video.setVideoURI(Uri.parse(url));
+        MediaController mediacontroller = new MediaController(this);
+        video.setMediaController(mediacontroller);
+        video.start();
+        video.requestFocus();
     }
 
     public void refresh()
@@ -263,6 +365,7 @@ public class Detail extends AppCompatActivity {
                     date.setText(postInfo.date);
                     text.setText(postInfo.text);
                     thumbs.setText(postInfo.likes);
+                    thumb_list.setText(postInfo.thumb_list);
                     if (postInfo.like!=0)
                         thumbs.setTextColor(Color.RED);
                     else
@@ -285,11 +388,15 @@ public class Detail extends AppCompatActivity {
                 recycleView.setLayoutManager(manager);
                 postAdapter = new PostAdapter(that,postInfo.response,that);
                 recycleView.setAdapter(postAdapter);
-                LinearLayoutManager manager1 = new LinearLayoutManager(that);
-                manager1.setOrientation(RecyclerView.HORIZONTAL);
-                pictureView.setLayoutManager(manager1);
-                imageAdapter = new ImageAdapter(that, postInfo.pic);
-                pictureView.setAdapter(imageAdapter);
+                if (postInfo.type.equals("图文")) {
+                    LinearLayoutManager manager1 = new LinearLayoutManager(that);
+                    manager1.setOrientation(RecyclerView.HORIZONTAL);
+                    pictureView.setLayoutManager(manager1);
+                    imageAdapter = new ImageAdapter(that, postInfo.pic);
+                    pictureView.setAdapter(imageAdapter);
+                }
+                else
+                    pictureView.setVisibility(View.GONE);
                 ava.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
@@ -373,5 +480,4 @@ public class Detail extends AppCompatActivity {
 
         popupMenu.show();
     }
-
 }

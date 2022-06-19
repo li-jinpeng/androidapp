@@ -105,7 +105,7 @@ public class ChatActivity extends BaseActivity {
                         ArrayList msgs = new ArrayList<>();
                         for(int i =0;i<post_list.size();i++){
                             Calendar tmp_cal = Calendar.getInstance();
-                            tmp_cal.set(post_list.get(i).year,post_list.get(i).mon,post_list.get(i).day,
+                            tmp_cal.set(post_list.get(i).year,post_list.get(i).mon-1,post_list.get(i).day,
                                     post_list.get(i).hour,post_list.get(i).min);
                             Message tmp= new Message("1",user,post_list.get(i).msg,tmp_cal);
                             msgs.add(tmp);

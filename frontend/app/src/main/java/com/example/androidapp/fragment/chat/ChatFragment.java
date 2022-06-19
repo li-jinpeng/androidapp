@@ -113,7 +113,7 @@ public class ChatFragment extends Fragment implements DateFormatter.Formatter {
                             User user1 = new User(post_list.get(i).id, post_list.get(i).sender, "http://101.43.128.148:9999/pic/notice.jpg", true);
                             users1.add(user1);
                             Calendar cal = Calendar.getInstance();
-                            cal.set(post_list.get(i).year,post_list.get(i).mon,post_list.get(i).day,
+                            cal.set(post_list.get(i).year,post_list.get(i).mon-1,post_list.get(i).day,
                                     post_list.get(i).hour,post_list.get(i).min);
                             Log.d("TAG", "年份handleMessage: "+post_list.get(i).min);
                             Dialog dia =  new Dialog(

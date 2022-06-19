@@ -72,7 +72,6 @@ public class HomeFragment extends Fragment {
     private Gson gson;
     private String host = Global.SERVER_URL;
     private Switch attention_switch,order_switch;
-    private int lock = 0;
     private HomeFragment that = this;
     private Handler handler;
     private Message msg;
@@ -116,14 +115,22 @@ public class HomeFragment extends Fragment {
                     responseData = response.body().string();
                     gson = new Gson();
                     post_list = gson.fromJson(responseData,new TypeToken<List<PostDetail>>(){}.getType());
-                    homeAdapter = new HomeAdapter(getActivity(),post_list,that);
-                    recycleView.setAdapter(homeAdapter);
+                    msg = new Message();
+                    msg.what = 1;
+                    handler.sendMessage(msg);
 
                 }catch (Exception e){
                     e.printStackTrace();
                 }
             }
         }).start();
+        handler = new Handler(){ //创建Handler
+            @Override
+            public void handleMessage(Message msg) {
+                homeAdapter = new HomeAdapter(getActivity(),post_list,that);
+                recycleView.setAdapter(homeAdapter);
+            }
+        };
 
         text.setOnClickListener(new View.OnClickListener() {
             @Override

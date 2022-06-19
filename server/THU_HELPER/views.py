@@ -60,13 +60,16 @@ def translate(number): #转化数字表示
 
 def get_user_home(request):
     id = request.POST.get('id', '')
+    user_id = request.POST.get('user_id','')
+    black = Operator.objects.filter(user_id = user_id).filter(reply_id = id).filter(type = 5).count()+Operator.objects.filter(user_id = id).filter(reply_id = user_id).filter(type = 5).count() 
     user = User.objects.get(id=id)
     res = {}
     res["account"] = user.email
     res["name"] = user.nickname
     res["ava"] = user.profile
     res["intro"]=user.wechat_id
-    
+    res1 = {}
+    res1['name']="已被拉黑"
     follows = Operator.objects.filter(type=6).filter(user_id=id)
     count = 0
     for follow in follows:
@@ -78,8 +81,36 @@ def get_user_home(request):
     for follow in followeds:
         count+=1
     res["followed"] = str(count)
+    if black!=0:
+        return JsonResponse(res1,safe=False)
+    else:
+        return JsonResponse(res,safe=False)
     
-    return JsonResponse(res)
+def get_user_detail(request):
+    id = request.POST.get('id', '')
+    user_id = request.POST.get('user_id','')
+    user = User.objects.get(id=id)
+    res1 = {}
+    res1['name']="已被拉黑"
+    black = Operator.objects.filter(user_id = user_id).filter(reply_id = id).filter(type = 5).count()+Operator.objects.filter(user_id = id).filter(reply_id = user_id).filter(type = 5).count() 
+    res = {}
+    res["name"] = user.nickname
+    res["ava"] = user.profile
+    res["intro"] = user.wechat_id
+    res["account"] = user.email
+    res["user_id"] = user.id 
+    follow = Operator.objects.filter(user_id = user_id).filter(reply_id = id).filter(type = 6)
+    if follow:
+        res["follow"] = "已关注"
+    else:
+        res["follow"] = "未关注"
+    if black!=0:
+        print(black)  
+        print(res1) 
+        res1['follow']="未知" 
+        return JsonResponse(res1,safe=False)
+    else:
+        return JsonResponse(res,safe=False)
     
 def change_avatar(request):
     myfile = request.FILES.get('image','')
@@ -100,15 +131,18 @@ def change_avatar(request):
 def login(request):
     password = request.POST.get('password', '')
     accounts = User.objects.filter(email = request.POST['account'])
+    
     res = {}
     for account in accounts:
       if account:
+          print(account.grade)
           if account.grade == password:
               res['message'] = account.id
               res['type'] = 'ok'
           else:
               res['type'] = 'nok'
               res['message'] = "密码错误"
+          print(res)
           return JsonResponse(res,safe=False)
     res['type'] = 'nok'
     res['message'] = "账号不存在"
@@ -125,22 +159,7 @@ def change_password(request):
     return JsonResponse(res,safe=False)
     
 
-def get_user_detail(request):
-    id = request.POST.get('id', '')
-    user_id = request.POST.get('user_id','')
-    user = User.objects.get(id=id)
-    res = {}
-    res["name"] = user.nickname
-    res["ava"] = user.profile
-    res["intro"] = user.wechat_id
-    res["account"] = user.email
-    res["user_id"] = user.id 
-    follow = Operator.objects.filter(user_id = user_id).filter(reply_id = id).filter(type = 6)
-    if follow:
-        res["follow"] = "已关注"
-    else:
-        res["follow"] = "未关注"
-    return JsonResponse(res,safe=False)
+
 
 def new_user(request):
     nickname = request.POST.get('name', '')
@@ -153,6 +172,26 @@ def new_user(request):
     user.school = intro
     user.grade = password
     user.save()
+    message = Message()
+    message.send_id = "notice_follow"
+    message.receive_id = user.id
+    message.content = "欢迎!"
+    message.save()
+    message = Message()
+    message.send_id = "notice_like"
+    message.receive_id = user.id
+    message.content = "欢迎!"
+    message.save()
+    message = Message()
+    message.send_id = "notice_upgrade"
+    message.receive_id = user.id
+    message.content = "欢迎!"
+    message.save()
+    message = Message()
+    message.send_id = "notice_comment"
+    message.receive_id = user.id
+    message.content = "欢迎!"
+    message.save()
     return JsonResponse({'type': 1})
 
 def edit_user(request):
@@ -747,6 +786,7 @@ def get_post_index(request):
             item["imagePath"] = temp[0]
         item["title"] = post.title
         item["type"] = post.type
+        item["location"] = post.tag
         author = post.author
         user = User.objects.get(id=author)
         item["user_id"] = user.id
@@ -782,9 +822,20 @@ def get_post_detail(request):
     res["likes"] = post.thumbs
     res["store"] = post.stores
     res["reports"] = post.reports
+    res["location"] = post.tag
     res["like"] = Operator.objects.filter(type=1).filter(user_id=user_id).filter(reply_id=id).count()
     res["sto"] = Operator.objects.filter(type=2).filter(user_id=user_id).filter(reply_id=id).count()
     res["reported"] = Operator.objects.filter(type=4).filter(user_id=user_id).filter(reply_id=id).count()
+    thumb_list = "点赞者:"
+    if res["likes"] == 0:
+      thumb_list += "无"
+    else:
+      peoples = Operator.objects.filter(type=1).filter(reply_id=id)
+      for people in peoples:
+        user = User.objects.get(id=people.user_id)
+        thumb_list += user.nickname + " "
+    res["thumb_list"] = thumb_list
+    
     #res["done"] = Reply.objects.filter(author=user_id).filter(reply_id=id).count()
     #if res["done"] > 0:
         #res["done"] = 1
@@ -858,12 +909,15 @@ def new_post(request):#新建帖子记录
     content = request.POST.get('content', '')
     user_id = request.POST.get('user_id', '')
     post_id = request.POST.get('post_id','')
-    
+    type = request.POST.get('type','')
+    location = request.POST.get('location','')
     if post_id == "init":
         post = Post()
         post.content = check_word(content)
         post.author = user_id
         post.title = title
+        post.tag = location
+        post.type = type
         if myfile:
             dir = "pic/"  + myfile.name
             w = open(dir,'wb+')
@@ -1275,6 +1329,7 @@ def index_search(request):
             item["image"] = True
             item["imagePath"] = temp[0]
         item["type"] = post.type
+        item["location"] = post.tag
         item["thumbs"] = post.thumbs
         author = post.author
         user = User.objects.get(id=author)
@@ -1303,7 +1358,9 @@ def index_search(request):
                     flag = 0
         if flag != 0:
             if user_type != 'all':
-                if item['user_id']==user_type:
+                black = Operator.objects.filter(user_id = user_id).filter(reply_id = user_type).filter(type = 5).count()+Operator.objects.filter(user_id = user_type).filter(reply_id = user_id).filter(type = 5).count()
+                print(black)
+                if black==0 and item['user_id']==user_type:
                     res.append(item)
             else:
                 res.append(item)
@@ -1399,10 +1456,9 @@ def delete_draft(request):
 def get_image(request,id):
     imagepath = "pic/" + id
     image_data = open(imagepath,"rb").read()
-
     if ".mp4" in imagepath:
         return HttpResponse(image_data, content_type="video/mp4")
-    if ".png" or ".jgp" in imagepath:
+    if ".png" in imagepath or ".jpg" in imagepath or ".jpeg" in imagepath:
         return HttpResponse(image_data, content_type="image/png")
     if ".mp3" in imagepath:
         return HttpResponse(image_data, content_type="video/mp4")
@@ -1471,4 +1527,8 @@ def reset_task():
     for user in users:
         user.task = 0
         user.save()
+        
+        
+    
+
 

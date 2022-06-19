@@ -183,7 +183,7 @@ public class visit extends AppCompatActivity {
             public void run() {
                 try {
                     FormBody.Builder builder = new  FormBody.Builder()
-                            .add("id",the_id);
+                            .add("id",the_id).add("user_id",Global.user_id);
                     OkHttpClient client = new OkHttpClient();
                     Request request = new Request.Builder()
                             .url(Global.SERVER_URL + "/user/get/home/")
